@@ -1,0 +1,132 @@
+<!--file settings.html -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚙️ الإعدادات</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #1e293b, #0f172a, #2563eb);
+      background-size: 200% 200%;
+      animation: gradientShift 12s ease infinite;
+      color: white;
+      transition: all 0.4s ease;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .card {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      border-radius: 18px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+    .btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    .btn:hover {
+      transform: scale(1.05);
+    }
+    .light-mode {
+      background: #f9fafb !important;
+      color: #1e293b !important;
+    }
+    .light-mode .card {
+      background: #ffffff;
+      color: #1e293b;
+    }
+    .light-mode footer {
+      background: #e5e7eb;
+      color: #111827;
+    }
+    .light-mode nav {
+      background: #ffffffcc;
+      color: #111827;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- 🚀 Navbar -->
+  <nav class="flex items-center justify-between px-6 py-4 bg-black/30 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <img src="photo_2025-09-03_00-46-19.jpg" alt="شعار" class="w-10 h-10 rounded-full">
+      <span class="text-lg font-bold">منصة البداية</span>
+    </div>
+    <div class="flex items-center gap-4 text-sm md:text-base">
+      <a href="profile.html" class="hover:text-blue-300">👤 الملف الشخصي</a>
+      <a href="grades.html" class="hover:text-green-300">📝 الدرجات</a>
+      <a href="calendar.html" class="hover:text-purple-300">📅 التقويم</a>
+      <a href="files.html" class="hover:text-yellow-300">📂 الملفات</a>
+      <a href="index_updated.html" onclick="logout()" class="hover:text-red-400">🚪 تسجيل خروج</a>
+    </div>
+  </nav>
+
+  <!-- ⚙️ Settings Content -->
+  <main class="flex-grow container mx-auto px-4 py-10 space-y-10">
+    <h1 class="text-3xl md:text-4xl font-bold text-center mb-10">⚙️ إعدادات الحساب</h1>
+
+    <!-- تعديل البيانات -->
+    <div class="card">
+      <h2 class="text-xl md:text-2xl font-bold mb-4">👤 تعديل بيانات الحساب</h2>
+      <form class="flex flex-col gap-4">
+        <input type="text" placeholder="الاسم" class="p-3 rounded bg-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <input type="email" placeholder="البريد الإلكتروني" class="p-3 rounded bg-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <input type="password" placeholder="كلمة المرور الجديدة" class="p-3 rounded bg-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <button type="submit" class="btn bg-blue-600 text-white w-fit">💾 حفظ التغييرات</button>
+      </form>
+    </div>
+    
+    <!-- الثيم -->
+    <div class="card">
+      <h2 class="text-xl md:text-2xl font-bold mb-4">🎨 المظهر</h2>
+      <button onclick="toggleTheme()" class="btn bg-purple-600 text-white">🌓 تبديل المظهر</button>
+    </div>
+
+    <!-- الإشعارات -->
+    <div class="card">
+      <h2 class="text-xl md:text-2xl font-bold mb-4">🔔 الإشعارات</h2>
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input type="checkbox" checked class="w-5 h-5 accent-blue-600">
+        <span>تفعيل الإشعارات</span>
+      </label>
+    </div>
+
+    <!-- تسجيل خروج -->
+    <div class="card text-center">
+      <button onclick="logout()" class="btn bg-red-600 text-white">🚪 تسجيل خروج</button>
+    </div>
+  </main>
+
+  <!-- 📩 Footer -->
+  <footer class="bg-gray-900 text-white py-6 text-center">
+    <p>© 2025 منصة البداية. جميع الحقوق محفوظة.</p>
+  </footer>
+
+  <!-- ⚡ Script -->
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

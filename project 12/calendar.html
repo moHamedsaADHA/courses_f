@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📅 التقويم</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #1e293b, #0f172a, #9333ea);
+      background-size: 200% 200%;
+      animation: gradientShift 12s ease infinite;
+      color: white;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .card {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      border-radius: 18px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- 🚀 Navbar -->
+  <nav class="flex flex-wrap items-center justify-between px-6 py-4 bg-black/30 backdrop-blur-md">
+    <div class="flex items-center gap-3 mb-3 md:mb-0">
+      <img src="photo_2025-09-03_00-46-19.jpg" alt="شعار" class="w-10 h-10 rounded-full">
+      <span class="text-lg font-bold">منصة البداية</span>
+    </div>
+    <div class="flex flex-wrap gap-4 text-sm md:text-base">
+      <a href="profile.html" class="hover:text-blue-300">👤 الملف الشخصي</a>
+      <a href="grades.html" class="hover:text-green-300">📝 الدرجات</a>
+      <a href="files.html" class="hover:text-purple-300">📂 الملفات</a>
+      <a href="settings.html" class="hover:text-pink-300">⚙️ الإعدادات</a>
+      <a href="index.html" onclick="logout()" class="hover:text-red-400">🚪 تسجيل خروج</a>
+    </div>
+  </nav>
+
+  <!-- 🗓️ Calendar Content -->
+  <main class="flex-grow container mx-auto px-4 py-10">
+    <h1 class="text-3xl md:text-4xl font-bold text-center mb-10">📅 تقويم الطالب</h1>
+
+    <!-- الجدول -->
+    <div class="card overflow-x-auto">
+      <table class="w-full text-center border-collapse min-w-[600px]">
+        <thead class="bg-purple-600">
+          <tr>
+            <th class="p-3">اليوم</th>
+            <th class="p-3">المادة</th>
+            <th class="p-3">الوقت</th>
+            <th class="p-3">الملاحظات</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white/10">
+          <tr>
+            <td class="p-3">الأحد</td>
+            <td class="p-3">رياضيات - جبر</td>
+            <td class="p-3">10:00 صباحًا</td>
+            <td class="p-3">محاضرة مباشرة عبر زووم</td>
+          </tr>
+          <tr>
+            <td class="p-3">الإثنين</td>
+            <td class="p-3">لغة عربية</td>
+            <td class="p-3">12:00 ظهرًا</td>
+            <td class="p-3">اختبار قصير</td>
+          </tr>
+          <tr>
+            <td class="p-3">الأربعاء</td>
+            <td class="p-3">لغة إنجليزية</td>
+            <td class="p-3">9:00 صباحًا</td>
+            <td class="p-3">مراجعة قبل الامتحان</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- أحداث إضافية -->
+    <div class="grid md:grid-cols-2 gap-6 mt-10">
+      <div class="card">
+        <h2 class="text-lg md:text-xl font-bold mb-2">📖 واجبات</h2>
+        <p class="text-sm md:text-base">حل تمارين الرياضيات من صفحة 35 - 40 وتسليمها يوم الخميس.</p>
+      </div>
+      <div class="card">
+        <h2 class="text-lg md:text-xl font-bold mb-2">🛑 تنبيه</h2>
+        <p class="text-sm md:text-base">اختبار منتصف الترم يوم الإثنين القادم الساعة 11 صباحًا.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- 📩 Footer -->
+  <footer class="bg-gray-900 text-white py-6 text-center text-sm md:text-base">
+    <p>© 2025 منصة البداية. جميع الحقوق محفوظة.</p>
+  </footer>
+
+  <!-- ⚡ Script -->
+  <script>
+    function logout() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

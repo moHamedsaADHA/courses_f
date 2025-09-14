@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>منصة البداية</title>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- مكتبة التايبنج -->
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+    .animated-bg {
+      background: linear-gradient(270deg, #0f172a, #0f172a);
+      background-size: 600% 600%;
+      animation: gradientShift 18s ease infinite;
+    }
+    @keyframes gradientShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .profile-img {
+      transition: all 0.5s ease;
+    }
+    .profile-img:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 25px rgba(59,130,246,0.8));
+    }
+    .card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+    .modal {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none; justify-content: center; align-items: center;
+      z-index: 100;
+    }
+    .modal-content {
+      background: rgba(255, 255, 255, 0);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: 2rem;
+      width: 100%; max-width: 420px;
+      color: rgb(15, 20, 171);
+      transform: scale(0.7);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .modal.show .modal-content {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    /* 🌞 Light Mode */
+    .light-mode {
+      background: #f9fafb !important;   /* خلفية فاتحة */
+      color: #1e293b !important;        /* النصوص غامقة */
+    }
+    .light-mode nav {
+      background: #ffffffcc !important;
+      color: #1e293b !important;
+    }
+    .light-mode .card {
+      background: #ffffff !important;
+      color: #1e293b !important;
+      border: 1px solid #e5e7eb;
+    }
+    .light-mode h1, 
+    .light-mode h2, 
+    .light-mode h3, 
+    .light-mode p {
+      color: #1e293b !important;
+    }
+    .light-mode footer {
+      background: #f1f5f9 !important;
+      color: #1e293b !important;
+    }
+    .light-mode .modal-content {
+      background: #ffffff !important;
+      color: #1e293b !important;
+    }
+    .light-mode button {
+      color: white !important;
+    }
+
+    /* Teacher Mode Indicator */
+    .teacher-mode-badge {
+      background: linear-gradient(135deg, #8b5cf6, #a855f7);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+  </style>
+</head>
+<body class="animated-bg text-white">
+
+  <!-- 🚀 Navbar -->
+  <nav class="flex items-center justify-between px-4 sm:px-6 py-3 bg-black/40 backdrop-blur-md fixed w-full top-0 z-50">
+    <!-- الشعار -->
+    <div class="flex items-center gap-3">
+      <img src="WhatsApp_Image_2025-09-06_at_00.31.42_7b113d97-removebg-preview.png" alt="شعار البداية" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full" />
+      <span class="text-lg sm:text-xl font-bold">منصة البداية</span>
+    </div>
+
+    <!-- اللينكات + الازرار -->
+    <div class="hidden md:flex items-center gap-6">
+      <a href="#courses" class="hover:text-blue-300">📚 الكورسات</a>
+      <a href="#teacher" class="hover:text-blue-300">👨‍🏫 المدرس</a>
+      <button onclick="toggleTheme()" class="px-3 py-1 bg-white/20 rounded-lg">🌓</button>
+      <button id="openLogin" class="px-3 sm:px-4 py-2 bg-blue-600 rounded-lg text-sm sm:text-base">تسجيل دخول</button>
+      <button id="openRegister" class="px-3 sm:px-4 py-2 bg-green-600 rounded-lg text-sm sm:text-base">إنشاء حساب</button>
+    </div>
+
+    <!-- مينو للموبايل -->
+    <div class="md:hidden">
+      <button id="menuToggle" class="px-3 py-2 bg-white/20 rounded-lg">☰</button>
+    </div>
+  </nav>
+
+  <!-- قائمة الموبايل -->
+ <div id="mobileMenu" class="hidden flex-col gap-4 px-6 py-4 bg-black/90 fixed top-14 right-0 w-2/3 h-screen z-40">
+  <a href="#courses" class="hover:text-blue-300">📚 الكورسات</a>
+  <a href="#teacher" class="hover:text-blue-300">👨‍🏫 المدرس</a>
+  <button onclick="toggleTheme()" class="px-4 py-2 bg-white/20 rounded-lg">🌓 تبديل الوضع</button>
+  <button id="openLoginMobile" class="px-4 py-2 bg-blue-600 rounded-lg">تسجيل دخول</button>
+  <button id="openRegisterMobile" class="px-4 py-2 bg-green-600 rounded-lg">إنشاء حساب</button>
+</div>
+
+  <!-- 🌟 Hero Section -->
+
+<header class="h-[90vh] sm:h-screen flex items-center justify-center relative px-4 sm:px-6">
+  <div class="absolute inset-0 bg-black/30"></div>
+  <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10 items-center">
+    
+    <!-- النصوص -->
+    <div class="text-center md:text-right order-2 md:order-1">
+      <div class="flex flex-col items-center md:items-start">
+        <img src="WhatsApp_Image_2025-09-06_at_00.31.42_7b113d97-removebg-preview.png" 
+             alt="شعار البداية" 
+             class="w-20 h-20 mb-4 rounded-full shadow-lg" />
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">
+          <span id="typed-text" class="text-blue-400"></span>
+        </h1>
+      </div>
+      <p class="text-base sm:text-lg md:text-xl mt-6 max-w-xl mx-auto md:mx-0">
+        تعلم مادة الرياضة مع الأستاذ مجدي جمال - خبرة في تدريس المرحلة الثانوية.
+      </p>
+    </div>
+
+    <!-- صورة المدرس -->
+    <div class="flex justify-center order-1 md:order-2">
+      <div class="relative">
+        <img src="تصميم_بدون_عنوان-removebg-preview.png" 
+             alt="الأستاذ مجدي" 
+             class="profile-img w-60 sm:w-80 md:w-[420px] rounded-3xl shadow-2xl" />
+        
+        <!-- Teacher Mode Toggle Button -->
+        <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2">
+          <button id="globalModeToggle" 
+                  onclick="toggleGlobalTeacherMode()" 
+                  class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow-lg transition-all duration-300 flex items-center gap-2">
+            <span id="globalModeText">🎓 في وضع المدرس</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+  <!-- 👨‍🏫 About Teacher -->
+  <section id="teacher" class="py-14 sm:py-20 px-4 sm:px-5 bg-white/10 backdrop-blur-md rounded-3xl shadow-2xl mx-2 sm:mx-4 my-8 sm:my-10">
+    <div class="container mx-auto text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 text-white">الأستاذ مجدي</h2>
+      <p class="text-base sm:text-lg mb-6 sm:mb-8 max-w-3xl mx-auto text-gray-200">
+                                              الأستاذ مجدي جمال هو مدرس مادة الرياضة المتخصص، يشرح لطلاب الصف الأول والثاني والثالث الثانوي بأسلوب واضح وممتع يساعد على الفهم السهل والتفوق كما قال المستر الواحد مننا بالف .
+      </p>
+      <img src="photo_2025-09-03_00-20-27.jpg" alt="صورة الأستاذ مجدي" class="profile-img mx-auto w-32 sm:w-44" />
+    </div>
+  </section>
+
+  <!-- 📚 Courses -->
+  <section id="courses" class="py-14 sm:py-20 px-4 sm:px-5 bg-gradient-to-r from-blue-500 to-teal-500">
+    <div class="container mx-auto">
+      <h2 class="text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-10">📚 الكورسات التعليمية</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8">
+
+        <div class="card bg-white text-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center">
+          <img src="photo_2025-09-03_23-36-50.jpg" alt="الصف الأول" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
+          <h3 class="text-xl sm:text-2xl font-semibold mb-2">الصف الأول الثانوي</h3>
+          <p class="text-center">دروس تأسيسية شاملة.</p>
+        </div>
+
+        <div class="card bg-white text-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center">
+          <img src="photo_2025-09-03_23-53-13.jpg" alt="الصف الثاني علمي" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
+          <h3 class="text-xl sm:text-2xl font-semibold mb-2">الصف الثاني - علمي</h3>
+          <p class="text-center">تمارين وتطبيقات للعلمي.</p>
+        </div>
+
+        <div class="card bg-white text-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center">
+          <img src="photo_2025-09-03_23-53-13.jpg" alt="الصف الثاني أدبي" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
+          <h3 class="text-xl sm:text-2xl font-semibold mb-2">الصف الثاني - أدبي</h3>
+          <p class="text-center">شرح مبسط للأدبي.</p>
+        </div>
+
+        <div class="card bg-white text-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center">
+          <img src="photo_2025-09-03_23-53-17.jpg" alt="الصف الثالث علمي" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
+          <h3 class="text-xl sm:text-2xl font-semibold mb-2">الصف الثالث - علمي</h3>
+          <p class="text-center">مراجعات شاملة للعلمي.</p>
+        </div>
+
+        <div class="card bg-white text-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center">
+          <img src="photo_2025-09-03_23-53-16.jpg" alt="الصف الثالث أدبي" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
+          <h3 class="text-xl sm:text-2xl font-semibold mb-2">الصف الثالث - أدبي</h3>
+          <p class="text-center">محتوى واضح للأدبي.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 📩 Footer -->
+  <footer class="bg-gray-900 text-white py-10 text-center px-4">
+    <p>© 2025 منصة البداية للتعلم الرياضي. جميع الحقوق محفوظة.</p>
+    <p class="mt-2">📧 تواصل معنا: info@magdijamal-sport.com</p>
+  </footer>
+
+  <!-- 🔑 Login Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold">تسجيل دخول</h2>
+        <button onclick="closeModal('loginModal')">✖️</button>
+      </div>
+      <form id="loginForm" class="flex flex-col gap-4">
+        <input type="email" id="loginEmail" placeholder="البريد الإلكتروني" required class="p-3 rounded bg-white/20" />
+        <input type="password" id="loginPassword" placeholder="كلمة المرور" required class="p-3 rounded bg-white/20" />
+        <select id="loginGrade" required class="p-3 rounded bg-white/20 text-black">
+          <option value="" disabled selected>اختر الصف الدراسي</option>
+          <option value="grade1">الصف الأول الثانوي</option>
+          <option value="grade2sci">الصف الثاني الثانوي - علمي</option>
+          <option value="grade2art">الصف الثاني الثانوي - أدبي</option>
+          <option value="grade3sci">الصف الثالث الثانوي - علمي</option>
+          <option value="grade3art">الصف الثالث الثانوي - أدبي</option>
+        </select>
+        <button type="submit" class="bg-blue-600 py-2 rounded-lg">دخول</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 🆕 Signup Modal -->
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold">إنشاء حساب</h2>
+        <button onclick="closeModal('registerModal')">✖️</button>
+      </div>
+      <form id="signupForm" class="flex flex-col gap-4">
+        <input type="text" id="signupName" placeholder="الاسم الرباعي" required class="p-3 rounded bg-white/20" />
+        <input type="email" id="signupEmail" placeholder="البريد الإلكتروني" required class="p-3 rounded bg-white/20" />
+        <input type="password" id="signupPassword" placeholder="كلمة المرور" required class="p-3 rounded bg-white/20" />
+        <select id="signupCountry" required class="p-3 rounded bg-white/20 text-black">
+          <option value="" disabled selected>اختر بلدك</option>
+          <option>الأجايوه</option>
+          <option>العسيرات</option>
+          <option>المنشأة</option>
+        </select>
+        <select id="signupGrade" required class="p-3 rounded bg-white/20 text-black">
+          <option value="" disabled selected>اختر الصف الدراسي</option>
+          <option value="grade1">الصف الأول الثانوي</option>
+          <option value="grade2sci">الصف الثاني الثانوي - علمي</option>
+          <option value="grade2art">الصف الثاني الثانوي - أدبي</option>
+          <option value="grade3sci">الصف الثالث الثانوي - علمي</option>
+          <option value="grade3art">الصف الثالث الثانوي - أدبي</option>
+        </select>
+        <button type="submit" class="bg-green-600 py-2 rounded-lg">تسجيل</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ⚡ Scripts -->
+  <script>
+    // Global teacher mode state
+    let isGlobalTeacherMode = localStorage.getItem('globalTeacherMode') === 'true';
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      updateGlobalModeDisplay();
+      
+      // Typed effect
+      new Typed('#typed-text', {
+        strings: ['🚀 منصة البداية', '✨ مستقبلك يبدأ من هنا', '📚 تعلم وتفوق مع البداية'],
+        typeSpeed: 60,
+        backSpeed: 40,
+        loop: true
+      });
+    });
+
+    // Toggle global teacher mode
+    function toggleGlobalTeacherMode() {
+      isGlobalTeacherMode = !isGlobalTeacherMode;
+      localStorage.setItem('globalTeacherMode', isGlobalTeacherMode.toString());
+      updateGlobalModeDisplay();
+      showNotification(
+        isGlobalTeacherMode ? 'تم التبديل إلى وضع المدرس 👨‍🏫' : 'تم التبديل إلى وضع الطالب 👨‍🎓', 
+        'success'
+      );
+    }
+
+    // Update global mode display
+    function updateGlobalModeDisplay() {
+      const toggleBtn = document.getElementById('globalModeToggle');
+      const toggleText = document.getElementById('globalModeText');
+      
+      if (isGlobalTeacherMode) {
+        toggleBtn.className = 'px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-lg transition-all duration-300 flex items-center gap-2';
+        toggleText.textContent = '👨‍🎓 في وضع الطالب';
+      } else {
+        toggleBtn.className = 'px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow-lg transition-all duration-300 flex items-center gap-2';
+        toggleText.textContent = '🎓 في وضع المدرس';
+      }
+    }
+
+    // Show notification
+    function showNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.className = `fixed top-20 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 ${
+        type === 'success' ? 'bg-green-600 text-white' : 
+        type === 'error' ? 'bg-red-600 text-white' : 
+        'bg-blue-600 text-white'
+      }`;
+      notification.textContent = message;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 3000);
+    }
+
+    // 🌙 Light / Dark Mode
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+    }
+
+    // Open/close modals
+    document.getElementById('openLogin').onclick = () => openModal('loginModal');
+    document.getElementById('openRegister').onclick = () => openModal('registerModal');
+    document.getElementById('openLoginMobile').onclick = () => openModal('loginModal');
+    document.getElementById('openRegisterMobile').onclick = () => openModal('registerModal');
+
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('show'), 10);
+    }
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      modal.classList.remove('show');
+      setTimeout(() => modal.style.display = 'none', 300);
+    }
+
+    // ✅ ربط الصفحات
+    function redirectToGrade(grade) {
+      // Set teacher mode in localStorage before redirect
+      localStorage.setItem('globalTeacherMode', isGlobalTeacherMode.toString());
+      
+      if (grade === "grade1") {
+        window.location.href = "grade1.html";
+      } else if (grade === "grade2sci") {
+        window.location.href = "grade2_1.html";
+      } else if (grade === "grade2art") {
+        window.location.href = "grade2_2.html";
+      } else if (grade === "grade3sci") {
+        window.location.href = "grade3_1.html";
+      } else if (grade === "grade3art") {
+        window.location.href = "grade3_2.html";
+      }
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const grade = document.getElementById("loginGrade").value;
+      redirectToGrade(grade);
+    });
+    document.getElementById("signupForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const grade = document.getElementById("signupGrade").value;
+      redirectToGrade(grade);
+    });
+
+    // Mobile menu
+    const menuToggle = document.getElementById("menuToggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+    menuToggle.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+  </script>
+</body>
+</html>
