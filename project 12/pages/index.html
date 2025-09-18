@@ -8,12 +8,322 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- مكتبة التايبنج -->
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-  <!-- Auth Utility Library -->
+  <!-- Auth Utility Library (موحد) -->
   <script src="../js/auth.js"></script>
-  <!-- Main CSS -->
-  <link rel="stylesheet" href="../css/style.css">
-  <!-- تحميل الخط Cairo -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+    .animated-bg {
+      background: linear-gradient(270deg, #0f172a, #0f172a);
+      background-size: 600% 600%;
+      animation: gradientShift 18s ease infinite;
+    }
+    @keyframes gradientShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .profile-img {
+      transition: all 0.5s ease;
+    }
+    .profile-img:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 25px rgba(59,130,246,0.8));
+    }
+    .card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+    .modal {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none; justify-content: center; align-items: center;
+      z-index: 100;
+    }
+    .modal-content {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 2rem;
+      width: 100%; max-width: 460px;
+      color: white;
+      transform: scale(0.7);
+      opacity: 0;
+      transition: all 0.3s ease;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+    .modal.show .modal-content {
+      transform: scale(1);
+      opacity: 1;
+    }
+    
+    /* OTP Input Styling */
+    .otp-input {
+      background: rgba(255, 255, 255, 0.1) !important;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      color: white !important;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    .otp-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+    
+    /* Form Input Styling */
+    .modal input {
+      background: rgba(255, 255, 255, 0.1) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      color: white !important;
+    }
+    
+    .modal select {
+      background: white !important;
+      color: #374151 !important;
+      border: 1px solid #d1d5db;
+      transition: all 0.3s ease;
+    }
+    
+    .modal select option {
+      background: white !important;
+      color: #374151 !important;
+      padding: 8px;
+    }
+    
+    .modal select optgroup {
+      font-weight: bold;
+      padding: 4px;
+    }
+    
+    .modal input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+    
+    .modal select:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+    
+    /* Button Styling */
+    .modal button[type="submit"] {
+      position: relative;
+      overflow: hidden;
+    }
+    .modal button[type="submit"]:before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+    .modal button[type="submit"]:hover:before {
+      left: 100%;
+    }
+    
+    /* Loading Animation */
+    .loading {
+      position: relative;
+    }
+    .loading:after {
+      content: '';
+      position: absolute;
+      right: 10px; top: 50%;
+      transform: translateY(-50%);
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: translateY(-50%) rotate(0deg); }
+      100% { transform: translateY(-50%) rotate(360deg); }
+    }
+    
+    /* Error and Success Messages */
+    .error-message {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      animation: slideInFromTop 0.3s ease;
+    }
+    .success-message {
+      background: linear-gradient(135deg, #10b981, #059669);
+      animation: slideInFromTop 0.3s ease;
+    }
+    
+    @keyframes slideInFromTop {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Course Card Hover Effects */
+    .course-card {
+      cursor: pointer !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    
+    .course-card:hover {
+      transform: translateY(-8px) scale(1.02) !important;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4) !important;
+    }
+    
+    .course-card:active {
+      transform: translateY(-4px) scale(0.98) !important;
+    }
+    
+    /* Course Access Badges */
+    .no-access-badge {
+      z-index: 10;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+    
+    /* Authenticated User Badge */
+    .user-badge {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow {
+      0% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
+      100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8); }
+    }
+    
+    /* Enhanced Select Styling */
+    .modal select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+      background-position: left 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      padding-left: 2.5rem;
+    }
+    
+    .modal select optgroup {
+      background: #f9fafb;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    
+    .modal select option {
+      padding: 8px 12px;
+      font-size: 14px;
+    }
+    
+    .modal select option:hover {
+      background: #e5e7eb;
+    }
+
+    /* Responsive Modal */
+    @media (max-width: 640px) {
+      .modal-content {
+        margin: 1rem;
+        max-width: calc(100% - 2rem);
+        padding: 1.5rem;
+      }
+      
+      .otp-input {
+        width: 2.5rem !important;
+        height: 2.5rem !important;
+        font-size: 1.2rem !important;
+      }
+      
+      .modal select {
+        background-position: left 0.25rem center;
+        padding-left: 2rem;
+      }
+    }
+    
+    /* Loading States */
+    .btn-loading {
+      position: relative;
+      color: transparent !important;
+    }
+    
+    .btn-loading::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 50%;
+      left: 50%;
+      margin-left: -8px;
+      margin-top: -8px;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+    }
+
+    /* 🌞 Light Mode */
+    .light-mode {
+      background: #f9fafb !important;   /* خلفية فاتحة */
+      color: #1e293b !important;        /* النصوص غامقة */
+    }
+    .light-mode nav {
+      background: #ffffffcc !important;
+      color: #1e293b !important;
+    }
+    .light-mode .card {
+      background: #ffffff !important;
+      color: #1e293b !important;
+      border: 1px solid #e5e7eb;
+    }
+    .light-mode h1, 
+    .light-mode h2, 
+    .light-mode h3, 
+    .light-mode p {
+      color: #1e293b !important;
+    }
+    .light-mode footer {
+      background: #f1f5f9 !important;
+      color: #1e293b !important;
+    }
+    .light-mode .modal-content {
+      background: #ffffff !important;
+      color: #1e293b !important;
+    }
+    .light-mode button {
+      color: white !important;
+    }
+
+    /* Teacher Mode Indicator */
+    .teacher-mode-badge {
+      background: linear-gradient(135deg, #8b5cf6, #a855f7);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+  </style>
 </head>
 <body class="animated-bg text-white">
 
@@ -30,28 +340,8 @@
       <a href="#courses" class="hover:text-blue-300">📚 الكورسات</a>
       <a href="#teacher" class="hover:text-blue-300">👨‍🏫 المدرس</a>
       <button onclick="toggleTheme()" class="px-3 py-1 bg-white/20 rounded-lg">🌓</button>
-      
-      <!-- أزرار تسجيل الدخول وإنشاء حساب (تظهر للزوار فقط) -->
-      <div id="guestButtons" class="flex items-center gap-4">
-        <button id="openLogin" class="px-3 sm:px-4 py-2 bg-blue-600 rounded-lg text-sm sm:text-base">تسجيل دخول</button>
-        <button id="openRegister" class="px-3 sm:px-4 py-2 bg-green-600 rounded-lg text-sm sm:text-base">إنشاء حساب</button>
-      </div>
-      
-      <!-- معلومات المستخدم بعد تسجيل الدخول -->
-      <div id="userProfile" class="hidden items-center gap-3">
-        <div class="flex items-center gap-2">
-          <img id="userAvatar" src="../images/default_user.png" alt="الصورة الشخصية" class="w-8 h-8 rounded-full border-2 border-blue-400">
-          <span id="userName" class="text-sm font-medium">مستخدم</span>
-        </div>
-        <div class="relative group">
-          <button class="px-2 py-1 bg-blue-600 rounded-lg text-sm">حسابي</button>
-          <div class="absolute left-0 mt-1 w-36 bg-white text-gray-800 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-            <a href="profile.html" class="block px-4 py-2 hover:bg-blue-100">الملف الشخصي</a>
-            <a href="settings.html" class="block px-4 py-2 hover:bg-blue-100">الإعدادات</a>
-            <button id="logoutBtn" onclick="logout()" class="w-full text-right px-4 py-2 text-red-600 hover:bg-red-100">تسجيل خروج</button>
-          </div>
-        </div>
-      </div>
+      <button id="openLogin" class="px-3 sm:px-4 py-2 bg-blue-600 rounded-lg text-sm sm:text-base">تسجيل دخول</button>
+      <button id="openRegister" class="px-3 sm:px-4 py-2 bg-green-600 rounded-lg text-sm sm:text-base">إنشاء حساب</button>
     </div>
 
     <!-- مينو للموبايل -->
@@ -65,543 +355,1534 @@
   <a href="#courses" class="hover:text-blue-300">📚 الكورسات</a>
   <a href="#teacher" class="hover:text-blue-300">👨‍🏫 المدرس</a>
   <button onclick="toggleTheme()" class="px-4 py-2 bg-white/20 rounded-lg">🌓 تبديل الوضع</button>
-  
-  <!-- أزرار تسجيل الدخول وإنشاء حساب للموبايل -->
-  <div id="guestButtonsMobile" class="flex flex-col gap-2">
-    <button id="openLoginMobile" class="px-4 py-2 bg-blue-600 rounded-lg">تسجيل دخول</button>
-    <button id="openRegisterMobile" class="px-4 py-2 bg-green-600 rounded-lg">إنشاء حساب</button>
-  </div>
-  
-  <!-- معلومات المستخدم للموبايل -->
-  <div id="userProfileMobile" class="hidden flex-col gap-3">
-    <div class="flex items-center gap-3">
-      <img id="userAvatarMobile" src="../images/default_user.png" alt="الصورة الشخصية" class="w-10 h-10 rounded-full border-2 border-blue-400">
-      <span id="userNameMobile" class="text-sm font-medium">مستخدم</span>
-    </div>
-    <a href="profile.html" class="px-4 py-2 bg-blue-100/20 rounded-lg text-right">الملف الشخصي</a>
-    <a href="settings.html" class="px-4 py-2 bg-blue-100/20 rounded-lg text-right">الإعدادات</a>
-    <button id="logoutBtnMobile" onclick="logout()" class="px-4 py-2 bg-red-600/20 text-red-400 rounded-lg text-right">تسجيل خروج</button>
-  </div>
+  <button id="openLoginMobile" class="px-4 py-2 bg-blue-600 rounded-lg">تسجيل دخول</button>
+  <button id="openRegisterMobile" class="px-4 py-2 bg-green-600 rounded-lg">إنشاء حساب</button>
 </div>
 
   <!-- 🌟 Hero Section -->
-  <section class="pt-32 pb-16 px-4 text-center">
-    <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
-      <span id="typed-text"></span>
-    </h1>
-    <p class="text-lg sm:text-xl mb-8 max-w-2xl mx-auto opacity-80">
-      منصة تعليمية متميزة للمرحلة الثانوية تساعدك على التفوق والنجاح بأسلوب مبتكر ومتطور
-    </p>
-    <div class="flex justify-center gap-4">
-      <button id="heroCta" class="px-6 py-3 bg-blue-600 rounded-lg text-lg font-bold hover:bg-blue-700 transition-colors">
-        سجل الآن واستمتع بالتعلم!
-      </button>
-    </div>
-  </section>
 
-  <!-- 📚 Courses Section -->
-  <section id="courses" class="py-16 px-4">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold mb-10 text-center">الكورسات المتاحة</h2>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Course Card 1 -->
-        <div class="course-card bg-white/5 backdrop-blur-sm p-6 rounded-xl">
-          <div class="mb-4 relative">
-            <img src="../images/photo_2025-09-03_23-53-17.jpg" alt="الفيزياء" class="w-full h-48 object-cover rounded-lg" />
-            <span class="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 rounded-md text-xs">محتوى كامل</span>
-          </div>
-          <h3 class="text-xl font-bold mb-2">الفيزياء للصف الأول الثانوي</h3>
-          <div class="flex justify-between items-center mb-4">
-            <span class="text-gray-200">د. أحمد محمد</span>
-            <span class="text-yellow-400 flex items-center">4.9 <svg class="w-4 h-4 fill-current ml-1" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></span>
-          </div>
-          <p class="text-gray-300 mb-4 line-clamp-2">شرح مفصل لمنهج الفيزياء بالكامل مع تدريبات وامتحانات</p>
-          <button class="w-full py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">الاشتراك في الكورس</button>
-        </div>
-        
-        <!-- Course Card 2 -->
-        <div class="course-card bg-white/5 backdrop-blur-sm p-6 rounded-xl">
-          <div class="mb-4 relative">
-            <img src="../images/photo_2025-09-03_23-53-16.jpg" alt="الكيمياء" class="w-full h-48 object-cover rounded-lg" />
-            <span class="absolute top-2 right-2 bg-green-600 text-white px-2 py-1 rounded-md text-xs">جديد</span>
-          </div>
-          <h3 class="text-xl font-bold mb-2">الكيمياء للصف الثاني الثانوي</h3>
-          <div class="flex justify-between items-center mb-4">
-            <span class="text-gray-200">د. محمد أحمد</span>
-            <span class="text-yellow-400 flex items-center">4.8 <svg class="w-4 h-4 fill-current ml-1" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></span>
-          </div>
-          <p class="text-gray-300 mb-4 line-clamp-2">شرح مبسط للكيمياء مع تجارب عملية وحل للمسائل الصعبة</p>
-          <button class="w-full py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">الاشتراك في الكورس</button>
-        </div>
-        
-        <!-- Course Card 3 -->
-        <div class="course-card bg-white/5 backdrop-blur-sm p-6 rounded-xl">
-          <div class="mb-4 relative">
-            <img src="../images/photo_2025-09-03_23-53-13.jpg" alt="الرياضيات" class="w-full h-48 object-cover rounded-lg" />
-            <span class="absolute top-2 right-2 bg-purple-600 text-white px-2 py-1 rounded-md text-xs">الأكثر طلبًا</span>
-          </div>
-          <h3 class="text-xl font-bold mb-2">الرياضيات للصف الثالث الثانوي</h3>
-          <div class="flex justify-between items-center mb-4">
-            <span class="text-gray-200">أ. محمود علي</span>
-            <span class="text-yellow-400 flex items-center">5.0 <svg class="w-4 h-4 fill-current ml-1" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></span>
-          </div>
-          <p class="text-gray-300 mb-4 line-clamp-2">تغطية كاملة لمنهج الثانوية العامة مع حل نماذج امتحانات سابقة</p>
-          <button class="w-full py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">الاشتراك في الكورس</button>
-        </div>
+<header class="h-[90vh] sm:h-screen flex items-center justify-center relative px-4 sm:px-6">
+  <div class="absolute inset-0 bg-black/30"></div>
+  <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10 items-center">
+    
+    <!-- النصوص -->
+    <div class="text-center md:text-right order-2 md:order-1">
+      <div class="flex flex-col items-center md:items-start">
+        <img src="../images/WhatsApp_Image_2025-09-06_at_00.31.42_7b113d97-removebg-preview.png" 
+             alt="شعار البداية" 
+             class="w-20 h-20 mb-4 rounded-full shadow-lg" />
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">
+          <span id="typed-text" class="text-blue-400"></span>
+        </h1>
       </div>
-      
-      <div class="text-center mt-10">
-        <a href="#" class="inline-block px-6 py-3 border border-blue-500 rounded-lg hover:bg-blue-500/20 transition-colors">عرض جميع الكورسات</a>
-      </div>
-    </div>
-  </section>
-  
-  <!-- 👨‍🏫 Teacher Section -->
-  <section id="teacher" class="py-16 px-4 bg-gradient-to-b from-slate-900/50 to-slate-800/50">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold mb-12 text-center">تعرف على مدرسينا</h2>
-      
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        <!-- Teacher Image -->
-        <div class="flex justify-center">
-          <img src="../images/photo_2025-09-06_18-08-15.jpg" alt="المدرس" class="profile-img w-64 h-64 rounded-full object-cover border-4 border-blue-500" />
-        </div>
-        
-        <!-- Teacher Info -->
-        <div class="lg:col-span-2">
-          <h3 class="text-2xl font-bold mb-2">د. أحمد محمد السيد</h3>
-          <p class="text-blue-400 mb-4">دكتوراه في العلوم - مدرس أول فيزياء</p>
-          
-          <div class="mb-6">
-            <p class="text-gray-300 mb-4">
-              خبرة أكثر من 15 عامًا في تدريس الفيزياء للمرحلة الثانوية، حاصل على جائزة المعلم المتميز لثلاث سنوات متتالية. 
-              يتميز بأسلوب تدريس مبسط يجعل الفيزياء سهلة وممتعة لجميع الطلاب.
-            </p>
-            <p class="text-gray-300">
-              حاصل على شهادات معتمدة في طرق التدريس الحديثة، ويستخدم التكنولوجيا والتجارب العملية لتوصيل المعلومات بشكل أفضل للطلاب.
-            </p>
-          </div>
-          
-          <div class="flex flex-wrap gap-2 mb-6">
-            <span class="px-3 py-1 bg-blue-900/50 rounded-full text-sm">الفيزياء</span>
-            <span class="px-3 py-1 bg-blue-900/50 rounded-full text-sm">الميكانيكا</span>
-            <span class="px-3 py-1 bg-blue-900/50 rounded-full text-sm">الإستاتيكا</span>
-            <span class="px-3 py-1 bg-blue-900/50 rounded-full text-sm">الديناميكا</span>
-          </div>
-          
-          <div class="flex gap-4 text-sm font-bold">
-            <a href="#" class="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">الاشتراك في كورسات المدرس</a>
-            <a href="#" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-white/10 transition-colors">تواصل مع المدرس</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 📱 التطبيق -->
-  <section class="py-16 px-4">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10">
-      <div class="md:w-1/2">
-        <h2 class="text-3xl font-bold mb-4">حمّل تطبيقنا الآن!</h2>
-        <p class="text-gray-300 mb-6">
-          استمتع بتجربة تعليمية كاملة من خلال تطبيقنا المتوفر على أندرويد وآيفون. شاهد الدروس، حل التمارين، وتواصل مع المدرسين في أي وقت وأي مكان.
-        </p>
-        <div class="flex flex-wrap gap-4">
-          <a href="#" class="flex items-center gap-2 px-4 py-2 bg-black rounded-lg hover:bg-gray-900 transition-colors border border-gray-700">
-            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="white"><path d="M17.7 19.5c.41.39.79.78 1.13 1.2.23.28.35.58.35.92 0 .25-.07.5-.21.73-.14.23-.33.42-.56.54-1.44.72-2.88 1.08-4.32 1.08-1.75 0-3.15-.71-4.19-2.14-.95-1.31-1.44-2.88-1.44-4.74s.49-3.45 1.46-4.83C11 10.4 12.53 9.72 14.29 9.72c1.73 0 3.32.7 4.76 2.07-1.65 1.45-2.48 2.77-2.48 3.94 0 1.18.38 2.27 1.13 3.27M21.12 4c.25.41.37.93.37 1.56 0 .86-.21 1.7-.64 2.52-.43.82-1 1.5-1.71 2.05-.14.1-.28.14-.42.14-.12 0-.24-.03-.34-.1-.1-.07-.15-.19-.15-.35 0-.05.01-.1.04-.15s.05-.1.07-.14c.62-1.19.93-2.17.93-2.95 0-.56-.14-1.02-.43-1.39-.28-.37-.64-.55-1.07-.55-.21 0-.44.05-.69.14-.25.09-.45.21-.59.34-.08.08-.18.12-.3.12-.14 0-.29-.07-.44-.21s-.22-.29-.22-.46c0-.12.05-.28.15-.48.1-.2.26-.4.49-.6.23-.2.53-.37.89-.49.36-.12.76-.18 1.2-.18.61 0 1.16.16 1.66.48.5.32.89.74 1.2 1.25M9.06 24H7.38v-8.41H3.94V14.2h9.12v1.39H9.06V24m-7.49 0L-4 14.2h1.68l3.99 6.87L5.73 14.2h1.68l-5.84 9.8z"/></svg>
-            <span>Google Play</span>
-          </a>
-          <a href="#" class="flex items-center gap-2 px-4 py-2 bg-black rounded-lg hover:bg-gray-900 transition-colors border border-gray-700">
-            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="white"><path d="M11.99 1.98C16.52 1.98 20 5.65 20 10.37c0 4.72-3.48 8.4-8.01 8.4-4.54 0-7.99-3.67-7.99-8.38 0-4.72 3.47-8.41 7.99-8.41zM12 5.36c-1.78 0-2.44 1.94-2.44 3.35 0 1.41.67 3.35 2.44 3.35 1.78 0 2.44-1.94 2.44-3.35 0-1.41-.67-3.35-2.44-3.35zm0 14.83c-1.73 0-3.38-.6-4.71-1.71L10 16.99l-1.97-.29L5.65 17l-1.49-4.97 2.74-.86c.43.84 1.34 1.69 2.29 2.03 1.12.4 2.39.32 3.58.32 1.16 0 2.43.08 3.55-.32.94-.35 1.81-1.19 2.28-2.02l2.74.86-1.49 4.97-2.38-.31-1.97.29 2.71 1.49c-1.33 1.11-2.98 1.71-4.71 1.71z"/></svg>
-            <span>App Store</span>
-          </a>
-        </div>
-      </div>
-      <div class="md:w-1/2">
-        <img src="../images/WhatsApp Image 2025-09-03 at 21.27.56_d0ae389c.jpg" alt="التطبيق" class="w-full rounded-xl shadow-lg" />
-      </div>
-    </div>
-  </section>
-
-  <!-- 📊 Stats -->
-  <section class="py-16 px-4 bg-gradient-to-b from-slate-900/50 to-slate-800/50">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="text-3xl font-bold mb-12 text-center">لماذا تختار منصة البداية؟</h2>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="p-6 bg-white/5 backdrop-blur-sm rounded-xl text-center">
-          <div class="w-16 h-16 bg-blue-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg>
-          </div>
-          <div class="text-3xl font-bold mb-2">+5000</div>
-          <div class="text-gray-300">طالب مستفيد</div>
-        </div>
-        
-        <div class="p-6 bg-white/5 backdrop-blur-sm rounded-xl text-center">
-          <div class="w-16 h-16 bg-green-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-          </div>
-          <div class="text-3xl font-bold mb-2">95%</div>
-          <div class="text-gray-300">نسبة النجاح والتفوق</div>
-        </div>
-        
-        <div class="p-6 bg-white/5 backdrop-blur-sm rounded-xl text-center">
-          <div class="w-16 h-16 bg-yellow-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path></svg>
-          </div>
-          <div class="text-3xl font-bold mb-2">+20</div>
-          <div class="text-gray-300">مدرس متخصص</div>
-        </div>
-        
-        <div class="p-6 bg-white/5 backdrop-blur-sm rounded-xl text-center">
-          <div class="w-16 h-16 bg-red-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path></svg>
-          </div>
-          <div class="text-3xl font-bold mb-2">+1000</div>
-          <div class="text-gray-300">فيديو تعليمي</div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- 📱 CTA -->
-  <section class="py-16 px-4">
-    <div class="max-w-4xl mx-auto text-center">
-      <h2 class="text-3xl font-bold mb-6">مستعد للبدء في رحلة التفوق؟</h2>
-      <p class="text-lg mb-8 max-w-2xl mx-auto text-gray-300">
-        انضم إلى آلاف الطلاب المتفوقين وابدأ في تحقيق أحلامك التعليمية اليوم. التسجيل سهل وسريع!
+      <p class="text-base sm:text-lg md:text-xl mt-6 max-w-xl mx-auto md:mx-0">
+        تعلم مادة الرياضة مع الأستاذ مجدي جمال - خبرة في تدريس المرحلة الثانوية.
       </p>
-      <div class="flex flex-wrap justify-center gap-4">
-        <button id="footerCta" class="px-6 py-3 bg-blue-600 rounded-lg text-lg font-bold hover:bg-blue-700 transition-colors">
-          سجل الآن مجاناً
-        </button>
-        <a href="#" class="px-6 py-3 border border-gray-300 rounded-lg text-lg font-bold hover:bg-white/10 transition-colors">
-          تعرف علينا أكثر
-        </a>
+    </div>
+
+    <!-- صورة المدرس -->
+    <div class="flex justify-center order-1 md:order-2">
+      <div class="relative">
+        <img src="../images/تصميم_بدون_عنوان-removebg-preview.png" 
+             alt="الأستاذ مجدي" 
+             class="profile-img w-60 sm:w-80 md:w-[420px] rounded-3xl shadow-2xl" />
+        
+        <!-- Teacher Mode Indicator (Auto based on user role) -->
+        <div id="teacherModeIndicator" class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 teacher-mode-badge hidden">
+          👨‍� وضع المعلم
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+  <!-- 👨‍🏫 About Teacher -->
+  <section id="teacher" class="py-14 sm:py-20 px-4 sm:px-5 bg-white/10 backdrop-blur-md rounded-3xl shadow-2xl mx-2 sm:mx-4 my-8 sm:my-10">
+    <div class="container mx-auto text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 text-white">الأستاذ مجدي</h2>
+      <p class="text-base sm:text-lg mb-6 sm:mb-8 max-w-3xl mx-auto text-gray-200">
+                                              الأستاذ مجدي جمال هو مدرس مادة الرياضة المتخصص، يشرح لطلاب الصف الأول والثاني والثالث الثانوي بأسلوب واضح وممتع يساعد على الفهم السهل والتفوق كما قال المستر الواحد مننا بالف .
+      </p>
+      <img src="../images/photo_2025-09-03_00-20-27.jpg" alt="صورة الأستاذ مجدي" class="profile-img mx-auto w-32 sm:w-44" />
+    </div>
+  </section>
+
+  <!-- 📚 Courses -->
+  <section id="courses" class="py-14 sm:py-20 px-4 sm:px-5 bg-gradient-to-r from-blue-500 to-teal-500">
+    <div class="container mx-auto">
+      <h2 class="text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-10">📚 الكورسات التعليمية</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8">
+
+        <div class="card course-card bg-white text-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center">
+          <img src="../images/photo_2025-09-03_23-36-50.jpg" alt="الصف الأول" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
+          <h3 class="text-xl sm:text-2xl font-semibold mb-2">الصف الأول الثانوي</h3>
+          <p class="text-center">دروس تأسيسية شاملة في الرياضة.</p>
+        </div>
+
+        <div class="card course-card bg-white text-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center">
+          <img src="../images/photo_2025-09-03_23-53-13.jpg" alt="الصف الثاني علمي" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
+          <h3 class="text-xl sm:text-2xl font-semibold mb-2">الصف الثاني - علمي</h3>
+          <p class="text-center">رياضة متقدمة للشعبة العلمية.</p>
+        </div>
+
+        <div class="card course-card bg-white text-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center">
+          <img src="../images/photo_2025-09-03_23-53-13.jpg" alt="الصف الثاني أدبي" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
+          <h3 class="text-xl sm:text-2xl font-semibold mb-2">الصف الثاني - أدبي</h3>
+          <p class="text-center">رياضة الشعبة الأدبية المبسطة.</p>
+        </div>
+
+        <div class="card course-card bg-white text-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center">
+          <img src="../images/photo_2025-09-03_23-53-17.jpg" alt="الصف الثالث علمي" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
+          <h3 class="text-xl sm:text-2xl font-semibold mb-2">الصف الثالث - علمي</h3>
+          <p class="text-center">مراجعة نهائية وتحضير للثانوية العامة - الشعبة العلمية.</p>
+        </div>
+
+        <div class="card course-card bg-white text-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center">
+          <img src="../images/photo_2025-09-03_23-53-16.jpg" alt="الصف الثالث أدبي" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
+          <h3 class="text-xl sm:text-2xl font-semibold mb-2">الصف الثالث - أدبي</h3>
+          <p class="text-center">مراجعة نهائية وتحضير للثانوية العامة - الشعبة الأدبية.</p>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- 🦶 Footer -->
-  <footer class="py-12 px-4 bg-black/30">
-    <div class="max-w-6xl mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        <div>
-          <div class="flex items-center gap-3 mb-4">
-            <img src="../images/WhatsApp_Image_2025-09-06_at_00.31.42_7b113d97-removebg-preview.png" alt="شعار البداية" class="w-10 h-10 rounded-full" />
-            <span class="text-xl font-bold">منصة البداية</span>
-          </div>
-          <p class="text-gray-300 mb-4">
-            المنصة الأولى للتعليم الثانوي في مصر، نساعدك على التفوق والنجاح.
-          </p>
-          <div class="flex gap-4">
-            <a href="#" class="text-gray-300 hover:text-white">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
-            </a>
-            <a href="#" class="text-gray-300 hover:text-white">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            </a>
-            <a href="#" class="text-gray-300 hover:text-white">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
-            </a>
-            <a href="#" class="text-gray-300 hover:text-white">
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
-            </a>
-          </div>
-        </div>
-        
-        <div>
-          <h4 class="text-lg font-bold mb-4">روابط سريعة</h4>
-          <ul class="space-y-2">
-            <li><a href="#" class="text-gray-300 hover:text-white">الصفحة الرئيسية</a></li>
-            <li><a href="#courses" class="text-gray-300 hover:text-white">الكورسات</a></li>
-            <li><a href="#teacher" class="text-gray-300 hover:text-white">المدرسين</a></li>
-            <li><a href="#" class="text-gray-300 hover:text-white">جدول الحصص</a></li>
-            <li><a href="#" class="text-gray-300 hover:text-white">التسجيل</a></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h4 class="text-lg font-bold mb-4">الصفوف الدراسية</h4>
-          <ul class="space-y-2">
-            <li><a href="#" class="text-gray-300 hover:text-white">الصف الأول الثانوي</a></li>
-            <li><a href="#" class="text-gray-300 hover:text-white">الصف الثاني الثانوي علمي</a></li>
-            <li><a href="#" class="text-gray-300 hover:text-white">الصف الثاني الثانوي أدبي</a></li>
-            <li><a href="#" class="text-gray-300 hover:text-white">الصف الثالث الثانوي علمي</a></li>
-            <li><a href="#" class="text-gray-300 hover:text-white">الصف الثالث الثانوي أدبي</a></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h4 class="text-lg font-bold mb-4">تواصل معنا</h4>
-          <ul class="space-y-2">
-            <li class="flex items-center gap-2">
-              <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-              <span class="text-gray-300">01234567890</span>
-            </li>
-            <li class="flex items-center gap-2">
-              <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-              <span class="text-gray-300">info@albedaya.com</span>
-            </li>
-            <li class="flex items-center gap-2">
-              <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-              <span class="text-gray-300">المنشاة، سوهاج، مصر</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-      
-      <div class="mt-12 pt-8 border-t border-gray-700 text-center text-gray-400">
-        <p>جميع الحقوق محفوظة &copy; منصة البداية 2025</p>
-      </div>
-    </div>
+  <!-- 📩 Footer -->
+  <footer class="bg-gray-900 text-white py-10 text-center px-4">
+    <p>© 2025 منصة البداية للتعلم الرياضي. جميع الحقوق محفوظة.</p>
+    <p class="mt-2">📧 تواصل معنا: info@magdijamal-sport.com</p>
   </footer>
 
   <!-- 🔑 Login Modal -->
   <div id="loginModal" class="modal">
     <div class="modal-content">
-      <div class="flex justify-between items-center mb-6">
+      <div class="flex justify-between items-center mb-4">
         <h2 class="text-2xl font-bold">تسجيل الدخول</h2>
-        <button class="close-modal text-gray-400 hover:text-white">×</button>
+        <button onclick="closeModal('loginModal')" class="text-2xl hover:text-red-500">✖️</button>
       </div>
       
-      <div id="loginErrors" class="hidden error-message p-3 rounded mb-4"></div>
-      <div id="loginSuccess" class="hidden success-message p-3 rounded mb-4"></div>
+      <!-- رسائل الخطأ -->
+      <div id="loginErrors" class="mb-4 p-3 bg-red-500/20 text-red-300 rounded-lg hidden"></div>
+      <div id="loginSuccess" class="mb-4 p-3 bg-green-500/20 text-green-300 rounded-lg hidden"></div>
       
-      <form id="loginForm" class="space-y-4">
-        <div>
-          <input type="email" id="loginEmail" name="email" placeholder="البريد الإلكتروني" required class="p-3 rounded bg-white/20 placeholder-gray-300 w-full" />
-        </div>
-        <div>
-          <input type="password" id="loginPassword" name="password" placeholder="كلمة المرور" required class="p-3 rounded bg-white/20 placeholder-gray-300 w-full" />
-        </div>
-        <div class="flex justify-between">
-          <button type="button" class="forgot-password-link text-blue-400 hover:underline text-sm">نسيت كلمة المرور؟</button>
-        </div>
-        <button type="submit" id="loginSubmitBtn" class="bg-blue-600 hover:bg-blue-700 transition-colors p-3 rounded w-full mt-2 text-white font-bold">تسجيل الدخول</button>
+      <form id="loginForm" class="flex flex-col gap-4">
+        <input type="email" id="loginEmail" name="email" placeholder="البريد الإلكتروني" required class="p-3 rounded bg-white/20 placeholder-gray-300" />
+        <input type="password" id="loginPassword" name="password" placeholder="كلمة المرور" required class="p-3 rounded bg-white/20 placeholder-gray-300" />
+        
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 py-3 rounded-lg font-bold transition-colors duration-300" id="loginBtn">
+          تسجيل الدخول
+        </button>
+        
+        <button type="button" onclick="openForgotPasswordModal()" class="text-blue-400 hover:text-blue-300 text-sm underline">
+          نسيت كلمة المرور؟
+        </button>
+        
+        <p class="text-sm text-center text-gray-300">
+          ليس لديك حساب؟ 
+          <button type="button" onclick="closeModal('loginModal'); openModal('registerModal')" class="text-green-400 hover:text-green-300 underline">
+            إنشاء حساب جديد
+          </button>
+        </p>
       </form>
-      
-      <div class="mt-4 text-center">
-        <p>ليس لديك حساب؟ <button id="switchToRegister" class="text-blue-400 hover:underline">إنشاء حساب جديد</button></p>
-      </div>
     </div>
   </div>
 
-  <!-- 📝 Register Modal -->
+  <!-- 🆕 Signup Modal -->
   <div id="registerModal" class="modal">
-    <div class="modal-content">
-      <div class="flex justify-between items-center mb-6">
+    <div class="modal-content max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center mb-4">
         <h2 class="text-2xl font-bold">إنشاء حساب جديد</h2>
-        <button class="close-modal text-gray-400 hover:text-white">×</button>
+        <button onclick="closeModal('registerModal')" class="text-2xl hover:text-red-500">✖️</button>
       </div>
       
-      <div id="registerErrors" class="hidden error-message p-3 rounded mb-4"></div>
-      <div id="registerSuccess" class="hidden success-message p-3 rounded mb-4"></div>
+      <!-- رسائل الخطأ -->
+      <div id="registerErrors" class="mb-4 p-3 bg-red-500/20 text-red-300 rounded-lg hidden"></div>
+      <div id="registerSuccess" class="mb-4 p-3 bg-green-500/20 text-green-300 rounded-lg hidden"></div>
       
-      <form id="registerForm" class="space-y-4">
+      <form id="signupForm" class="flex flex-col gap-4">
         <input type="text" id="fullName" name="fullName" placeholder="الاسم الرباعي كاملاً (مثال: أحمد محمد علي السيد)" required minlength="10" maxlength="100" class="p-3 rounded bg-white/20 placeholder-gray-300" />
         <div id="fullNameIndicator" class="mt-1 text-xs text-white/70 hidden">
           <span id="nameCount">0/100 حرف</span>
         </div>
         
-        <input type="email" id="email" name="email" placeholder="البريد الإلكتروني" required class="p-3 rounded bg-white/20 placeholder-gray-300" />
+        <input type="email" id="signupEmail" name="email" placeholder="البريد الإلكتروني" required class="p-3 rounded bg-white/20 placeholder-gray-300" />
+        <input type="password" id="signupPassword" name="password" placeholder="كلمة المرور (8 أحرف على الأقل)" required class="p-3 rounded bg-white/20 placeholder-gray-300" />
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input type="password" id="password" name="password" placeholder="كلمة المرور" required class="p-3 rounded bg-white/20 placeholder-gray-300" />
-          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="تأكيد كلمة المرور" required class="p-3 rounded bg-white/20 placeholder-gray-300" />
-        </div>
+        <select id="location" name="location" required class="p-3 rounded bg-white text-gray-800 border border-gray-300">
+          <option value="" disabled selected>اختر المكان</option>
+          <option value="العسيرات">العسيرات</option>
+          <option value="المنشاة">المنشاة</option>
+          <option value="الاجايوه">الاجايوه</option>
+        </select>
+        
+        <select id="signupGrade" name="grade" required class="p-3 rounded bg-white text-gray-800 border border-gray-300">
+          <option value="" disabled selected>اختر الصف الدراسي</option>
+          <optgroup label="المرحلة الثانوية" class="bg-purple-50">
+            <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+            <option value="الصف الثاني الثانوي">الصف الثاني الثانوي (عام - يمنح صلاحية العلمي و الأدبي)</option>
+            <option value="الصف الثاني الثانوي علمي">الصف الثاني الثانوي علمي</option>
+            <option value="الصف الثاني الثانوي ادبي">الصف الثاني الثانوي ادبي</option>
+            <option value="الصف الثالث الثانوي">الصف الثالث الثانوي (عام - يمنح صلاحية العلمي و الأدبي)</option>
+            <option value="الصف الثالث الثانوي علمي">الصف الثالث الثانوي علمي</option>
+            <option value="الصف الثالث الثانوي ادبي">الصف الثالث الثانوي ادبي</option>
+          </optgroup>
+        </select>
         
         <input type="tel" id="phone" name="phone" placeholder="رقم الهاتف (اختياري)" class="p-3 rounded bg-white/20 placeholder-gray-300" />
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <select name="location" id="location" required class="p-3 rounded text-center">
-            <option value="" selected disabled>اختر المكان</option>
-            <option value="العسيرات">العسيرات</option>
-            <option value="المنشاة">المنشاة</option>
-            <option value="الاجايوه">الاجايوه</option>
-          </select>
-          
-          <select name="grade" id="grade" required class="p-3 rounded text-center">
-            <option value="" selected disabled>اختر الصف الدراسي</option>
-            <optgroup label="المرحلة الثانوية">
-              <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
-              <option value="الصف الثاني الثانوي - علمي">الصف الثاني الثانوي - علمي</option>
-              <option value="الصف الثاني الثانوي - أدبي">الصف الثاني الثانوي - أدبي</option>
-              <option value="الصف الثالث الثانوي - علمي">الصف الثالث الثانوي - علمي</option>
-              <option value="الصف الثالث الثانوي - أدبي">الصف الثالث الثانوي - أدبي</option>
-            </optgroup>
-          </select>
-        </div>
+        <button type="submit" class="bg-green-600 hover:bg-green-700 py-3 rounded-lg font-bold transition-colors duration-300" id="registerBtn">
+          إنشاء الحساب
+        </button>
         
-        <button type="submit" id="registerSubmitBtn" class="bg-green-600 hover:bg-green-700 transition-colors p-3 rounded w-full mt-2 text-white font-bold">إنشاء الحساب</button>
+        <p class="text-sm text-center text-gray-300">
+          هل لديك حساب بالفعل؟ 
+          <button type="button" onclick="closeModal('registerModal'); openModal('loginModal')" class="text-blue-400 hover:text-blue-300 underline">
+            تسجيل الدخول
+          </button>
+        </p>
       </form>
-      
-      <div class="mt-4 text-center">
-        <p>لديك حساب بالفعل؟ <button id="switchToLogin" class="text-blue-400 hover:underline">تسجيل الدخول</button></p>
-      </div>
     </div>
   </div>
 
-  <!-- ✅ OTP Modal -->
+  <!-- 📱 OTP Verification Modal -->
   <div id="otpModal" class="modal">
     <div class="modal-content">
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold">تأكيد الحساب</h2>
-        <button class="close-modal text-gray-400 hover:text-white">×</button>
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold">تفعيل الحساب</h2>
+        <button onclick="closeModal('otpModal')" class="text-2xl hover:text-red-500">✖️</button>
       </div>
       
       <div class="text-center mb-6">
-        <p>تم إرسال رمز التحقق إلى بريدك الإلكتروني</p>
-        <p id="otpEmail" class="text-blue-400 font-bold mt-2"></p>
-        <p class="text-sm mt-2">أدخل الرمز المكون من 6 أرقام للتحقق من حسابك</p>
+        <p class="text-gray-300 mb-2">تم إرسال رمز التفعيل إلى بريدك الإلكتروني</p>
+        <p class="text-blue-400 font-semibold" id="otpEmailDisplay"></p>
       </div>
       
-      <div id="otpErrors" class="hidden error-message p-3 rounded mb-4"></div>
-      <div id="otpSuccess" class="hidden success-message p-3 rounded mb-4"></div>
+      <!-- رسائل الخطأ -->
+      <div id="otpErrors" class="mb-4 p-3 bg-red-500/20 text-red-300 rounded-lg hidden"></div>
+      <div id="otpSuccess" class="mb-4 p-3 bg-green-500/20 text-green-300 rounded-lg hidden"></div>
       
-      <form id="otpForm" class="space-y-6">
-        <div class="flex justify-center gap-2">
-          <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-2xl font-bold rounded" required />
-          <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-2xl font-bold rounded" required />
-          <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-2xl font-bold rounded" required />
-          <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-2xl font-bold rounded" required />
-          <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-2xl font-bold rounded" required />
-          <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-2xl font-bold rounded" required />
+      <form id="otpForm" class="flex flex-col gap-4">
+        <div class="flex justify-center gap-2 mb-4">
+          <input type="text" class="otp-input w-12 h-12 text-center text-2xl bg-white/20 rounded-lg" maxlength="1" />
+          <input type="text" class="otp-input w-12 h-12 text-center text-2xl bg-white/20 rounded-lg" maxlength="1" />
+          <input type="text" class="otp-input w-12 h-12 text-center text-2xl bg-white/20 rounded-lg" maxlength="1" />
+          <input type="text" class="otp-input w-12 h-12 text-center text-2xl bg-white/20 rounded-lg" maxlength="1" />
+          <input type="text" class="otp-input w-12 h-12 text-center text-2xl bg-white/20 rounded-lg" maxlength="1" />
+          <input type="text" class="otp-input w-12 h-12 text-center text-2xl bg-white/20 rounded-lg" maxlength="1" />
         </div>
         
-        <button type="submit" id="verifyOtpBtn" class="bg-blue-600 hover:bg-blue-700 transition-colors p-3 rounded w-full mt-2 text-white font-bold">تحقق</button>
+        <button type="submit" class="bg-green-600 hover:bg-green-700 py-3 rounded-lg font-bold transition-colors duration-300" id="verifyOtpBtn">
+          تفعيل الحساب
+        </button>
+        
+        <div class="text-center">
+          <p class="text-sm text-gray-300 mb-2">لم تستلم الرمز؟</p>
+          <button type="button" onclick="resendOTP()" class="text-blue-400 hover:text-blue-300 text-sm underline" id="resendOtpBtn">
+            إعادة الإرسال
+          </button>
+          <span id="resendTimer" class="text-sm text-gray-400 ml-2"></span>
+        </div>
       </form>
-      
-      <div class="mt-6 text-center">
-        <button id="resendOtpButton" class="text-blue-400 hover:underline">إعادة إرسال الرمز</button>
-      </div>
     </div>
   </div>
 
-  <!-- 🔑 Forgot Password Modal -->
+  <!-- 🔒 Forgot Password Modal -->
   <div id="forgotPasswordModal" class="modal">
     <div class="modal-content">
-      <div class="flex justify-between items-center mb-6">
+      <div class="flex justify-between items-center mb-4">
         <h2 class="text-2xl font-bold">استعادة كلمة المرور</h2>
-        <button class="close-modal text-gray-400 hover:text-white">×</button>
+        <button onclick="closeModal('forgotPasswordModal')" class="text-2xl hover:text-red-500">✖️</button>
       </div>
       
-      <div class="mb-6">
-        <p>أدخل بريدك الإلكتروني لاستلام رابط إعادة تعيين كلمة المرور</p>
-      </div>
+      <p class="text-gray-300 mb-4 text-center">
+        أدخل بريدك الإلكتروني وسنرسل لك رابط استعادة كلمة المرور
+      </p>
       
-      <div id="forgotPasswordErrors" class="hidden error-message p-3 rounded mb-4"></div>
-      <div id="forgotPasswordSuccess" class="hidden success-message p-3 rounded mb-4"></div>
+      <!-- رسائل الخطأ -->
+      <div id="forgotPasswordErrors" class="mb-4 p-3 bg-red-500/20 text-red-300 rounded-lg hidden"></div>
+      <div id="forgotPasswordSuccess" class="mb-4 p-3 bg-green-500/20 text-green-300 rounded-lg hidden"></div>
       
-      <form id="forgotPasswordForm" class="space-y-4">
-        <div>
-          <input type="email" id="forgotEmail" name="email" placeholder="البريد الإلكتروني" required class="p-3 rounded bg-white/20 placeholder-gray-300 w-full" />
-        </div>
+      <form id="forgotPasswordForm" class="flex flex-col gap-4">
+        <input type="email" id="forgotEmail" name="email" placeholder="البريد الإلكتروني" required class="p-3 rounded bg-white/20 placeholder-gray-300" />
         
-        <button type="submit" id="forgotPasswordBtn" class="bg-blue-600 hover:bg-blue-700 transition-colors p-3 rounded w-full mt-2 text-white font-bold">إرسال رابط إعادة التعيين</button>
+        <button type="submit" class="bg-purple-600 hover:bg-purple-700 py-3 rounded-lg font-bold transition-colors duration-300" id="forgotPasswordBtn">
+          إرسال رابط الاستعادة
+        </button>
+        
+        <button type="button" onclick="closeModal('forgotPasswordModal'); openModal('loginModal')" class="text-blue-400 hover:text-blue-300 text-sm underline">
+          العودة لتسجيل الدخول
+        </button>
       </form>
-      
-      <div class="mt-6 text-center">
-        <button id="backToLoginBtn" class="text-blue-400 hover:underline close-modal">العودة لتسجيل الدخول</button>
-      </div>
     </div>
   </div>
 
-  <!-- 🔑 Reset Password Modal -->
+  <!-- 🔄 Reset Password Modal -->
   <div id="resetPasswordModal" class="modal">
     <div class="modal-content">
-      <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold">إعادة تعيين كلمة المرور</h2>
-        <button class="close-modal text-gray-400 hover:text-white">×</button>
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold">كلمة مرور جديدة</h2>
+        <button onclick="closeModal('resetPasswordModal')" class="text-2xl hover:text-red-500">✖️</button>
       </div>
       
-      <div class="mb-6">
-        <p>أدخل كلمة المرور الجديدة</p>
-      </div>
+      <!-- رسائل الخطأ -->
+      <div id="resetPasswordErrors" class="mb-4 p-3 bg-red-500/20 text-red-300 rounded-lg hidden"></div>
+      <div id="resetPasswordSuccess" class="mb-4 p-3 bg-green-500/20 text-green-300 rounded-lg hidden"></div>
       
-      <div id="resetPasswordErrors" class="hidden error-message p-3 rounded mb-4"></div>
-      <div id="resetPasswordSuccess" class="hidden success-message p-3 rounded mb-4"></div>
-      
-      <form id="resetPasswordForm" class="space-y-4">
-        <div>
-          <input type="password" id="newPassword" name="password" placeholder="كلمة المرور الجديدة" required class="p-3 rounded bg-white/20 placeholder-gray-300 w-full" />
-        </div>
-        <div>
-          <input type="password" id="confirmNewPassword" name="confirmPassword" placeholder="تأكيد كلمة المرور الجديدة" required class="p-3 rounded bg-white/20 placeholder-gray-300 w-full" />
-        </div>
+      <form id="resetPasswordForm" class="flex flex-col gap-4">
+        <input type="password" id="newPassword" name="newPassword" placeholder="كلمة المرور الجديدة (8 أحرف على الأقل)" required class="p-3 rounded bg-white/20 placeholder-gray-300" />
+        <input type="password" id="confirmNewPassword" name="confirmNewPassword" placeholder="تأكيد كلمة المرور الجديدة" required class="p-3 rounded bg-white/20 placeholder-gray-300" />
         
-        <button type="submit" id="resetPasswordBtn" class="bg-blue-600 hover:bg-blue-700 transition-colors p-3 rounded w-full mt-2 text-white font-bold">إعادة تعيين كلمة المرور</button>
+        <button type="submit" class="bg-green-600 hover:bg-green-700 py-3 rounded-lg font-bold transition-colors duration-300" id="resetPasswordBtn">
+          حفظ كلمة المرور الجديدة
+        </button>
       </form>
     </div>
   </div>
 
-  <!-- Main JavaScript File -->
-  <script src="../js/main.js"></script>
-  <script src="../js/auth.js"></script>
+  <!-- ⚡ Scripts -->
   <script>
-    // كود مؤقت لأغراض الاختبار - تسجيل الدخول تلقائياً
-    function testLogin() {
-      const mockToken = "mock_token_" + Date.now();
-      // استخدام بيانات المستخدم الحقيقية من النظام
-      const mockUser = {
-        id: "68c9e3a7adc25b745e52787a",
-        name: "أحمد محمد محمود ابراهيم",
-        email: "vevimeg542@ekuali.com",
-        grade: "الصف الأول الثانوي",
-        location: "العسيرات",
-        isVerified: true,
-        role: "student",
-        avatar: "../images/default_user.png"
-      };
-      saveUserSession(mockToken, mockUser);
-      window.location.reload();
+    // ============= Configuration & Constants =============
+    const API_BASE_URL = 'http://localhost:3000/api';
+    const TEST_MODE = false; // Set to true for testing without backend
+    
+    let resendTimer = 0;
+    let resendInterval;
+
+    // ============= Form Validation Functions =============
+    
+    // Validate email format
+    function validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
     }
     
-    // أضف زر اختبار في وضع التطوير فقط
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      document.addEventListener('DOMContentLoaded', function() {
-        const testButton = document.createElement('button');
-        testButton.textContent = "تسجيل دخول سريع (اختبار)";
-        testButton.style = "position: fixed; bottom: 10px; left: 10px; padding: 8px 15px; background-color: #818cf8; color: white; border-radius: 8px; z-index: 9999; font-size: 14px;";
-        testButton.onclick = testLogin;
-        document.body.appendChild(testButton);
+    // Validate password strength
+    function validatePassword(password) {
+      return password.length >= 8 && 
+             /[A-Z]/.test(password) && 
+             /[a-z]/.test(password) && 
+             /\d/.test(password);
+    }
+    
+    // Validate Arabic/English names (2-20 characters)
+    function validateName(name) {
+      const nameRegex = /^[\u0621-\u064A\u0660-\u0669a-zA-Z\s]{2,20}$/;
+      return nameRegex.test(name.trim());
+    }
+    
+    // Validate Egyptian phone number
+    function validatePhone(phone) {
+      if (!phone) return true; // Optional field
+      const phoneRegex = /^(010|011|012|015)\d{8}$/;
+      return phoneRegex.test(phone.replace(/\s|-/g, ''));
+    }
+    
+    // Validate full name according to backend requirements
+    function validateFullName(fullName) {
+      if (!fullName || typeof fullName !== 'string') {
+        return false;
+      }
+      
+      const trimmedName = fullName.trim();
+      
+      // Check length (10-100 characters)
+      if (trimmedName.length < 10 || trimmedName.length > 100) {
+        return false;
+      }
+      
+      // Check that it contains only letters and spaces (Arabic or English)
+      const nameRegex = /^[\u0621-\u064A\u0660-\u0669a-zA-Z\s]+$/;
+      if (!nameRegex.test(trimmedName)) {
+        return false;
+      }
+      
+      // Check that it contains at least 3 separate names
+      const names = trimmedName.split(/\s+/).filter(name => name.length > 0);
+      if (names.length < 3) {
+        return false;
+      }
+      
+      // Check each name part (at least 2 characters each)
+      return names.every(name => name.length >= 2);
+    }
+    
+    // Split full name into parts
+    function splitFullName(fullName) {
+      if (!fullName || typeof fullName !== 'string') {
+        console.error('Invalid fullName provided:', fullName);
+        return {
+          firstName: '',
+          secondName: '',
+          thirdName: '',
+          fourthName: ''
+        };
+      }
+      
+      const names = fullName.trim().split(/\s+/).filter(name => name.length > 0);
+      return {
+        firstName: names[0] || '',
+        secondName: names[1] || '',
+        thirdName: names[2] || '',
+        fourthName: names[3] || names[2] || '' // If only 3 names, use third as fourth
+      };
+    }
+
+    // Validate registration form
+    function validateRegistrationForm(formData) {
+      console.log('🔍 بدء التحقق من بيانات التسجيل...');
+      const errors = [];
+      
+      const fullName = formData.get('fullName');
+      const email = formData.get('email');
+      const password = formData.get('password');
+      const location = formData.get('location');
+      const grade = formData.get('grade');
+      const phone = formData.get('phone');
+      
+      console.log('📝 البيانات المستلمة:', {
+        fullName: fullName ? `"${fullName.substring(0, 30)}" (${fullName.length} حرف)` : 'فارغ',
+        email: email || 'فارغ',
+        phone: phone || 'فارغ',
+        location: location || 'غير محدد',
+        grade: grade || 'غير محدد'
+      });
+      
+      // Validate full name with detailed logging
+      console.log('🔤 فحص الاسم الرباعي...');
+      if (!fullName || !fullName.trim()) {
+        console.log('❌ الاسم فارغ');
+        errors.push('الاسم الرباعي مطلوب');
+      } else {
+        const nameLength = fullName.trim().length;
+        const isNameValid = validateFullName(fullName);
+        console.log(`📏 طول الاسم: ${nameLength}، صحيح: ${isNameValid}`);
+        
+        if (nameLength < 10) {
+          errors.push(`الاسم قصير جداً - أدخل ${10 - nameLength} حرف إضافي على الأقل`);
+        } else if (nameLength > 100) {
+          errors.push(`الاسم طويل جداً - احذف ${nameLength - 100} حرف`);
+        } else if (!isNameValid) {
+          const nameParts = fullName.trim().split(/\s+/).filter(part => part.length > 0);
+          console.log(`🔢 عدد أجزاء الاسم: ${nameParts.length}`);
+          if (nameParts.length < 3) {
+            errors.push(`يجب إدخال 3 أسماء على الأقل مفصولة بمسافات (لديك ${nameParts.length} فقط)`);
+          }
+        }
+      }
+      
+      if (!validateEmail(email)) {
+        errors.push('البريد الإلكتروني غير صحيح');
+      }
+      if (!validatePassword(password)) {
+        errors.push('كلمة المرور يجب أن تحتوي على 8 أحرف على الأقل مع حرف كبير وصغير ورقم');
+      }
+      if (!location) {
+        errors.push('يجب اختيار المكان');
+      }
+      if (!grade) {
+        errors.push('يجب اختيار الصف الدراسي');
+      }
+      if (phone && phone.trim() && !validatePhone(phone)) {
+        errors.push('رقم الهاتف غير صحيح (يجب أن يبدأ بـ 010, 011, 012, أو 015)');
+      }
+      
+      console.log(errors.length === 0 ? '✅ جميع البيانات صحيحة!' : '❌ الأخطاء الموجودة:', errors);
+      return errors;
+    }
+    
+    // Validate login form
+    function validateLoginForm(email, password) {
+      const errors = [];
+      
+      if (!validateEmail(email)) {
+        errors.push('البريد الإلكتروني غير صحيح');
+      }
+      if (!password || password.length < 8) {
+        errors.push('كلمة المرور يجب أن تكون 8 أحرف على الأقل');
+      }
+      
+      return errors;
+    }
+
+    // ============= Authentication Utility Functions =============
+    
+    // Get auth token from localStorage
+    function getAuthToken() {
+      return localStorage.getItem('authToken');
+    }
+    
+    // Get user data from localStorage
+    function getCurrentUser() {
+      const userStr = localStorage.getItem('user');
+      return userStr ? JSON.parse(userStr) : null;
+    }
+    
+    // Check if user is logged in
+    function isLoggedIn() {
+      return getAuthToken() && getCurrentUser();
+    }
+    
+    // Save user session
+    function saveUserSession(token, user) {
+      localStorage.setItem('authToken', token);
+      localStorage.setItem('user', JSON.stringify(user));
+    }
+    
+    // Clear user session
+    function clearUserSession() {
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('user');
+      localStorage.removeItem('tempToken');
+      localStorage.removeItem('userEmail');
+    }
+    
+    // Show loading state
+    function showLoading(buttonId, text = 'جاري المعالجة...') {
+      const button = document.getElementById(buttonId);
+      button.innerHTML = text;
+      button.disabled = true;
+    }
+    
+    // Hide loading state
+    function hideLoading(buttonId, originalText) {
+      const button = document.getElementById(buttonId);
+      button.innerHTML = originalText;
+      button.disabled = false;
+    }
+    
+    // Show error message
+    function showError(containerId, message) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = message;
+      container.classList.remove('hidden');
+      setTimeout(() => container.classList.add('hidden'), 5000);
+    }
+    
+    // Show success message
+    function showSuccess(containerId, message) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = message;
+      container.classList.remove('hidden');
+      setTimeout(() => container.classList.add('hidden'), 5000);
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Page loaded, initializing...');
+      
+      updateGlobalModeDisplay();
+      checkAuthState();
+      setupEventListeners();
+      addCourseCardHandlers();
+      // ضمان ربط الأزرار فور التحميل
+      if (typeof attachAuthButtonHandlers === 'function') {
+        attachAuthButtonHandlers();
+      }
+      
+      // Update course visibility after auth state is checked
+      setTimeout(updateCourseVisibility, 100);
+      
+      console.log('Event listeners set up');
+      
+      // Typed effect
+      new Typed('#typed-text', {
+        strings: ['🚀 منصة البداية', '✨ مستقبلك يبدأ من هنا', '📚 تعلم وتفوق مع البداية'],
+        typeSpeed: 60,
+        backSpeed: 40,
+        loop: true
+      });
+
+      // Check for reset password token in URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const resetToken = urlParams.get('reset-token');
+      if (resetToken) {
+        localStorage.setItem('resetToken', resetToken);
+        openModal('resetPasswordModal');
+      }
+    });
+
+    // ============= Authentication Functions =============
+    
+    // Register new user
+    async function registerUser(formData) {
+      // Debug: Log form data
+      console.log('Form Data received:', formData);
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+      }
+      
+      // Client-side validation
+      const validationErrors = validateRegistrationForm(formData);
+      if (validationErrors.length > 0) {
+        showError('registerErrors', validationErrors.join('<br>'));
+        return;
+      }
+      
+      showLoading('registerBtn', 'جاري إنشاء الحساب...');
+      
+      const fullName = formData.get('fullName');
+      
+      // Additional validation
+      if (!fullName) {
+        showError('registerErrors', 'الاسم الرباعي مطلوب');
+        return;
+      }
+      
+      // Validate full name using existing validation function
+      if (!validateFullName(fullName)) {
+        showError('registerErrors', 'يجب إدخال اسم رباعي صحيح (3 أسماء على الأقل، 10-100 حرف)');
+        return;
+      }
+      
+      const userData = {
+        name: fullName.trim(), // Send full name as single field
+        email: formData.get('email'),
+        password: formData.get('password'),
+        location: formData.get('location'),
+        grade: formData.get('grade'),
+        role: 'student' // Always student as requested
+      };
+
+      // Add phone number only if provided
+      const phoneNumber = formData.get('phone');
+      if (phoneNumber && phoneNumber.trim()) {
+        userData.phoneNumber = phoneNumber.trim();
+      }
+      
+      // Clean up userData - remove undefined values
+      Object.keys(userData).forEach(key => {
+        if (userData[key] === undefined) {
+          delete userData[key];
+        }
+      });
+
+      console.log('📤 User data to be sent:', userData);
+      console.log('📝 Form data details:', {
+        name: `"${userData.name}" (${userData.name?.length} حرف)`,
+        email: userData.email,
+        password: userData.password ? `${userData.password.length} حرف` : 'فارغ',
+        phoneNumber: userData.phoneNumber || 'غير متوفر',
+        location: userData.location,
+        grade: userData.grade
+      });
+
+      try {
+        if (TEST_MODE) {
+          // Test mode - simulate successful registration
+          console.log('TEST MODE: Simulating successful registration');
+          showSuccess('registerSuccess', 'تم إنشاء الحساب بنجاح (وضع اختبار)');
+          setTimeout(() => {
+            closeModal('registerModal');
+            openOtpModal(userData.email);
+          }, 1500);
+          return;
+        }
+        
+        console.log('Sending request to:', `${API_BASE_URL}/users/`);
+        console.log('Request payload:', JSON.stringify(userData));
+        
+        const response = await fetch(`${API_BASE_URL}/users/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
+        });
+        
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+        
+        const result = await response.json();
+        console.log('📥 Response data:', result);
+        
+        if (response.ok) {
+          // Success - store temp token and show OTP modal
+          console.log('✅ Registration successful!');
+          localStorage.setItem('tempToken', result.tempToken);
+          localStorage.setItem('userEmail', result.user.email);
+          
+          showSuccess('registerSuccess', result.message);
+          setTimeout(() => {
+            closeModal('registerModal');
+            openOtpModal(result.user.email);
+          }, 1500);
+        } else {
+          // Handle errors
+          console.log('❌ Registration failed with status:', response.status);
+          if (result.errors && Array.isArray(result.errors)) {
+            console.log('🚫 Server validation errors:', result.errors);
+            const errorMessages = result.errors
+              .map(error => `• ${error.msg}`)
+              .join('<br>');
+            showError('registerErrors', `خطأ في البيانات:<br>${errorMessages}`);
+          } else {
+            showError('registerErrors', result.message);
+          }
+        }
+      } catch (error) {
+        console.error('Registration error:', error);
+        
+        if (error.name === 'TypeError' && error.message.includes('fetch')) {
+          showError('registerErrors', 'لا يمكن الاتصال بالخادم. تأكد من تشغيل الباك إند على http://localhost:3000');
+        } else {
+          showError('registerErrors', `حدث خطأ في الاتصال: ${error.message}`);
+        }
+      } finally {
+        hideLoading('registerBtn', 'إنشاء الحساب');
+      }
+    }
+
+    // Login user
+    async function loginUser(email, password) {
+      console.log('Login attempt:', { email }); // Don't log password
+      
+      // Client-side validation
+      const validationErrors = validateLoginForm(email, password);
+      if (validationErrors.length > 0) {
+        showError('loginErrors', validationErrors.join('<br>'));
+        return;
+      }
+      
+      showLoading('loginBtn', 'جاري تسجيل الدخول...');
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/users/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          // Success - save session and redirect
+          saveUserSession(result.token, result.user);
+          showSuccess('loginSuccess', result.message);
+          
+          setTimeout(() => {
+            closeModal('loginModal');
+            updateNavbar();
+            showNotification('تم تسجيل الدخول بنجاح! 🎉', 'success');
+          }, 1500);
+          
+        } else if (response.status === 403 && result.requiresVerification) {
+          // Account not verified - show OTP modal
+          localStorage.setItem('userEmail', result.userEmail);
+          closeModal('loginModal');
+          openOtpModal(result.userEmail);
+          showError('otpErrors', 'يجب تفعيل حسابك أولاً');
+          
+        } else {
+          showError('loginErrors', result.message);
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        showError('loginErrors', 'حدث خطأ في الاتصال. حاول مرة أخرى.');
+      } finally {
+        hideLoading('loginBtn', 'تسجيل الدخول');
+      }
+    }
+
+    // Verify OTP
+    async function verifyOTP(email, otp) {
+      showLoading('verifyOtpBtn', 'جاري التحقق...');
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/users/verify-otp`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, otp })
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          // Success - save permanent token
+          saveUserSession(result.token, result.user);
+          showSuccess('otpSuccess', result.message);
+          
+          setTimeout(() => {
+            closeModal('otpModal');
+            updateNavbar();
+            showNotification('تم تفعيل حسابك بنجاح! 🎉', 'success');
+          }, 1500);
+          
+        } else {
+          showError('otpErrors', result.message);
+        }
+      } catch (error) {
+        console.error('OTP verification error:', error);
+        showError('otpErrors', 'حدث خطأ في الاتصال. حاول مرة أخرى.');
+      } finally {
+        hideLoading('verifyOtpBtn', 'تفعيل الحساب');
+      }
+    }
+
+    // Resend OTP
+    async function resendOTP() {
+      const email = localStorage.getItem('userEmail');
+      if (!email) return;
+      
+      const button = document.getElementById('resendOtpBtn');
+      button.disabled = true;
+      button.textContent = 'جاري الإرسال...';
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/users/resend-otp`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email })
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          showSuccess('otpSuccess', result.message);
+          startResendTimer();
+        } else {
+          showError('otpErrors', result.message);
+          button.disabled = false;
+          button.textContent = 'إعادة الإرسال';
+        }
+      } catch (error) {
+        console.error('Resend OTP error:', error);
+        showError('otpErrors', 'حدث خطأ في الاتصال. حاول مرة أخرى.');
+        button.disabled = false;
+        button.textContent = 'إعادة الإرسال';
+      }
+    }
+
+    // Request password reset
+    async function requestPasswordReset(email) {
+      showLoading('forgotPasswordBtn', 'جاري الإرسال...');
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/users/reset-password/request`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email })
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          showSuccess('forgotPasswordSuccess', 'تم إرسال رابط استعادة كلمة المرور إلى بريدك الإلكتروني');
+          document.getElementById('forgotPasswordForm').reset();
+        } else {
+          showError('forgotPasswordErrors', result.message);
+        }
+      } catch (error) {
+        console.error('Password reset request error:', error);
+        showError('forgotPasswordErrors', 'حدث خطأ في الاتصال. حاول مرة أخرى.');
+      } finally {
+        hideLoading('forgotPasswordBtn', 'إرسال رابط الاستعادة');
+      }
+    }
+
+    // Reset password
+    async function resetPassword(newPassword) {
+      const token = localStorage.getItem('resetToken');
+      if (!token) {
+        showError('resetPasswordErrors', 'رمز الاستعادة غير صالح');
+        return;
+      }
+      
+      showLoading('resetPasswordBtn', 'جاري الحفظ...');
+      
+      try {
+        const response = await fetch(`${API_BASE_URL}/users/reset-password/perform`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ token, newPassword })
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          showSuccess('resetPasswordSuccess', 'تم تغيير كلمة المرور بنجاح');
+          localStorage.removeItem('resetToken');
+          
+          setTimeout(() => {
+            closeModal('resetPasswordModal');
+            openModal('loginModal');
+            showNotification('يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة', 'success');
+          }, 2000);
+        } else {
+          showError('resetPasswordErrors', result.message);
+        }
+      } catch (error) {
+        console.error('Password reset error:', error);
+        showError('resetPasswordErrors', 'حدث خطأ في الاتصال. حاول مرة أخرى.');
+      } finally {
+        hideLoading('resetPasswordBtn', 'حفظ كلمة المرور الجديدة');
+      }
+    }
+
+    // Logout user
+    function logoutUser() {
+      clearUserSession();
+      updateNavbar();
+      showNotification('تم تسجيل الخروج بنجاح', 'info');
+    }
+
+    // Update mode display based on user role (automatic)
+    function updateGlobalModeDisplay() {
+      if (typeof AUTH !== 'undefined' && AUTH.updateAutoModeDisplay) {
+        AUTH.updateAutoModeDisplay();
+      }
+      // Also update using teacher mode system if available
+      if (typeof TeacherMode !== 'undefined' && TeacherMode.updateModeDisplay) {
+        TeacherMode.updateModeDisplay();
+      }
+    }
+
+    // Show notification
+    function showNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.className = `fixed top-20 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 ${
+        type === 'success' ? 'bg-green-600 text-white' : 
+        type === 'error' ? 'bg-red-600 text-white' : 
+        'bg-blue-600 text-white'
+      }`;
+      notification.textContent = message;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 3000);
+    }
+
+    // 🌙 Light / Dark Mode
+    function toggleTheme() {
+      document.body.classList.toggle("light-mode");
+    }
+
+    // ============= UI Helper Functions =============
+    
+    // Open OTP modal
+    function openOtpModal(email) {
+      document.getElementById('otpEmailDisplay').textContent = email;
+      openModal('otpModal');
+      startResendTimer();
+      setupOtpInputs();
+    }
+    
+    // Open forgot password modal
+    function openForgotPasswordModal() {
+      closeModal('loginModal');
+      openModal('forgotPasswordModal');
+    }
+    
+    // Setup OTP inputs behavior
+    function setupOtpInputs() {
+      const inputs = document.querySelectorAll('.otp-input');
+      inputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+          if (e.target.value.length === 1 && index < inputs.length - 1) {
+            inputs[index + 1].focus();
+          }
+        });
+        
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+            inputs[index - 1].focus();
+          }
+        });
       });
     }
     
-    // التحقق مما إذا كان المستخدم مسجل الدخول
-    document.addEventListener('DOMContentLoaded', function() {
-      if (isLoggedIn()) {
-        // إظهار معلومات المستخدم وإخفاء أزرار تسجيل الدخول
-        document.getElementById('userProfile').classList.remove('hidden');
-        document.getElementById('userProfile').classList.add('flex');
-        document.getElementById('guestButtons').classList.add('hidden');
-        
-        // للموبايل
-        document.getElementById('userProfileMobile').classList.remove('hidden');
-        document.getElementById('userProfileMobile').classList.add('flex');
-        document.getElementById('guestButtonsMobile').classList.add('hidden');
-        
-        // عرض اسم المستخدم والصورة
-        console.log("User data in index.html:", getCurrentUser()); // تسجيل بيانات المستخدم
-        const userName = getUserDisplayName();
-        const userAvatar = getUserAvatar();
-        
-        console.log("Display Name:", userName); // تسجيل اسم العرض
-        console.log("Avatar:", userAvatar); // تسجيل مسار الصورة
-        
-        document.getElementById('userName').textContent = userName;
-        document.getElementById('userNameMobile').textContent = userName;
-        document.getElementById('userAvatar').src = userAvatar;
-        document.getElementById('userAvatarMobile').src = userAvatar;
-      }
-    });
-    
-    // وظيفة تسجيل الخروج
-    function logout() {
-      clearUserSession();
-      window.location.reload();
+    // Get OTP value from inputs
+    function getOtpValue() {
+      const inputs = document.querySelectorAll('.otp-input');
+      return Array.from(inputs).map(input => input.value).join('');
     }
+    
+    // Clear OTP inputs
+    function clearOtpInputs() {
+      document.querySelectorAll('.otp-input').forEach(input => input.value = '');
+    }
+    
+    // Start resend timer
+    function startResendTimer() {
+      resendTimer = 60;
+      const button = document.getElementById('resendOtpBtn');
+      const timerSpan = document.getElementById('resendTimer');
+      
+      button.disabled = true;
+      
+      resendInterval = setInterval(() => {
+        timerSpan.textContent = `(${resendTimer})`;
+        resendTimer--;
+        
+        if (resendTimer < 0) {
+          clearInterval(resendInterval);
+          button.disabled = false;
+          button.textContent = 'إعادة الإرسال';
+          timerSpan.textContent = '';
+        }
+      }, 1000);
+    }
+    
+    // Check authentication state on page load
+    function checkAuthState() {
+      if (isLoggedIn()) {
+        updateNavbar();
+      }
+    }
+    
+    // Update navbar based on auth state
+    function updateNavbar() {
+      const user = getCurrentUser();
+      const authButtons = document.querySelector('.hidden.md\\:flex');
+      
+      if (user && authButtons) {
+        const roleText = user.role === 'instructor' ? 'مدرس' : user.role === 'admin' ? 'مشرف' : 'طالب';
+        const roleColor = user.role === 'instructor' ? 'bg-green-600' : user.role === 'admin' ? 'bg-purple-600' : 'bg-blue-600';
+        // استخدام window.AUTH بأمان لتجنب ReferenceError إذا لم يكن محملاً بعد
+        const authObj = window.AUTH || {};
+        const displayName = typeof authObj.getUserDisplayName === 'function'
+          ? authObj.getUserDisplayName()
+          : (user.firstName || user.name || 'مستخدم');
+        
+        authButtons.innerHTML = `
+          <a href="#courses" class="hover:text-blue-300">📚 الكورسات</a>
+          <a href="#teacher" class="hover:text-blue-300">👨‍🏫 المدرس</a>
+          <button onclick="toggleTheme()" class="px-3 py-1 bg-white/20 rounded-lg">🌓</button>
+          <div class="flex items-center gap-2 px-3 py-2 bg-blue-600/20 rounded-lg">
+            <span class="text-sm">مرحباً، ${displayName}</span>
+            <span class="text-xs ${roleColor} px-2 py-1 rounded">${roleText}</span>
+          </div>
+          <button onclick="logoutUser()" class="px-3 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm">خروج</button>
+        `;
+        
+        // Update mobile menu too
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenu.innerHTML = `
+          <a href="#courses" class="hover:text-blue-300">📚 الكورسات</a>
+          <a href="#teacher" class="hover:text-blue-300">👨‍🏫 المدرس</a>
+          <button onclick="toggleTheme()" class="px-4 py-2 bg-white/20 rounded-lg">🌓 تبديل الوضع</button>
+          <div class="px-4 py-2 bg-blue-600/20 rounded-lg">
+            <div class="text-sm">مرحباً، ${displayName}</div>
+            <div class="text-xs text-blue-300">${user.email}</div>
+            <div class="text-xs text-gray-400">${roleText}</div>
+          </div>
+          <button onclick="logoutUser()" class="px-4 py-2 bg-red-600 rounded-lg">تسجيل الخروج</button>
+        `;
+        
+        // Update course visibility based on user role and grade
+        updateCourseVisibility();
+      } else if (!user && authButtons) {
+        // المستخدم غير مسجل الدخول – نضمن إرجاع الأزرار الأصلية (قد تكون اختفت بعد تسجيل خروج سابق)
+        authButtons.innerHTML = `
+          <a href="#courses" class="hover:text-blue-300">📚 الكورسات</a>
+          <a href="#teacher" class="hover:text-blue-300">👨‍🏫 المدرس</a>
+          <button onclick="toggleTheme()" class="px-3 py-1 bg-white/20 rounded-lg">🌓</button>
+          <button id="openLogin" class="px-3 sm:px-4 py-2 bg-blue-600 rounded-lg text-sm sm:text-base">تسجيل دخول</button>
+          <button id="openRegister" class="px-3 sm:px-4 py-2 bg-green-600 rounded-lg text-sm sm:text-base">إنشاء حساب</button>
+        `;
+        // إعادة بناء قائمة الموبايل كذلك
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenu) {
+          mobileMenu.innerHTML = `
+            <a href="#courses" class="hover:text-blue-300">📚 الكورسات</a>
+            <a href="#teacher" class="hover:text-blue-300">👨‍🏫 المدرس</a>
+            <button onclick="toggleTheme()" class="px-4 py-2 bg-white/20 rounded-lg">🌓 تبديل الوضع</button>
+            <button id="openLoginMobile" class="px-4 py-2 bg-blue-600 rounded-lg">تسجيل دخول</button>
+            <button id="openRegisterMobile" class="px-4 py-2 bg-green-600 rounded-lg">إنشاء حساب</button>
+          `;
+        }
+        // إعادة ربط المستمعات بعد إعادة بناء الـ innerHTML
+        attachAuthButtonHandlers();
+      }
+    }
+
+    // Helper: (إعادة) ربط أزرار المصادقة مع المودالات – تتحمل التكرار بأمان
+    function attachAuthButtonHandlers() {
+      const loginBtn = document.getElementById('openLogin');
+      const registerBtn = document.getElementById('openRegister');
+      const loginBtnMob = document.getElementById('openLoginMobile');
+      const registerBtnMob = document.getElementById('openRegisterMobile');
+
+      if (loginBtn) loginBtn.onclick = () => openModal('loginModal');
+      if (registerBtn) registerBtn.onclick = () => openModal('registerModal');
+      if (loginBtnMob) loginBtnMob.onclick = () => openModal('loginModal');
+      if (registerBtnMob) registerBtnMob.onclick = () => openModal('registerModal');
+
+      // كود احتياطي عبر التفويض – يضمن العمل حتى لو تبدلت العناصر لاحقاً
+      if (!window.__authDelegationBound) {
+        document.addEventListener('click', (e) => {
+          if (e.target && (e.target.id === 'openLogin' || e.target.id === 'openLoginMobile')) {
+            openModal('loginModal');
+          } else if (e.target && (e.target.id === 'openRegister' || e.target.id === 'openRegisterMobile')) {
+            openModal('registerModal');
+          }
+        });
+        window.__authDelegationBound = true;
+      }
+    }
+    
+    // Add real-time validation
+    function addRealTimeValidation() {
+      // Email validation
+      const emailInputs = document.querySelectorAll('input[type="email"]');
+      emailInputs.forEach(input => {
+        input.addEventListener('blur', function() {
+          if (this.value && !validateEmail(this.value)) {
+            this.style.borderColor = '#ef4444';
+            showTooltip(this, 'البريد الإلكتروني غير صحيح');
+          } else {
+            this.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            hideTooltip(this);
+          }
+        });
+      });
+      
+      // Password validation
+      const passwordInputs = document.querySelectorAll('input[type="password"]');
+      passwordInputs.forEach(input => {
+        input.addEventListener('input', function() {
+          if (this.value && !validatePassword(this.value)) {
+            this.style.borderColor = '#ef4444';
+          } else if (this.value) {
+            this.style.borderColor = '#10b981';
+          }
+        });
+      });
+      
+      // Full name validation
+      const fullNameInput = document.getElementById('fullName');
+      const fullNameIndicator = document.getElementById('fullNameIndicator');
+      const nameCount = document.getElementById('nameCount');
+      
+      if (fullNameInput) {
+        fullNameInput.addEventListener('input', function() {
+          const value = this.value;
+          
+          // Update character count
+          if (nameCount) {
+            nameCount.textContent = `${value.length}/100 حرف`;
+            if (fullNameIndicator) {
+              fullNameIndicator.classList.remove('hidden');
+            }
+          }
+          
+          if (value.length > 0) {
+            if (value.length < 10) {
+              this.style.borderColor = '#ef4444';
+              if (nameCount) nameCount.className = 'text-red-400';
+              showTooltip(this, `الاسم قصير جداً (${value.length}/10 أحرف على الأقل)`);
+            } else if (value.length > 100) {
+              this.style.borderColor = '#ef4444';
+              if (nameCount) nameCount.className = 'text-red-400';
+              showTooltip(this, `الاسم طويل جداً (${value.length}/100 حرف كحد أقصى)`);
+            } else if (!validateFullName(value)) {
+              this.style.borderColor = '#ef4444';
+              if (nameCount) nameCount.className = 'text-yellow-400';
+              showTooltip(this, 'يجب إدخال 3 أسماء على الأقل مفصولة بمسافات');
+            } else {
+              this.style.borderColor = '#10b981';
+              if (nameCount) nameCount.className = 'text-green-400';
+              hideTooltip(this);
+            }
+          } else {
+            if (fullNameIndicator) {
+              fullNameIndicator.classList.add('hidden');
+            }
+          }
+        });
+        
+        fullNameInput.addEventListener('blur', function() {
+          if (this.value && !validateFullName(this.value)) {
+            this.style.borderColor = '#ef4444';
+          }
+        });
+      }
+    }
+    
+    function showTooltip(element, message) {
+      hideTooltip(element); // Remove existing tooltip
+      const tooltip = document.createElement('div');
+      tooltip.className = 'validation-tooltip';
+      tooltip.textContent = message;
+      tooltip.style.cssText = `
+        position: absolute;
+        bottom: -30px;
+        right: 0;
+        background: #ef4444;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        z-index: 1000;
+      `;
+      element.style.position = 'relative';
+      element.parentElement.appendChild(tooltip);
+    }
+    
+    function hideTooltip(element) {
+      const tooltip = element.parentElement.querySelector('.validation-tooltip');
+      if (tooltip) {
+        tooltip.remove();
+      }
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+      // Add real-time validation
+      addRealTimeValidation();
+      
+      // Registration form
+      const signupForm = document.getElementById('signupForm');
+      if (signupForm) {
+        console.log('Adding event listener to signup form');
+        signupForm.addEventListener('submit', async (e) => {
+          console.log('Signup form submitted');
+          e.preventDefault();
+          const formData = new FormData(e.target);
+          await registerUser(formData);
+        });
+      } else {
+        console.error('Signup form not found!');
+      }
+      
+      // Login form
+      document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        
+        await loginUser(email, password);
+      });
+      
+      // OTP form
+      document.getElementById('otpForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = localStorage.getItem('userEmail');
+        const otp = getOtpValue();
+        
+        if (otp.length !== 6) {
+          showError('otpErrors', 'يرجى إدخال الرمز كاملاً (6 أرقام)');
+          return;
+        }
+        
+        await verifyOTP(email, otp);
+      });
+      
+      // Forgot password form
+      document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('forgotEmail').value;
+        await requestPasswordReset(email);
+      });
+      
+      // Reset password form
+      document.getElementById('resetPasswordForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmNewPassword').value;
+        
+        if (newPassword !== confirmPassword) {
+          showError('resetPasswordErrors', 'كلمتا المرور غير متطابقتان');
+          return;
+        }
+        
+        if (newPassword.length < 8) {
+          showError('resetPasswordErrors', 'كلمة المرور يجب أن تكون 8 أحرف على الأقل');
+          return;
+        }
+        
+        await resetPassword(newPassword);
+      });
+      
+  // Modal buttons (حماية من عدم وجود العناصر لو تم استبدالها بعد تسجيل الدخول)
+  const btnLogin = document.getElementById('openLogin');
+  const btnRegister = document.getElementById('openRegister');
+  const btnLoginMob = document.getElementById('openLoginMobile');
+  const btnRegisterMob = document.getElementById('openRegisterMobile');
+
+  if (btnLogin) btnLogin.onclick = () => openModal('loginModal');
+  if (btnRegister) btnRegister.onclick = () => openModal('registerModal');
+  if (btnLoginMob) btnLoginMob.onclick = () => openModal('loginModal');
+  if (btnRegisterMob) btnRegisterMob.onclick = () => openModal('registerModal');
+      
+      // Course card handlers
+      addCourseCardHandlers();
+      
+      // Close modals when clicking outside
+      document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('modal')) {
+          const modalId = e.target.id;
+          closeModal(modalId);
+        }
+      });
+    }
+
+    // Open/close modals
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('show'), 10);
+    }
+    
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      modal.classList.remove('show');
+      setTimeout(() => modal.style.display = 'none', 300);
+    }
+
+    // ============= Page Protection & Navigation =============
+    
+    // Check if user has access to specific grade
+    function hasGradeAccess(gradeKey) {
+      const user = getCurrentUser();
+      if (!user) return false;
+      
+      // Instructors and admins can access all grades
+      if (user.role === 'instructor' || user.role === 'admin') {
+        return true;
+      }
+
+      // Normalize Arabic or stored grade values to internal codes
+      function normalizeGrade(g) {
+        if (!g || typeof g !== 'string') return g;
+        const s = g.trim().toLowerCase();
+        const map = {
+          // Internal codes pass-through
+          'grade1': 'grade1',
+          'grade2': 'grade2',
+          'grade2sci': 'grade2sci',
+          'grade2art': 'grade2art',
+          'grade3': 'grade3',
+          'grade3sci': 'grade3sci',
+          'grade3art': 'grade3art',
+          // Arabic variants
+          'الصف الأول الثانوي': 'grade1',
+          'الصف الاول الثانوي': 'grade1',
+          'الصف الثاني الثانوي': 'grade2',
+          'الصف الثاني الثانوي علمي': 'grade2sci',
+            'الصف الثاني - علمي': 'grade2sci',
+          'الصف الثاني الثانوي ادبي': 'grade2art',
+            'الصف الثاني - أدبي': 'grade2art',
+          'الصف الثالث الثانوي': 'grade3',
+          'الصف الثالث الثانوي علمي': 'grade3sci',
+            'الصف الثالث - علمي': 'grade3sci',
+          'الصف الثالث الثانوي ادبي': 'grade3art',
+            'الصف الثالث - أدبي': 'grade3art'
+        };
+        return map[s] || g; // fallback: return original
+      }
+
+      const userNormalized = normalizeGrade(user.grade);
+
+      // Exact match (student picked specific track)
+      if (userNormalized === gradeKey) return true;
+
+      // If student has generic grade (without specialization) allow both tracks of that grade
+      if (userNormalized === 'grade2' && (gradeKey === 'grade2sci' || gradeKey === 'grade2art')) return true;
+      if (userNormalized === 'grade3' && (gradeKey === 'grade3sci' || gradeKey === 'grade3art')) return true;
+
+      // Allow mapping from specialization back to generic if needed
+      if ((userNormalized === 'grade2sci' || userNormalized === 'grade2art') && gradeKey === 'grade2') return true;
+      if ((userNormalized === 'grade3sci' || userNormalized === 'grade3art') && gradeKey === 'grade3') return true;
+
+      return false; // No access
+    }
+    
+    // Redirect functions for authenticated users
+    function redirectToGrade(grade) {
+      // Check if user is logged in first
+      if (!isLoggedIn()) {
+        showNotification('يجب تسجيل الدخول أولاً للوصول إلى الكورسات التعليمية', 'error');
+        
+        // Open login modal automatically
+        setTimeout(() => {
+          openModal('loginModal');
+        }, 500);
+        
+        console.log('User not logged in, opening login modal for grade:', grade);
+        return;
+      }
+      
+      const user = getCurrentUser();
+      const gradeNames = {
+        "grade1": "الصف الأول الثانوي",
+        "grade2": "الصف الثاني الثانوي (عام)",
+        "grade2sci": "الصف الثاني الثانوي - علمي",
+        "grade2art": "الصف الثاني الثانوي - أدبي", 
+        "grade3": "الصف الثالث الثانوي (عام)",
+        "grade3sci": "الصف الثالث الثانوي - علمي",
+        "grade3art": "الصف الثالث الثانوي - أدبي"
+      };
+      
+      // Check if user has access to this grade
+      if (!hasGradeAccess(grade)) {
+        const gradeName = gradeNames[grade] || grade;
+        if (user.role === 'student') {
+          showNotification(`عذراً، يمكنك الوصول فقط لصفحك الدراسي`, 'error');
+        } else {
+          showNotification(`ليس لديك صلاحية للوصول إلى ${gradeName}`, 'error');
+        }
+        return;
+      }
+      
+      // Map grade keys to actual page files
+      const pages = {
+        "grade1": "grade1.html",
+        "grade2sci": "grade2_1.html", 
+        "grade2art": "grade2_2.html",
+        "grade3sci": "grade3_1.html",
+        "grade3art": "grade3_2.html"
+      };
+      
+      if (pages[grade]) {
+        console.log(`Redirecting ${user.role} to ${pages[grade]} for grade: ${grade}`);
+        window.location.href = pages[grade];
+      } else {
+        showNotification('الصفحة غير موجودة', 'error');
+      }
+    }
+    
+    // Update course card visibility based on user access
+    function updateCourseVisibility() {
+      const courseCards = document.querySelectorAll('.course-card');
+      const grades = [
+        'grade1',      // الصف الأول الثانوي
+        'grade2sci',   // الصف الثاني - علمي  
+        'grade2art',   // الصف الثاني - أدبي
+        'grade3sci',   // الصف الثالث الثانوي (علمي)
+        'grade3art'    // الصف الثالث الثانوي (أدبي)
+      ];
+      
+      courseCards.forEach((card, index) => {
+        const grade = grades[index];
+        if (grade) {
+          const hasAccess = hasGradeAccess(grade);
+          
+          // Remove any existing badges first
+          const existingBadge = card.querySelector('.no-access-badge');
+          if (existingBadge) {
+            existingBadge.remove();
+          }
+          
+          const user = getCurrentUser();
+          
+          if (hasAccess) {
+            card.classList.remove('opacity-50', 'cursor-not-allowed');
+            card.classList.add('cursor-pointer');
+          } else {
+            card.classList.add('opacity-50', 'cursor-not-allowed');
+            card.classList.remove('cursor-pointer');
+            
+            // Add appropriate badge based on user status
+            const badge = document.createElement('div');
+            badge.className = 'no-access-badge absolute top-2 right-2 text-white text-xs px-2 py-1 rounded';
+            card.style.position = 'relative';
+            
+            if (!user) {
+              // User not logged in
+              badge.className += ' bg-orange-500';
+              badge.textContent = '� يتطلب تسجيل دخول';
+            } else if (user.role === 'student') {
+              // Student without access
+              badge.className += ' bg-red-500';
+              badge.textContent = '🔒 غير متاح';
+            }
+            
+            card.appendChild(badge);
+          }
+        }
+      });
+    }
+
+    // Add course card click handlers
+    function addCourseCardHandlers() {
+      const courseCards = document.querySelectorAll('.course-card');
+      courseCards.forEach((card, index) => {
+        card.addEventListener('click', function() {
+          // Map each course card to its corresponding grade
+          const grades = [
+            'grade1',      // الصف الأول الثانوي
+            'grade2sci',   // الصف الثاني - علمي  
+            'grade2art',   // الصف الثاني - أدبي
+            'grade3sci',   // الصف الثالث الثانوي (علمي)
+            'grade3art'    // الصف الثالث الثانوي (أدبي)
+          ];
+          
+          if (grades[index]) {
+            redirectToGrade(grades[index]);
+          }
+        });
+      });
+    }
+    
+    // Create protected API request function
+    async function protectedRequest(url, options = {}) {
+      const token = getAuthToken();
+      if (!token) {
+        logoutUser();
+        throw new Error('لا يوجد رمز مصادقة');
+      }
+      
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        ...options.headers
+      };
+      
+      try {
+        const response = await fetch(url, {
+          ...options,
+          headers
+        });
+        
+        if (response.status === 401) {
+          logoutUser();
+          throw new Error('انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى');
+        }
+        
+        if (response.status === 403) {
+          const result = await response.json();
+          if (result.requiresVerification) {
+            openOtpModal(getCurrentUser().email);
+            throw new Error('يجب تفعيل حسابك أولاً');
+          }
+        }
+        
+        return response;
+      } catch (error) {
+        if (error.message.includes('NetworkError') || error.message.includes('fetch')) {
+          throw new Error('خطأ في الاتصال. تحقق من اتصالك بالإنترنت');
+        }
+        throw error;
+      }
+    }
+
+    // Mobile menu
+    const menuToggle = document.getElementById("menuToggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+    menuToggle.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
   </script>
+  
+  <!-- Teacher Mode Auto System -->
+  <script src="../js/teacher-mode.js"></script>
 </body>
 </html>

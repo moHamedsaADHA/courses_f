@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>منصة البداية</title>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- مكتبة التايبنج -->
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <!-- Auth Utility Library -->
+  <script src="../js/auth.js"></script>
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="../css/style.css">
+  <!-- تحميل الخط Cairo -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="animated-bg text-white">
+
+  <!-- 🚀 Navbar -->
+  <nav class="flex items-center justify-between px-4 sm:px-6 py-3 bg-black/40 backdrop-blur-md fixed w-full top-0 z-50">
+    <!-- الشعار -->
+    <div class="flex items-center gap-3">
+      <img src="../images/WhatsApp_Image_2025-09-06_at_00.31.42_7b113d97-removebg-preview.png" alt="شعار البداية" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full" />
+      <span class="text-lg sm:text-xl font-bold">منصة البداية</span>
+    </div>
+
+    <!-- اللينكات + الازرار -->
+    <div class="hidden md:flex items-center gap-6">
+      <a href="#courses" class="hover:text-blue-300">📚 الكورسات</a>
+      <a href="#teacher" class="hover:text-blue-300">👨‍🏫 المدرس</a>
+      <button onclick="toggleTheme()" class="px-3 py-1 bg-white/20 rounded-lg">🌓</button>
+      
+      <!-- أزرار تسجيل الدخول وإنشاء حساب (تظهر للزوار فقط) -->
+      <div id="guestButtons" class="flex items-center gap-4">
+        <button id="openLogin" class="px-3 sm:px-4 py-2 bg-blue-600 rounded-lg text-sm sm:text-base">تسجيل دخول</button>
+        <button id="openRegister" class="px-3 sm:px-4 py-2 bg-green-600 rounded-lg text-sm sm:text-base">إنشاء حساب</button>
+      </div>
+      
+      <!-- معلومات المستخدم بعد تسجيل الدخول -->
+      <div id="userProfile" class="hidden items-center gap-3">
+        <div class="flex items-center gap-2">
+          <img id="userAvatar" src="../images/default_user.png" alt="الصورة الشخصية" class="w-8 h-8 rounded-full border-2 border-blue-400">
+          <span id="userName" class="text-sm font-medium">مستخدم</span>
+        </div>
+        <div class="relative group">
+          <button class="px-2 py-1 bg-blue-600 rounded-lg text-sm">حسابي</button>
+          <div class="absolute left-0 mt-1 w-36 bg-white text-gray-800 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+            <a href="profile.html" class="block px-4 py-2 hover:bg-blue-100">الملف الشخصي</a>
+            <a href="settings.html" class="block px-4 py-2 hover:bg-blue-100">الإعدادات</a>
+            <button id="logoutBtn" onclick="logout()" class="w-full text-right px-4 py-2 text-red-600 hover:bg-red-100">تسجيل خروج</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- مينو للموبايل -->
+    <div class="md:hidden">
+      <button id="menuToggle" class="px-3 py-2 bg-white/20 rounded-lg">☰</button>
+    </div>
+  </nav>
+
+  <!-- قائمة الموبايل -->
+ <div id="mobileMenu" class="hidden flex-col gap-4 px-6 py-4 bg-black/90 fixed top-14 right-0 w-2/3 h-screen z-40">
+  <a href="#courses" class="hover:text-blue-300">📚 الكورسات</a>
+  <a href="#teacher" class="hover:text-blue-300">👨‍🏫 المدرس</a>
+  <button onclick="toggleTheme()" class="px-4 py-2 bg-white/20 rounded-lg">🌓 تبديل الوضع</button>
+  
+  <!-- أزرار تسجيل الدخول وإنشاء حساب للموبايل -->
+  <div id="guestButtonsMobile" class="flex flex-col gap-2">
+    <button id="openLoginMobile" class="px-4 py-2 bg-blue-600 rounded-lg">تسجيل دخول</button>
+    <button id="openRegisterMobile" class="px-4 py-2 bg-green-600 rounded-lg">إنشاء حساب</button>
+  </div>
+  
+  <!-- معلومات المستخدم للموبايل -->
+  <div id="userProfileMobile" class="hidden flex-col gap-3">
+    <div class="flex items-center gap-3">
+      <img id="userAvatarMobile" src="../images/default_user.png" alt="الصورة الشخصية" class="w-10 h-10 rounded-full border-2 border-blue-400">
+      <span id="userNameMobile" class="text-sm font-medium">مستخدم</span>
+    </div>
+    <a href="profile.html" class="px-4 py-2 bg-blue-100/20 rounded-lg text-right">الملف الشخصي</a>
+    <a href="settings.html" class="px-4 py-2 bg-blue-100/20 rounded-lg text-right">الإعدادات</a>
+    <button id="logoutBtnMobile" onclick="logout()" class="px-4 py-2 bg-red-600/20 text-red-400 rounded-lg text-right">تسجيل خروج</button>
+  </div>
+</div>
+
+  <!-- 🌟 Hero Section -->
+  <section class="pt-32 pb-16 px-4 text-center">
+    <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
+      <span id="typed-text"></span>
+    </h1>
+    <p class="text-lg sm:text-xl mb-8 max-w-2xl mx-auto opacity-80">
+      منصة تعليمية متميزة للمرحلة الثانوية تساعدك على التفوق والنجاح بأسلوب مبتكر ومتطور
+    </p>
+    <div class="flex justify-center gap-4">
+      <button id="heroCta" class="px-6 py-3 bg-blue-600 rounded-lg text-lg font-bold hover:bg-blue-700 transition-colors">
+        سجل الآن واستمتع بالتعلم!
+      </button>
+    </div>
+  </section>
+
+  <!-- 📚 Courses Section -->
+  <section id="courses" class="py-16 px-4">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold mb-10 text-center">الكورسات المتاحة</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Course Card 1 -->
+        <div class="course-card bg-white/5 backdrop-blur-sm p-6 rounded-xl">
+          <div class="mb-4 relative">
+            <img src="../images/photo_2025-09-03_23-53-17.jpg" alt="الفيزياء" class="w-full h-48 object-cover rounded-lg" />
+            <span class="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 rounded-md text-xs">محتوى كامل</span>
+          </div>
+          <h3 class="text-xl font-bold mb-2">الفيزياء للصف الأول الثانوي</h3>
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-gray-200">د. أحمد محمد</span>
+            <span class="text-yellow-400 flex items-center">4.9 <svg class="w-4 h-4 fill-current ml-1" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></span>
+          </div>
+          <p class="text-gray-300 mb-4 line-clamp-2">شرح مفصل لمنهج الفيزياء بالكامل مع تدريبات وامتحانات</p>
+          <button class="w-full py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">الاشتراك في الكورس</button>
+        </div>
+        
+        <!-- Course Card 2 -->
+        <div class="course-card bg-white/5 backdrop-blur-sm p-6 rounded-xl">
+          <div class="mb-4 relative">
+            <img src="../images/photo_2025-09-03_23-53-16.jpg" alt="الكيمياء" class="w-full h-48 object-cover rounded-lg" />
+            <span class="absolute top-2 right-2 bg-green-600 text-white px-2 py-1 rounded-md text-xs">جديد</span>
+          </div>
+          <h3 class="text-xl font-bold mb-2">الكيمياء للصف الثاني الثانوي</h3>
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-gray-200">د. محمد أحمد</span>
+            <span class="text-yellow-400 flex items-center">4.8 <svg class="w-4 h-4 fill-current ml-1" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></span>
+          </div>
+          <p class="text-gray-300 mb-4 line-clamp-2">شرح مبسط للكيمياء مع تجارب عملية وحل للمسائل الصعبة</p>
+          <button class="w-full py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">الاشتراك في الكورس</button>
+        </div>
+        
+        <!-- Course Card 3 -->
+        <div class="course-card bg-white/5 backdrop-blur-sm p-6 rounded-xl">
+          <div class="mb-4 relative">
+            <img src="../images/photo_2025-09-03_23-53-13.jpg" alt="الرياضيات" class="w-full h-48 object-cover rounded-lg" />
+            <span class="absolute top-2 right-2 bg-purple-600 text-white px-2 py-1 rounded-md text-xs">الأكثر طلبًا</span>
+          </div>
+          <h3 class="text-xl font-bold mb-2">الرياضيات للصف الثالث الثانوي</h3>
+          <div class="flex justify-between items-center mb-4">
+            <span class="text-gray-200">أ. محمود علي</span>
+            <span class="text-yellow-400 flex items-center">5.0 <svg class="w-4 h-4 fill-current ml-1" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg></span>
+          </div>
+          <p class="text-gray-300 mb-4 line-clamp-2">تغطية كاملة لمنهج الثانوية العامة مع حل نماذج امتحانات سابقة</p>
+          <button class="w-full py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">الاشتراك في الكورس</button>
+        </div>
+      </div>
+      
+      <div class="text-center mt-10">
+        <a href="#" class="inline-block px-6 py-3 border border-blue-500 rounded-lg hover:bg-blue-500/20 transition-colors">عرض جميع الكورسات</a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- 👨‍🏫 Teacher Section -->
+  <section id="teacher" class="py-16 px-4 bg-gradient-to-b from-slate-900/50 to-slate-800/50">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold mb-12 text-center">تعرف على مدرسينا</h2>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <!-- Teacher Image -->
+        <div class="flex justify-center">
+          <img src="../images/photo_2025-09-06_18-08-15.jpg" alt="المدرس" class="profile-img w-64 h-64 rounded-full object-cover border-4 border-blue-500" />
+        </div>
+        
+        <!-- Teacher Info -->
+        <div class="lg:col-span-2">
+          <h3 class="text-2xl font-bold mb-2">د. أحمد محمد السيد</h3>
+          <p class="text-blue-400 mb-4">دكتوراه في العلوم - مدرس أول فيزياء</p>
+          
+          <div class="mb-6">
+            <p class="text-gray-300 mb-4">
+              خبرة أكثر من 15 عامًا في تدريس الفيزياء للمرحلة الثانوية، حاصل على جائزة المعلم المتميز لثلاث سنوات متتالية. 
+              يتميز بأسلوب تدريس مبسط يجعل الفيزياء سهلة وممتعة لجميع الطلاب.
+            </p>
+            <p class="text-gray-300">
+              حاصل على شهادات معتمدة في طرق التدريس الحديثة، ويستخدم التكنولوجيا والتجارب العملية لتوصيل المعلومات بشكل أفضل للطلاب.
+            </p>
+          </div>
+          
+          <div class="flex flex-wrap gap-2 mb-6">
+            <span class="px-3 py-1 bg-blue-900/50 rounded-full text-sm">الفيزياء</span>
+            <span class="px-3 py-1 bg-blue-900/50 rounded-full text-sm">الميكانيكا</span>
+            <span class="px-3 py-1 bg-blue-900/50 rounded-full text-sm">الإستاتيكا</span>
+            <span class="px-3 py-1 bg-blue-900/50 rounded-full text-sm">الديناميكا</span>
+          </div>
+          
+          <div class="flex gap-4 text-sm font-bold">
+            <a href="#" class="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">الاشتراك في كورسات المدرس</a>
+            <a href="#" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-white/10 transition-colors">تواصل مع المدرس</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 📱 التطبيق -->
+  <section class="py-16 px-4">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10">
+      <div class="md:w-1/2">
+        <h2 class="text-3xl font-bold mb-4">حمّل تطبيقنا الآن!</h2>
+        <p class="text-gray-300 mb-6">
+          استمتع بتجربة تعليمية كاملة من خلال تطبيقنا المتوفر على أندرويد وآيفون. شاهد الدروس، حل التمارين، وتواصل مع المدرسين في أي وقت وأي مكان.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a href="#" class="flex items-center gap-2 px-4 py-2 bg-black rounded-lg hover:bg-gray-900 transition-colors border border-gray-700">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="white"><path d="M17.7 19.5c.41.39.79.78 1.13 1.2.23.28.35.58.35.92 0 .25-.07.5-.21.73-.14.23-.33.42-.56.54-1.44.72-2.88 1.08-4.32 1.08-1.75 0-3.15-.71-4.19-2.14-.95-1.31-1.44-2.88-1.44-4.74s.49-3.45 1.46-4.83C11 10.4 12.53 9.72 14.29 9.72c1.73 0 3.32.7 4.76 2.07-1.65 1.45-2.48 2.77-2.48 3.94 0 1.18.38 2.27 1.13 3.27M21.12 4c.25.41.37.93.37 1.56 0 .86-.21 1.7-.64 2.52-.43.82-1 1.5-1.71 2.05-.14.1-.28.14-.42.14-.12 0-.24-.03-.34-.1-.1-.07-.15-.19-.15-.35 0-.05.01-.1.04-.15s.05-.1.07-.14c.62-1.19.93-2.17.93-2.95 0-.56-.14-1.02-.43-1.39-.28-.37-.64-.55-1.07-.55-.21 0-.44.05-.69.14-.25.09-.45.21-.59.34-.08.08-.18.12-.3.12-.14 0-.29-.07-.44-.21s-.22-.29-.22-.46c0-.12.05-.28.15-.48.1-.2.26-.4.49-.6.23-.2.53-.37.89-.49.36-.12.76-.18 1.2-.18.61 0 1.16.16 1.66.48.5.32.89.74 1.2 1.25M9.06 24H7.38v-8.41H3.94V14.2h9.12v1.39H9.06V24m-7.49 0L-4 14.2h1.68l3.99 6.87L5.73 14.2h1.68l-5.84 9.8z"/></svg>
+            <span>Google Play</span>
+          </a>
+          <a href="#" class="flex items-center gap-2 px-4 py-2 bg-black rounded-lg hover:bg-gray-900 transition-colors border border-gray-700">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="white"><path d="M11.99 1.98C16.52 1.98 20 5.65 20 10.37c0 4.72-3.48 8.4-8.01 8.4-4.54 0-7.99-3.67-7.99-8.38 0-4.72 3.47-8.41 7.99-8.41zM12 5.36c-1.78 0-2.44 1.94-2.44 3.35 0 1.41.67 3.35 2.44 3.35 1.78 0 2.44-1.94 2.44-3.35 0-1.41-.67-3.35-2.44-3.35zm0 14.83c-1.73 0-3.38-.6-4.71-1.71L10 16.99l-1.97-.29L5.65 17l-1.49-4.97 2.74-.86c.43.84 1.34 1.69 2.29 2.03 1.12.4 2.39.32 3.58.32 1.16 0 2.43.08 3.55-.32.94-.35 1.81-1.19 2.28-2.02l2.74.86-1.49 4.97-2.38-.31-1.97.29 2.71 1.49c-1.33 1.11-2.98 1.71-4.71 1.71z"/></svg>
+            <span>App Store</span>
+          </a>
+        </div>
+      </div>
+      <div class="md:w-1/2">
+        <img src="../images/WhatsApp Image 2025-09-03 at 21.27.56_d0ae389c.jpg" alt="التطبيق" class="w-full rounded-xl shadow-lg" />
+      </div>
+    </div>
+  </section>
+
+  <!-- 📊 Stats -->
+  <section class="py-16 px-4 bg-gradient-to-b from-slate-900/50 to-slate-800/50">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold mb-12 text-center">لماذا تختار منصة البداية؟</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="p-6 bg-white/5 backdrop-blur-sm rounded-xl text-center">
+          <div class="w-16 h-16 bg-blue-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg>
+          </div>
+          <div class="text-3xl font-bold mb-2">+5000</div>
+          <div class="text-gray-300">طالب مستفيد</div>
+        </div>
+        
+        <div class="p-6 bg-white/5 backdrop-blur-sm rounded-xl text-center">
+          <div class="w-16 h-16 bg-green-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+          </div>
+          <div class="text-3xl font-bold mb-2">95%</div>
+          <div class="text-gray-300">نسبة النجاح والتفوق</div>
+        </div>
+        
+        <div class="p-6 bg-white/5 backdrop-blur-sm rounded-xl text-center">
+          <div class="w-16 h-16 bg-yellow-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path></svg>
+          </div>
+          <div class="text-3xl font-bold mb-2">+20</div>
+          <div class="text-gray-300">مدرس متخصص</div>
+        </div>
+        
+        <div class="p-6 bg-white/5 backdrop-blur-sm rounded-xl text-center">
+          <div class="w-16 h-16 bg-red-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"></path></svg>
+          </div>
+          <div class="text-3xl font-bold mb-2">+1000</div>
+          <div class="text-gray-300">فيديو تعليمي</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- 📱 CTA -->
+  <section class="py-16 px-4">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-6">مستعد للبدء في رحلة التفوق؟</h2>
+      <p class="text-lg mb-8 max-w-2xl mx-auto text-gray-300">
+        انضم إلى آلاف الطلاب المتفوقين وابدأ في تحقيق أحلامك التعليمية اليوم. التسجيل سهل وسريع!
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <button id="footerCta" class="px-6 py-3 bg-blue-600 rounded-lg text-lg font-bold hover:bg-blue-700 transition-colors">
+          سجل الآن مجاناً
+        </button>
+        <a href="#" class="px-6 py-3 border border-gray-300 rounded-lg text-lg font-bold hover:bg-white/10 transition-colors">
+          تعرف علينا أكثر
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🦶 Footer -->
+  <footer class="py-12 px-4 bg-black/30">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <img src="../images/WhatsApp_Image_2025-09-06_at_00.31.42_7b113d97-removebg-preview.png" alt="شعار البداية" class="w-10 h-10 rounded-full" />
+            <span class="text-xl font-bold">منصة البداية</span>
+          </div>
+          <p class="text-gray-300 mb-4">
+            المنصة الأولى للتعليم الثانوي في مصر، نساعدك على التفوق والنجاح.
+          </p>
+          <div class="flex gap-4">
+            <a href="#" class="text-gray-300 hover:text-white">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+            </a>
+            <a href="#" class="text-gray-300 hover:text-white">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="#" class="text-gray-300 hover:text-white">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+            </a>
+            <a href="#" class="text-gray-300 hover:text-white">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+            </a>
+          </div>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-4">روابط سريعة</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-300 hover:text-white">الصفحة الرئيسية</a></li>
+            <li><a href="#courses" class="text-gray-300 hover:text-white">الكورسات</a></li>
+            <li><a href="#teacher" class="text-gray-300 hover:text-white">المدرسين</a></li>
+            <li><a href="#" class="text-gray-300 hover:text-white">جدول الحصص</a></li>
+            <li><a href="#" class="text-gray-300 hover:text-white">التسجيل</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-4">الصفوف الدراسية</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-300 hover:text-white">الصف الأول الثانوي</a></li>
+            <li><a href="#" class="text-gray-300 hover:text-white">الصف الثاني الثانوي علمي</a></li>
+            <li><a href="#" class="text-gray-300 hover:text-white">الصف الثاني الثانوي أدبي</a></li>
+            <li><a href="#" class="text-gray-300 hover:text-white">الصف الثالث الثانوي علمي</a></li>
+            <li><a href="#" class="text-gray-300 hover:text-white">الصف الثالث الثانوي أدبي</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="text-lg font-bold mb-4">تواصل معنا</h4>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+              <span class="text-gray-300">01234567890</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+              <span class="text-gray-300">info@albedaya.com</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+              <span class="text-gray-300">المنشاة، سوهاج، مصر</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="mt-12 pt-8 border-t border-gray-700 text-center text-gray-400">
+        <p>جميع الحقوق محفوظة &copy; منصة البداية 2025</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 🔑 Login Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">تسجيل الدخول</h2>
+        <button class="close-modal text-gray-400 hover:text-white">×</button>
+      </div>
+      
+      <div id="loginErrors" class="hidden error-message p-3 rounded mb-4"></div>
+      <div id="loginSuccess" class="hidden success-message p-3 rounded mb-4"></div>
+      
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <input type="email" id="loginEmail" name="email" placeholder="البريد الإلكتروني" required class="p-3 rounded bg-white/20 placeholder-gray-300 w-full" />
+        </div>
+        <div>
+          <input type="password" id="loginPassword" name="password" placeholder="كلمة المرور" required class="p-3 rounded bg-white/20 placeholder-gray-300 w-full" />
+        </div>
+        <div class="flex justify-between">
+          <button type="button" class="forgot-password-link text-blue-400 hover:underline text-sm">نسيت كلمة المرور؟</button>
+        </div>
+        <button type="submit" id="loginSubmitBtn" class="bg-blue-600 hover:bg-blue-700 transition-colors p-3 rounded w-full mt-2 text-white font-bold">تسجيل الدخول</button>
+      </form>
+      
+      <div class="mt-4 text-center">
+        <p>ليس لديك حساب؟ <button id="switchToRegister" class="text-blue-400 hover:underline">إنشاء حساب جديد</button></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 📝 Register Modal -->
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">إنشاء حساب جديد</h2>
+        <button class="close-modal text-gray-400 hover:text-white">×</button>
+      </div>
+      
+      <div id="registerErrors" class="hidden error-message p-3 rounded mb-4"></div>
+      <div id="registerSuccess" class="hidden success-message p-3 rounded mb-4"></div>
+      
+      <form id="registerForm" class="space-y-4">
+        <input type="text" id="fullName" name="fullName" placeholder="الاسم الرباعي كاملاً (مثال: أحمد محمد علي السيد)" required minlength="10" maxlength="100" class="p-3 rounded bg-white/20 placeholder-gray-300" />
+        <div id="fullNameIndicator" class="mt-1 text-xs text-white/70 hidden">
+          <span id="nameCount">0/100 حرف</span>
+        </div>
+        
+        <input type="email" id="email" name="email" placeholder="البريد الإلكتروني" required class="p-3 rounded bg-white/20 placeholder-gray-300" />
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input type="password" id="password" name="password" placeholder="كلمة المرور" required class="p-3 rounded bg-white/20 placeholder-gray-300" />
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="تأكيد كلمة المرور" required class="p-3 rounded bg-white/20 placeholder-gray-300" />
+        </div>
+        
+        <input type="tel" id="phone" name="phone" placeholder="رقم الهاتف (اختياري)" class="p-3 rounded bg-white/20 placeholder-gray-300" />
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <select name="location" id="location" required class="p-3 rounded text-center">
+            <option value="" selected disabled>اختر المكان</option>
+            <option value="العسيرات">العسيرات</option>
+            <option value="المنشاة">المنشاة</option>
+            <option value="الاجايوه">الاجايوه</option>
+          </select>
+          
+          <select name="grade" id="grade" required class="p-3 rounded text-center">
+            <option value="" selected disabled>اختر الصف الدراسي</option>
+            <optgroup label="المرحلة الثانوية">
+              <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+              <option value="الصف الثاني الثانوي - علمي">الصف الثاني الثانوي - علمي</option>
+              <option value="الصف الثاني الثانوي - أدبي">الصف الثاني الثانوي - أدبي</option>
+              <option value="الصف الثالث الثانوي - علمي">الصف الثالث الثانوي - علمي</option>
+              <option value="الصف الثالث الثانوي - أدبي">الصف الثالث الثانوي - أدبي</option>
+            </optgroup>
+          </select>
+        </div>
+        
+        <button type="submit" id="registerSubmitBtn" class="bg-green-600 hover:bg-green-700 transition-colors p-3 rounded w-full mt-2 text-white font-bold">إنشاء الحساب</button>
+      </form>
+      
+      <div class="mt-4 text-center">
+        <p>لديك حساب بالفعل؟ <button id="switchToLogin" class="text-blue-400 hover:underline">تسجيل الدخول</button></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ OTP Modal -->
+  <div id="otpModal" class="modal">
+    <div class="modal-content">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">تأكيد الحساب</h2>
+        <button class="close-modal text-gray-400 hover:text-white">×</button>
+      </div>
+      
+      <div class="text-center mb-6">
+        <p>تم إرسال رمز التحقق إلى بريدك الإلكتروني</p>
+        <p id="otpEmail" class="text-blue-400 font-bold mt-2"></p>
+        <p class="text-sm mt-2">أدخل الرمز المكون من 6 أرقام للتحقق من حسابك</p>
+      </div>
+      
+      <div id="otpErrors" class="hidden error-message p-3 rounded mb-4"></div>
+      <div id="otpSuccess" class="hidden success-message p-3 rounded mb-4"></div>
+      
+      <form id="otpForm" class="space-y-6">
+        <div class="flex justify-center gap-2">
+          <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-2xl font-bold rounded" required />
+          <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-2xl font-bold rounded" required />
+          <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-2xl font-bold rounded" required />
+          <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-2xl font-bold rounded" required />
+          <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-2xl font-bold rounded" required />
+          <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-2xl font-bold rounded" required />
+        </div>
+        
+        <button type="submit" id="verifyOtpBtn" class="bg-blue-600 hover:bg-blue-700 transition-colors p-3 rounded w-full mt-2 text-white font-bold">تحقق</button>
+      </form>
+      
+      <div class="mt-6 text-center">
+        <button id="resendOtpButton" class="text-blue-400 hover:underline">إعادة إرسال الرمز</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔑 Forgot Password Modal -->
+  <div id="forgotPasswordModal" class="modal">
+    <div class="modal-content">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">استعادة كلمة المرور</h2>
+        <button class="close-modal text-gray-400 hover:text-white">×</button>
+      </div>
+      
+      <div class="mb-6">
+        <p>أدخل بريدك الإلكتروني لاستلام رابط إعادة تعيين كلمة المرور</p>
+      </div>
+      
+      <div id="forgotPasswordErrors" class="hidden error-message p-3 rounded mb-4"></div>
+      <div id="forgotPasswordSuccess" class="hidden success-message p-3 rounded mb-4"></div>
+      
+      <form id="forgotPasswordForm" class="space-y-4">
+        <div>
+          <input type="email" id="forgotEmail" name="email" placeholder="البريد الإلكتروني" required class="p-3 rounded bg-white/20 placeholder-gray-300 w-full" />
+        </div>
+        
+        <button type="submit" id="forgotPasswordBtn" class="bg-blue-600 hover:bg-blue-700 transition-colors p-3 rounded w-full mt-2 text-white font-bold">إرسال رابط إعادة التعيين</button>
+      </form>
+      
+      <div class="mt-6 text-center">
+        <button id="backToLoginBtn" class="text-blue-400 hover:underline close-modal">العودة لتسجيل الدخول</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔑 Reset Password Modal -->
+  <div id="resetPasswordModal" class="modal">
+    <div class="modal-content">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold">إعادة تعيين كلمة المرور</h2>
+        <button class="close-modal text-gray-400 hover:text-white">×</button>
+      </div>
+      
+      <div class="mb-6">
+        <p>أدخل كلمة المرور الجديدة</p>
+      </div>
+      
+      <div id="resetPasswordErrors" class="hidden error-message p-3 rounded mb-4"></div>
+      <div id="resetPasswordSuccess" class="hidden success-message p-3 rounded mb-4"></div>
+      
+      <form id="resetPasswordForm" class="space-y-4">
+        <div>
+          <input type="password" id="newPassword" name="password" placeholder="كلمة المرور الجديدة" required class="p-3 rounded bg-white/20 placeholder-gray-300 w-full" />
+        </div>
+        <div>
+          <input type="password" id="confirmNewPassword" name="confirmPassword" placeholder="تأكيد كلمة المرور الجديدة" required class="p-3 rounded bg-white/20 placeholder-gray-300 w-full" />
+        </div>
+        
+        <button type="submit" id="resetPasswordBtn" class="bg-blue-600 hover:bg-blue-700 transition-colors p-3 rounded w-full mt-2 text-white font-bold">إعادة تعيين كلمة المرور</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main JavaScript File -->
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    // كود مؤقت لأغراض الاختبار - تسجيل الدخول تلقائياً
+    function testLogin() {
+      const mockToken = "mock_token_" + Date.now();
+      // استخدام بيانات المستخدم الحقيقية من النظام
+      const mockUser = {
+        id: "68c9e3a7adc25b745e52787a",
+        name: "أحمد محمد محمود ابراهيم",
+        email: "vevimeg542@ekuali.com",
+        grade: "الصف الأول الثانوي",
+        location: "العسيرات",
+        isVerified: true,
+        role: "student",
+        avatar: "../images/default_user.png"
+      };
+      saveUserSession(mockToken, mockUser);
+      window.location.reload();
+    }
+    
+    // أضف زر اختبار في وضع التطوير فقط
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      document.addEventListener('DOMContentLoaded', function() {
+        const testButton = document.createElement('button');
+        testButton.textContent = "تسجيل دخول سريع (اختبار)";
+        testButton.style = "position: fixed; bottom: 10px; left: 10px; padding: 8px 15px; background-color: #818cf8; color: white; border-radius: 8px; z-index: 9999; font-size: 14px;";
+        testButton.onclick = testLogin;
+        document.body.appendChild(testButton);
+      });
+    }
+    
+    // التحقق مما إذا كان المستخدم مسجل الدخول
+    document.addEventListener('DOMContentLoaded', function() {
+      if (isLoggedIn()) {
+        // إظهار معلومات المستخدم وإخفاء أزرار تسجيل الدخول
+        document.getElementById('userProfile').classList.remove('hidden');
+        document.getElementById('userProfile').classList.add('flex');
+        document.getElementById('guestButtons').classList.add('hidden');
+        
+        // للموبايل
+        document.getElementById('userProfileMobile').classList.remove('hidden');
+        document.getElementById('userProfileMobile').classList.add('flex');
+        document.getElementById('guestButtonsMobile').classList.add('hidden');
+        
+        // عرض اسم المستخدم والصورة
+        console.log("User data in index.html:", getCurrentUser()); // تسجيل بيانات المستخدم
+        const userName = getUserDisplayName();
+        const userAvatar = getUserAvatar();
+        
+        console.log("Display Name:", userName); // تسجيل اسم العرض
+        console.log("Avatar:", userAvatar); // تسجيل مسار الصورة
+        
+        document.getElementById('userName').textContent = userName;
+        document.getElementById('userNameMobile').textContent = userName;
+        document.getElementById('userAvatar').src = userAvatar;
+        document.getElementById('userAvatarMobile').src = userAvatar;
+      }
+    });
+    
+    // وظيفة تسجيل الخروج
+    function logout() {
+      clearUserSession();
+      window.location.reload();
+    }
+  </script>
+</body>
+</html>
