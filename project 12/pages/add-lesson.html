@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>إضافة حصة جديدة</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="../js/auth.js"></script>
+  <script src="../js/lessons.js"></script>
+  <style>
+    body{background:linear-gradient(to bottom right,#eef2ff,#f0f9ff,#f5f3ff);min-height:100vh;}
+    html.dark body{background:linear-gradient(to bottom right,#0f172a,#1e293b,#312e81);}    
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Header يظهر فقط للمدرس / الادمن -->
+  <header id="pageHeader" class="bg-white/90 backdrop-blur shadow-md sticky top-0 z-30 hidden">
+    <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xl">
+          <i class="fas fa-plus"></i>
+        </div>
+        <div>
+          <h1 class="text-xl md:text-2xl font-bold text-gray-800">إضافة حصة جديدة</h1>
+          <p class="text-gray-500 text-sm">هذه الصفحة متاحة للمعلم أو الأدمن فقط</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="grade1.html" class="px-4 py-2 rounded-lg border text-sm hover:bg-gray-50 flex items-center gap-2"><i class="fas fa-arrow-right"></i><span>رجوع</span></a>
+        <button id="logoutBtn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 text-sm flex items-center gap-2"><i class="fas fa-right-from-bracket"></i><span>خروج</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 container mx-auto px-4 py-10">
+    <div id="accessDenied" class="max-w-xl mx-auto hidden">
+      <div class="bg-red-50 border border-red-200 text-red-700 p-6 rounded-xl shadow">
+        <h2 class="text-xl font-bold mb-2">🚫 غير مصرح</h2>
+        <p class="mb-4 text-sm leading-relaxed">هذه الصفحة مخصصة للمدرسين أو المسؤولين فقط. إذا كنت تملك حساباً بصلاحيات مناسبة قم <a href="index_updated.html" class="underline">بتسجيل الدخول</a>.</p>
+        <a href="index_updated.html" class="inline-block px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm">العودة للصفحة الرئيسية</a>
+      </div>
+    </div>
+
+    <div id="lessonFormWrapper" class="max-w-2xl mx-auto hidden">
+      <form id="lessonCreateForm" class="bg-white rounded-2xl shadow-xl p-8 space-y-6 relative overflow-hidden">
+        <div class="absolute inset-0 pointer-events-none opacity-[0.07] bg-[radial-gradient(circle_at_30%_30%,#6366f1,transparent_60%)]"></div>
+        <h2 class="text-2xl font-bold text-gray-800 relative z-10 flex items-center gap-2"><i class="fas fa-chalkboard"></i><span>تفاصيل الحصة</span></h2>
+        <div class="grid md:grid-cols-2 gap-5 relative z-10">
+          <div class="space-y-2 md:col-span-2">
+            <label class="block text-sm font-semibold text-gray-700">الصف</label>
+            <select name="grade" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white" required>
+              <option value="" disabled selected>اختر الصف</option>
+              <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+              <option value="الصف الثاني الثانوي علمي">الصف الثاني الثانوي علمي</option>
+              <option value="الصف الثاني الثانوي ادبي">الصف الثاني الثانوي ادبي</option>
+              <option value="الصف الثالث الثانوي علمي">الصف الثالث الثانوي علمي</option>
+              <option value="الصف الثالث الثانوي ادبي">الصف الثالث الثانوي ادبي</option>
+            </select>
+          </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold text-gray-700">عنوان الوحدة</label>
+            <input name="unitTitle" type="text" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="مثال: الوحدة الأولى" required />
+          </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold text-gray-700">عنوان الدرس</label>
+            <input name="lessonTitle" type="text" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="مثال: الدوال التربيعية" required />
+          </div>
+          <div class="space-y-2 md:col-span-2">
+            <label class="block text-sm font-semibold text-gray-700">رابط الفيديو (يوتيوب / Vimeo / MP4)</label>
+            <input name="videoUrl" type="url" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="https://youtube.com/watch?v=..." required />
+            <p class="text-xs text-gray-500 leading-relaxed">يتم دعم روابط YouTube (watch أو share) و Vimeo وروابط ملفات mp4 المباشرة.</p>
+          </div>
+        </div>
+        <div class="flex items-center justify-between pt-2 relative z-10">
+          <div class="text-xs text-gray-500">سيتم حفظ الحصة فوراً وربطها بحسابك</div>
+          <div class="flex gap-3">
+            <a href="javascript:history.back()" class="px-4 py-2 rounded-lg border text-sm hover:bg-gray-50">رجوع</a>
+            <button id="createLessonBtn" type="submit" class="px-6 py-2 rounded-lg bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 flex items-center gap-2">💾 حفظ</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <div id="notificationRoot" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+  <script>
+    // حراسة الوصول
+    (function guard(){
+      const attempt=()=>{
+        if(!(window.AUTH && AUTH.getCurrentUser)) return setTimeout(attempt,40);
+        const user = AUTH.getCurrentUser();
+        if(!user){
+          localStorage.setItem('postLoginRedirect','add-lesson.html');
+          return window.location.href='index_updated.html';
+        }
+        const role=(user.role||'').toLowerCase();
+        const allowed=['instructor','admin','teacher','مدرس','معلم'];
+        if(!allowed.includes(role)){
+          document.getElementById('accessDenied').classList.remove('hidden');
+          return; // لا نعرض الفورم
+        }
+        document.getElementById('pageHeader').classList.remove('hidden');
+        document.getElementById('lessonFormWrapper').classList.remove('hidden');
+      };
+      attempt();
+    })();
+
+    const form = document.getElementById('lessonCreateForm');
+    form?.addEventListener('submit', submitNewLesson);
+
+    async function submitNewLesson(e){
+      e.preventDefault();
+      const btn=document.getElementById('createLessonBtn');
+      btn.disabled=true; const original=btn.innerHTML; btn.innerHTML='⏳ جاري الحفظ...';
+      try {
+        const fd=new FormData(form);
+        const data={
+          grade: fd.get('grade'),
+          unitTitle: (fd.get('unitTitle')||'').trim(),
+          lessonTitle: (fd.get('lessonTitle')||'').trim(),
+          videoUrl: (fd.get('videoUrl')||'').trim(),
+          createdBy: (function(){ try { const u=AUTH.getCurrentUser(); return u? (u._id||u.id||u.userId):undefined;}catch(_){return undefined;} })()
+        };
+        if(!data.grade || !data.unitTitle || !data.lessonTitle || !data.videoUrl){
+          notify('يرجى ملء جميع الحقول','error');
+          return;
+        }
+        const res = await LessonsAPI.createLesson(data);
+        const created = res.data || res.lesson || res;
+        const id = created.id || created._id;
+        notify('✅ تم إنشاء الحصة بنجاح','success');
+        setTimeout(()=>{ window.location.href = 'lesson.html?id='+encodeURIComponent(id); },600);
+      } catch(err){
+        console.error(err);
+        notify('❌ حدث خطأ أثناء الحفظ','error');
+      } finally {
+        btn.disabled=false; btn.innerHTML=original;
+      }
+    }
+
+    function notify(msg,type='info'){
+      const root=document.getElementById('notificationRoot');
+      const el=document.createElement('div');
+      el.className=`px-5 py-3 rounded-lg shadow text-sm text-white transition transform ${type==='error'?'bg-red-600':type==='success'?'bg-green-600':'bg-indigo-600'}`;
+      el.textContent=msg; root.appendChild(el);
+      setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateX(100%)'; setTimeout(()=>el.remove(),300); },3000);
+    }
+
+    // تسجيل خروج
+    document.getElementById('logoutBtn')?.addEventListener('click',()=>{ try { AUTH.logout(); } catch(_){} window.location.href='index_updated.html'; });
+  </script>
+</body>
+</html>

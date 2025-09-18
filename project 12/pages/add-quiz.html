@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>إضافة كويز جديد</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body class="min-h-screen bg-gray-50">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">إضافة كويز جديد</h1>
+    <form id="quizForm" class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg space-y-6">
+      <div>
+        <label class="block mb-1 font-semibold">العنوان</label>
+        <input type="text" id="quizTitle" class="w-full px-3 py-2 border rounded" required />
+      </div>
+      <div>
+        <label class="block mb-1 font-semibold">الوصف</label>
+        <textarea id="quizDescription" class="w-full px-3 py-2 border rounded"></textarea>
+      </div>
+      <div>
+        <label class="block mb-1 font-semibold">الصف</label>
+        <select id="quizGrade" class="w-full px-3 py-2 border rounded" required>
+          <option value="">اختر الصف</option>
+          <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+          <option value="الصف الثاني الثانوي علمي">الصف الثاني الثانوي علمي</option>
+          <option value="الصف الثاني الثانوي أدبي">الصف الثاني الثانوي أدبي</option>
+          <option value="الصف الثالث الثانوي علمي">الصف الثالث الثانوي علمي</option>
+          <option value="الصف الثالث الثانوي أدبي">الصف الثالث الثانوي أدبي</option>
+        </select>
+      </div>
+      <div>
+        <label class="block mb-1 font-semibold">المادة</label>
+        <input type="text" id="quizSubject" class="w-full px-3 py-2 border rounded" required />
+      </div>
+      <div>
+        <label class="block mb-1 font-semibold">مدة الكويز (دقائق)</label>
+        <input type="number" id="quizTimeLimit" class="w-full px-3 py-2 border rounded" min="1" value="30" required />
+      </div>
+      <div>
+        <label class="block mb-1 font-semibold">نشط؟</label>
+        <select id="quizIsActive" class="w-full px-3 py-2 border rounded">
+          <option value="true">نعم</option>
+          <option value="false">لا</option>
+        </select>
+      </div>
+      <div>
+        <label class="block mb-1 font-semibold">الأسئلة</label>
+        <div id="questionsList" class="space-y-4"></div>
+        <button type="button" id="addQuestionBtn" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"><i class="fas fa-plus"></i> إضافة سؤال</button>
+      </div>
+      <button type="submit" class="w-full py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700">حفظ الكويز</button>
+    </form>
+    <div id="quizMsg" class="mt-6 text-center font-bold"></div>
+  </div>
+  <script src="../js/add-quiz.js"></script>
+</body>
+</html>

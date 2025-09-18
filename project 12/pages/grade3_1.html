@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>الصف الثاني الثانوي أدبي - منصتي التعليمية</title>
+  <title>الصف الثالث الثانوي علمي - منصتي البداية</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="../js/auth.js"></script>
+  <script src="../js/lessons.js"></script>
   <style>
     body {
       background: linear-gradient(to bottom right, #dbeafe, #e0e7ff, #e0f2fe);
@@ -92,7 +94,7 @@
           <i class="fas fa-graduation-cap text-white text-xl"></i>
         </div>
         <div>
-          <h1 class="text-xl md:text-2xl font-bold text-gray-800">الصف الثاني الثانوي أدبي</h1>
+          <h1 class="text-xl md:text-2xl font-bold text-gray-800">الصف الثالث الثانوي علمي</h1>
           <p class="text-gray-600 text-sm md:text-base">منصتي التعليمية</p>
         </div>
       </div>
@@ -107,7 +109,6 @@
             <a href="profile.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">الملف الشخصي</a>
             <a href="grades.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">الدرجات</a>
             <a href="calendar.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">التقويم</a>
-            <a href="files.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">الملفات الخاصة</a>
             <a href="settings.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">الإعدادات</a>
             <hr>
             <button id="logoutBtn2" class="w-full text-right px-4 py-2 text-red-600 hover:bg-red-100">تسجيل الخروج</button>
@@ -115,17 +116,39 @@
         </div>
         <!-- بيانات الأستاذ + زر التبديل -->
         <div class="flex items-center gap-3">
+          <!-- زر إضافة حصة للمعلمين فقط -->
+          <div id="addLessonHeaderBtn" class="hidden">
+            <a href="add-lesson.html" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+              <i class="fas fa-plus"></i>
+              <span>إضافة حصة</span>
+            </a>
+          </div>
+          
+          <!-- زر إضافة جدول دراسي للمعلمين فقط -->
+          <div id="addScheduleHeaderBtn" class="hidden">
+            <a href="add-schedule-simple.html" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+              <i class="fas fa-calendar-plus"></i>
+              <span>إضافة جدول</span>
+            </a>
+          </div>
+          
+          <!-- زر إضافة واجب للمعلمين فقط -->
+          <div id="addHomeworkHeaderBtn" class="hidden">
+            <a href="add-homework.html" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
+              <i class="fas fa-tasks"></i>
+              <span>إضافة واجب</span>
+            </a>
+          </div>
+          
           <div class="relative">
-            <img src="photo_2025-09-03_00-20-27.jpg" class="w-12 h-12 rounded-full border-2 border-blue-400" alt="أ/ مجدي جمال" />
+            <img src="../images/photo_2025-09-03_00-20-27.jpg" class="w-12 h-12 rounded-full border-2 border-blue-400" alt="أ/ مجدي جمال" />
             <div id="teacherModeIndicator" class="teacher-mode-indicator hidden">مدرس</div>
           </div>
           <div class="text-right">
             <p class="font-semibold text-gray-800">أ/ مجدي جمال</p>
             <p class="text-sm text-gray-600">مدرس الرياضيات</p>
           </div>
-          <button id="modeToggle" onclick="toggleMode()" class="px-4 py-2 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition-colors">
-            <span id="modeText">🎓 وضع المدرس</span>
-          </button>
+
         </div>
       </div>
     </div>
@@ -244,14 +267,66 @@
     let isTeacherMode = false;
     
     // Data structures
-    const lessons = [
-      { id: 'history1', title: 'التاريخ - الوحدة الأولى', description: 'الثورة العرابية وأحداثها' },
-      { id: 'history2', title: 'التاريخ - الوحدة الثانية', description: 'الحرب العالمية الأولى' },
-      { id: 'geography1', title: 'الجغرافيا - الوحدة الأولى', description: 'جغرافية مصر الطبيعية' },
-      { id: 'geography2', title: 'الجغرافيا - الوحدة الثانية', description: 'المناخ والنبات الطبيعي' },
-      { id: 'arabic1', title: 'اللغة العربية - النحو', description: 'الأساليب النحوية' },
-      { id: 'arabic2', title: 'اللغة العربية - الأدب', description: 'الشعر في العصر الحديث' }
-    ];
+    // Dynamic lessons system
+    let lessons = [];
+    let lessonsLoading = false;
+    let lessonsError = null;
+    
+    // Schedule state
+    let schedules = [];
+    let currentLessonUnit = '';
+    let currentLessonSearch = '';
+    let currentLessonPage = 1;
+    const LESSONS_PAGE_SIZE = 10;
+    
+    // Dynamic homework system
+    let homework = [];
+    let homeworkLoading = false;
+    let homeworkError = null;
+    
+    // Load lessons from grade-specific API endpoint
+    async function loadLessons(){
+      if(lessonsLoading) return;
+      lessonsLoading = true;
+      lessonsError = null;
+      const grid = document.getElementById('lessonsGrid');
+      grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-600">جارٍ تحميل الحصص...</div>`;
+      try {
+        // Use grade-specific endpoint for 3rd secondary science
+        const resp = await fetch('http://localhost:3000/api/lessons/grade/3rd-secondary-science');
+        const data = await resp.json();
+        lessons = (data.data || data.lessons || []).map(l=>{ if(!l.id && l._id) l.id = l._id; return l; });
+        renderAllContent();
+      } catch(e){
+        lessonsError = e;
+        console.error('Load lessons error:', e);
+        grid.innerHTML = `<div class='col-span-full text-center py-10 text-red-600'>فشل تحميل الحصص <button class='underline' onclick='loadLessons()'>إعادة المحاولة</button></div>`;
+      } finally {
+        lessonsLoading = false;
+      }
+    }
+    
+    // Load homework from API
+    async function loadHomework(){
+      if(homeworkLoading) return;
+      homeworkLoading = true;
+      homeworkError = null;
+      const grid = document.getElementById('homeworkGrid');
+      grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-600">جارٍ تحميل الواجبات...</div>`;
+      try {
+        // Use grade-specific endpoint for 3rd secondary science
+        const resp = await fetch('http://localhost:3000/api/tasks/grade/third-secondary-science');
+        const data = await resp.json();
+        homework = (data.data || data.tasks || []).map(h=>{ if(!h.id && h._id) h.id = h._id; return h; });
+        renderHomework();
+      } catch(e){
+        homeworkError = e;
+        console.error('Load homework error:', e);
+        grid.innerHTML = `<div class='col-span-full text-center py-10 text-red-600'>فشل تحميل الواجبات <button class='underline' onclick='loadHomework()'>إعادة المحاولة</button></div>`;
+      } finally {
+        homeworkLoading = false;
+      }
+    }
 
     // Initialize on page load
     document.addEventListener("DOMContentLoaded", () => {
@@ -262,14 +337,36 @@
         updateModeDisplay();
       }
 
-      renderAllContent();
+      loadLessons();
+      loadSchedules();
+      loadHomework();
       
-      const studentName = localStorage.getItem("studentName") || "👤 الطالب";
+        // Show add lesson header button for authorized users
+        if (window.LessonsAPI && LessonsAPI.canManage()) {
+          const addLessonHeaderBtn = document.getElementById('addLessonHeaderBtn');
+          if (addLessonHeaderBtn) {
+            addLessonHeaderBtn.classList.remove('hidden');
+          }
+          
+          // Show add schedule header button
+          const addScheduleHeaderBtn = document.getElementById('addScheduleHeaderBtn');
+          if (addScheduleHeaderBtn) {
+            addScheduleHeaderBtn.classList.remove('hidden');
+          }
+          
+          // Show add homework header button
+          const addHomeworkHeaderBtn = document.getElementById('addHomeworkHeaderBtn');
+          if (addHomeworkHeaderBtn) {
+            addHomeworkHeaderBtn.classList.remove('hidden');
+          }
+        }
+      
+        const studentName = localStorage.getItem("studentName") || "👤 الطالب";
       document.getElementById("studentName").textContent = studentName;
 
       if (studentName && studentName !== "👤 الطالب") {
         document.getElementById("welcomeBox").classList.remove("hidden");
-        document.getElementById("welcomeText").textContent = `👋 أهلاً، ${studentName} — الصف الثاني الثانوي أدبي 🎉`;
+        document.getElementById("welcomeText").textContent = `👋 أهلاً، ${studentName} — الصف الثالث الثانوي علمي 🎉`;
       }
 
       // Tabs functionality
@@ -345,25 +442,65 @@
       const lessonsGrid = document.getElementById('lessonsGrid');
       lessonsGrid.innerHTML = '';
       
+      if(!lessons || lessons.length === 0){
+        lessonsGrid.innerHTML = `<div class='col-span-full text-center py-10 text-gray-500'>لا توجد حصص متاحة حالياً</div>`;
+        return;
+      }
+      
       lessons.forEach(lesson => {
         const lessonCard = createLessonCard(lesson);
         lessonsGrid.appendChild(lessonCard);
       });
     }
 
+    // Load schedules from API
+    async function loadSchedules() {
+      try {
+        const token = localStorage.getItem('authToken') || '';
+        const response = await fetch('http://localhost:3000/api/schedule/grade/3rd-secondary-science', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          schedules = (data.data || data.schedules || []).map(s => {
+            if (!s.id && s._id) s.id = s._id;
+            return s;
+          });
+          renderSchedule();
+        } else {
+          console.error('Failed to load schedules');
+          renderSchedule(); // Render empty state
+        }
+      } catch (error) {
+        console.error('Schedule load error:', error);
+        renderSchedule(); // Render empty state
+      }
+    }
+
     // Create lesson card
     function createLessonCard(lesson) {
       const card = document.createElement('div');
-      card.className = 'card bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500 relative';
+      card.className = 'card bg-white rounded-xl shadow-lg p-6 border-l-4 border-indigo-500 relative';
       
-      const savedLink = localStorage.getItem(`lesson_${lesson.id}_link`) || '';
+      // Backend might return lessonTitle/unitTitle instead of title/unit
+      const lessonTitle = lesson.lessonTitle || lesson.title || 'بدون عنوان';
+      const lessonUnit = lesson.unitTitle || lesson.unit || '';
+      const lessonDescription = lesson.lessonDescription || lesson.description || '';
+      const videoUrl = lesson.videoUrl || lesson.video || lesson.video_link;
+      
+      const savedLink = localStorage.getItem(`lesson_${lesson.id}_link`) || videoUrl || '';
       
       card.innerHTML = `
         ${isTeacherMode ? '<div class="teacher-mode-indicator">وضع المدرس</div>' : ''}
         <div class="flex justify-between items-start mb-4">
           <div>
-            <h3 class="text-lg font-bold text-blue-800 mb-2">${lesson.title}</h3>
-            <p class="text-gray-700 text-sm mb-4">${lesson.description}</p>
+            <h3 class="text-lg font-bold text-indigo-800 mb-2">${lessonTitle}</h3>
+            ${lessonDescription ? `<p class="text-gray-700 text-sm mb-4">${lessonDescription}</p>` : ''}
+            ${lessonUnit ? `<span class='inline-block text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full mb-2'>${lessonUnit}</span>` : ''}
           </div>
         </div>
         
@@ -376,11 +513,11 @@
                 id="link_${lesson.id}" 
                 value="${savedLink}"
                 placeholder="https://youtube.com/watch?v=..."
-                class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               <button 
                 onclick="saveLink('${lesson.id}')"
-                class="px-3 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 transition-colors"
+                class="px-3 py-2 bg-indigo-600 text-white rounded-md text-sm hover:bg-indigo-700 transition-colors"
               >
                 💾 حفظ
               </button>
@@ -389,9 +526,9 @@
         ` : ''}
         
         <div class="flex justify-between items-center">
-          ${savedLink ? `
+          ${savedLink || videoUrl ? `
             <button 
-              onclick="watchLesson('${savedLink}')"
+              onclick="openLessonDetail('${lesson.id || lesson._id}')"
               class="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
             >
               ▶️ مشاهدة الدرس
@@ -422,20 +559,17 @@
     // Render schedule
     function renderSchedule() {
       const scheduleGrid = document.getElementById('scheduleGrid');
-      const scheduleItems = JSON.parse(localStorage.getItem('scheduleItems_grade2art') || '[]');
       
-      // Default schedule if empty
-      if (scheduleItems.length === 0) {
-        scheduleItems.push(
-          { day: 'الأحد', subject: 'تاريخ', startTime: '08:00', endTime: '09:30' },
-          { day: 'الأربعاء', subject: 'جغرافيا', startTime: '10:00', endTime: '11:30' }
-        );
+      // Use API data or show empty state
+      if (!schedules || schedules.length === 0) {
+        scheduleGrid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-500">لا توجد جداول دراسية متاحة حالياً</div>`;
+        return;
       }
       
       scheduleGrid.innerHTML = '';
       
       // Group by day
-      const groupedByDay = scheduleItems.reduce((acc, item) => {
+      const groupedByDay = schedules.reduce((acc, item) => {
         if (!acc[item.day]) acc[item.day] = [];
         acc[item.day].push(item);
         return acc;
@@ -452,21 +586,30 @@
           <div class="p-4 space-y-3">
         `;
         
-        groupedByDay[day].forEach((item, index) => {
+        groupedByDay[day].forEach(item => {
+          const canManage = window.LessonsAPI && LessonsAPI.canManage();
+          const timeFrom = item.timeFrom || item.startTime || '';
+          const timeTo = item.timeTo || item.endTime || '';
+          const scheduleId = item.id || item._id;
           const colors = day === 'الأحد' ? 'blue' : 'indigo';
+          
           dayContent += `
-            <div class="card bg-${colors}-50 border-l-4 border-${colors}-400 p-3 rounded-lg relative">
-              ${isTeacherMode ? '<div class="teacher-mode-indicator">قابل للتعديل</div>' : ''}
-              <div class="flex justify-between items-center">
-                <span class="font-semibold text-${colors}-800">${item.subject}</span>
-                <span class="text-sm text-${colors}-600">${item.startTime} - ${item.endTime}</span>
-                ${isTeacherMode ? `
-                  <button 
-                    onclick="removeScheduleItem('${day}', ${index})"
-                    class="ml-2 px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600"
-                  >
-                    🗑️
-                  </button>
+            <div class="schedule-card bg-${colors}-50 border-l-4 border-${colors}-400 p-3 rounded-lg relative">
+              ${canManage ? '<div class="teacher-mode-indicator">قابل للتعديل</div>' : ''}
+              <div class="flex justify-between items-start">
+                <div class="flex-1">
+                  <span class="font-semibold text-${colors}-800">${item.subject}</span>
+                  <div class="text-sm text-${colors}-600 mt-1">${timeFrom} - ${timeTo}</div>
+                  ${item.date ? `<div class="text-xs text-gray-500 mt-1">${new Date(item.date).toLocaleDateString('ar-EG')}</div>` : ''}
+                </div>
+                ${canManage ? `
+                  <div class="relative">
+                    <button class="text-gray-500 hover:text-gray-700" onclick="this.nextElementSibling.classList.toggle('hidden')">⋮</button>
+                    <div class="hidden absolute left-0 mt-1 w-32 bg-white border rounded shadow z-10">
+                      <button class="block w-full text-right px-3 py-1 text-sm hover:bg-gray-100" onclick="editScheduleItem('${scheduleId}')">✏️ تعديل</button>
+                      <button class="block w-full text-right px-3 py-1 text-sm text-red-600 hover:bg-red-100" onclick="deleteScheduleItem('${scheduleId}')">🗑️ حذف</button>
+                    </div>
+                  </div>
                 ` : ''}
               </div>
             </div>
@@ -482,40 +625,69 @@
     // Render homework
     function renderHomework() {
       const homeworkGrid = document.getElementById('homeworkGrid');
-      const homeworkItems = JSON.parse(localStorage.getItem('homeworkItems_grade2art') || '[]');
-      
-      // Default homework if empty
-      if (homeworkItems.length === 0) {
-        homeworkItems.push(
-          { subject: 'تاريخ', description: 'حل أسئلة درس الثورة العرابية', dueDate: '2025-01-20', status: 'غداً' },
-          { subject: 'جغرافيا', description: 'رسم خريطة نهر النيل', dueDate: '2025-01-25', status: 'الأسبوع القادم' }
-        );
-      }
-      
       homeworkGrid.innerHTML = '';
       
-      homeworkItems.forEach((item, index) => {
+      if(!homework || homework.length === 0){
+        homeworkGrid.innerHTML = `<div class='col-span-full text-center py-10 text-gray-500'>لا توجد واجبات متاحة حالياً</div>`;
+        return;
+      }
+      
+      homework.forEach((item, index) => {
         const homeworkCard = document.createElement('div');
         homeworkCard.className = 'card bg-white rounded-xl shadow-lg p-6 border-blue-400 relative';
         
-        const colors = item.subject === 'تاريخ' ? 'blue' : 'indigo';
+        // Get data from API response or fallback to defaults
+        const taskTitle = item.taskTitle || item.title || 'واجب بدون عنوان';
+        const taskSubject = item.subject || item.taskSubject || 'مادة غير محددة';
+        const taskDescription = item.taskDescription || item.description || '';
+        const dueDate = item.dueDate ? new Date(item.dueDate).toLocaleDateString('ar-EG') : 'غير محدد';
+        
+        // Calculate status based on due date
+        let status = 'متاح';
+        if (item.dueDate) {
+          const due = new Date(item.dueDate);
+          const now = new Date();
+          const diffTime = due - now;
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          
+          if (diffDays < 0) status = 'منتهي الصلاحية';
+          else if (diffDays === 0) status = 'اليوم';
+          else if (diffDays === 1) status = 'غداً';
+          else if (diffDays <= 7) status = `خلال ${diffDays} أيام`;
+          else status = 'الأسبوع القادم';
+        }
+        
+        const colors = taskSubject.includes('رياضيات') ? 'blue' : taskSubject.includes('فيزياء') ? 'green' : 'indigo';
+        const canManage = window.LessonsAPI && LessonsAPI.canManage();
         
         homeworkCard.innerHTML = `
-          ${isTeacherMode ? '<div class="teacher-mode-indicator">قابل للتعديل</div>' : ''}
+          ${canManage ? '<div class="teacher-mode-indicator">قابل للتعديل</div>' : ''}
           <div class="flex items-center justify-between mb-4">
-            <h3 class="text-xl font-bold text-${colors}-800">${item.subject}</h3>
-            <span class="px-3 py-1 bg-${colors}-100 text-${colors}-800 rounded-full text-sm">${item.status}</span>
+            <h3 class="text-xl font-bold text-${colors}-800">${taskTitle}</h3>
+            <span class="px-3 py-1 bg-${colors}-100 text-${colors}-800 rounded-full text-sm">${status}</span>
           </div>
-          <p class="text-gray-700 mb-4">${item.description}</p>
-          <p class="text-sm text-gray-600 mb-4">تاريخ التسليم: ${item.dueDate}</p>
-          ${isTeacherMode ? `
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium text-gray-600">المادة:</span>
+            <span class="text-sm text-${colors}-600">${taskSubject}</span>
+          </div>
+          <p class="text-gray-700 mb-4">${taskDescription}</p>
+          <p class="text-sm text-gray-600 mb-4">تاريخ التسليم: ${dueDate}</p>
+          ${canManage ? `
             <div class="teacher-tools rounded-lg p-3">
-              <button 
-                onclick="removeHomework(${index})"
-                class="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm"
-              >
-                🗑️ حذف
-              </button>
+              <div class='flex gap-2'>
+                <button 
+                  onclick="editHomework('${item.id || item._id}')"
+                  class="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm"
+                >
+                  ✏️ تعديل
+                </button>
+                <button 
+                  onclick="deleteHomework('${item.id || item._id}')"
+                  class="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm"
+                >
+                  🗑️ حذف
+                </button>
+              </div>
             </div>
           ` : ''}
         `;
@@ -527,15 +699,16 @@
     // Render materials
     function renderMaterials() {
       const materialsGrid = document.getElementById('materialsGrid');
-      const materials = JSON.parse(localStorage.getItem('materials_grade2art') || '[]');
+      const materials = JSON.parse(localStorage.getItem('materials_grade3sci') || '[]');
       
       // Default materials if empty
       if (materials.length === 0) {
         materials.push({
-          title: 'ملخص التاريخ',
-          description: 'الثورة العرابية',
+          title: 'ملخص الرياضيات',
+          description: 'جبر وهندسة',
           files: [
-            { name: 'أسئلة مراجعة.pdf', link: '#' }
+            { name: 'تمارين الجبر.pdf', link: '#' },
+            { name: 'مسائل الهندسة.pdf', link: '#' }
           ]
         });
       }
@@ -590,12 +763,12 @@
     // Render quizzes
     function renderQuizzes() {
       const quizzesGrid = document.getElementById('quizzesGrid');
-      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade2art') || '[]');
+      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade3sci') || '[]');
       
       // Default quizzes if empty
       if (quizzes.length === 0) {
         quizzes.push({
-          title: 'كويز تاريخ',
+          title: 'كويز جبر',
           description: '10 أسئلة اختيار من متعدد',
           status: 'متاح'
         });
@@ -653,9 +826,9 @@
         return;
       }
       
-      const scheduleItems = JSON.parse(localStorage.getItem('scheduleItems_grade2art') || '[]');
+      const scheduleItems = JSON.parse(localStorage.getItem('scheduleItems_grade3sci') || '[]');
       scheduleItems.push({ day, subject, startTime, endTime });
-      localStorage.setItem('scheduleItems_grade2art', JSON.stringify(scheduleItems));
+      localStorage.setItem('scheduleItems_grade3sci', JSON.stringify(scheduleItems));
       
       // Clear inputs
       document.getElementById('scheduleDay').value = '';
@@ -677,7 +850,7 @@
         return;
       }
       
-      const homeworkItems = JSON.parse(localStorage.getItem('homeworkItems_grade2art') || '[]');
+      const homeworkItems = JSON.parse(localStorage.getItem('homeworkItems_grade3sci') || '[]');
       const today = new Date();
       const due = new Date(dueDate);
       const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
@@ -688,7 +861,7 @@
       else if (diffDays > 7) status = 'الأسبوع القادم';
       
       homeworkItems.push({ subject, description, dueDate, status });
-      localStorage.setItem('homeworkItems_grade2art', JSON.stringify(homeworkItems));
+      localStorage.setItem('homeworkItems_grade3sci', JSON.stringify(homeworkItems));
       
       // Clear inputs
       document.getElementById('homeworkSubject').value = '';
@@ -709,7 +882,7 @@
         return;
       }
       
-      const materials = JSON.parse(localStorage.getItem('materials_grade2art') || '[]');
+      const materials = JSON.parse(localStorage.getItem('materials_grade3sci') || '[]');
       const fileName = title + '.pdf';
       
       materials.push({
@@ -718,7 +891,7 @@
         files: [{ name: fileName, link }]
       });
       
-      localStorage.setItem('materials_grade2art', JSON.stringify(materials));
+      localStorage.setItem('materials_grade3sci', JSON.stringify(materials));
       
       // Clear inputs
       document.getElementById('materialTitle').value = '';
@@ -739,9 +912,9 @@
         return;
       }
       
-      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade2art') || '[]');
+      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade3sci') || '[]');
       quizzes.push({ title, description, status });
-      localStorage.setItem('quizzes_grade2art', JSON.stringify(quizzes));
+      localStorage.setItem('quizzes_grade3sci', JSON.stringify(quizzes));
       
       // Clear inputs
       document.getElementById('quizTitle').value = '';
@@ -755,9 +928,9 @@
     function removeHomework(index) {
       if (!confirm('هل أنت متأكد من حذف هذا الواجب؟')) return;
       
-      const homeworkItems = JSON.parse(localStorage.getItem('homeworkItems_grade2art') || '[]');
+      const homeworkItems = JSON.parse(localStorage.getItem('homeworkItems_grade3sci') || '[]');
       homeworkItems.splice(index, 1);
-      localStorage.setItem('homeworkItems_grade2art', JSON.stringify(homeworkItems));
+      localStorage.setItem('homeworkItems_grade3sci', JSON.stringify(homeworkItems));
       
       renderHomework();
       showNotification('تم حذف الواجب بنجاح', 'success');
@@ -766,9 +939,9 @@
     function removeMaterial(index) {
       if (!confirm('هل أنت متأكد من حذف هذه المادة؟')) return;
       
-      const materials = JSON.parse(localStorage.getItem('materials_grade2art') || '[]');
+      const materials = JSON.parse(localStorage.getItem('materials_grade3sci') || '[]');
       materials.splice(index, 1);
-      localStorage.setItem('materials_grade2art', JSON.stringify(materials));
+      localStorage.setItem('materials_grade3sci', JSON.stringify(materials));
       
       renderMaterials();
       showNotification('تم حذف المادة بنجاح', 'success');
@@ -777,9 +950,9 @@
     function removeQuiz(index) {
       if (!confirm('هل أنت متأكد من حذف هذا الكويز؟')) return;
       
-      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade2art') || '[]');
+      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade3sci') || '[]');
       quizzes.splice(index, 1);
-      localStorage.setItem('quizzes_grade2art', JSON.stringify(quizzes));
+      localStorage.setItem('quizzes_grade3sci', JSON.stringify(quizzes));
       
       renderQuizzes();
       showNotification('تم حذف الكويز بنجاح', 'success');
@@ -815,6 +988,10 @@
       }
     }
 
+    function openLessonDetail(id) {
+      window.location.href = `lesson.html?id=${encodeURIComponent(id)}`;
+    }
+
     function downloadFile(link) {
       window.open(link, '_blank');
     }
@@ -822,6 +999,160 @@
     function isValidYouTubeUrl(url) {
       const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/)|youtu\.be\/).+/;
       return youtubeRegex.test(url);
+    }
+
+    // Schedule Management Functions
+    let editingScheduleId = null;
+
+    function openAddScheduleModal() {
+      editingScheduleId = null;
+      document.getElementById('scheduleModalTitle').textContent = 'إضافة جدول دراسي';
+      document.getElementById('scheduleForm').reset();
+      document.getElementById('scheduleModal').classList.remove('hidden');
+    }
+
+    function closeScheduleModal() {
+      document.getElementById('scheduleModal').classList.add('hidden');
+      editingScheduleId = null;
+    }
+
+    async function saveSchedule(event) {
+      event.preventDefault();
+      
+      const day = document.getElementById('scheduleDay').value;
+      const subject = document.getElementById('scheduleSubject').value;
+      const date = document.getElementById('scheduleDate').value;
+      const timeFrom = document.getElementById('scheduleTimeFrom').value;
+      const timeTo = document.getElementById('scheduleTimeTo').value;
+      
+      // Get current user data and teacher ID
+      let teacherId = null;
+      try {
+        const userStr = localStorage.getItem('currentUser') || 
+                       localStorage.getItem('user') || 
+                       localStorage.getItem('userData');
+        
+        if (userStr) {
+          const user = JSON.parse(userStr);
+          teacherId = user.id || user.userId || user._id || user.teacherId;
+          console.log('Teacher ID:', teacherId);
+        }
+      } catch (e) {
+        console.warn('Failed to get teacher ID:', e);
+      }
+
+      const scheduleData = {
+        day,
+        subject,
+        date,
+        timeFrom,
+        timeTo,
+        grade: 'الصف الثالث الثانوي علمي',
+        instructor: teacherId // إضافة معرف المعلم
+      };
+      
+      try {
+        const token = localStorage.getItem('authToken') || '';
+        const url = editingScheduleId 
+          ? `http://localhost:3000/api/schedule/${editingScheduleId}`
+          : 'http://localhost:3000/api/schedule';
+        
+        const method = editingScheduleId ? 'PUT' : 'POST';
+        
+        const response = await fetch(url, {
+          method,
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(scheduleData)
+        });
+        
+        if (response.ok) {
+          showNotification(editingScheduleId ? 'تم تحديث الجدول بنجاح' : 'تم إضافة الجدول بنجاح', 'success');
+          closeScheduleModal();
+          loadSchedules();
+        } else {
+          const error = await response.json();
+          showNotification(error.message || 'حدث خطأ أثناء حفظ الجدول', 'error');
+        }
+      } catch (error) {
+        console.error('Schedule save error:', error);
+        showNotification('حدث خطأ في الاتصال', 'error');
+      }
+    }
+
+    async function editScheduleItem(scheduleId) {
+      const schedule = schedules.find(s => (s.id || s._id) === scheduleId);
+      if (!schedule) return;
+      
+      editingScheduleId = scheduleId;
+      document.getElementById('scheduleModalTitle').textContent = 'تعديل الجدول الدراسي';
+      
+      document.getElementById('scheduleDay').value = schedule.day || '';
+      document.getElementById('scheduleSubject').value = schedule.subject || '';
+      document.getElementById('scheduleDate').value = schedule.date ? new Date(schedule.date).toISOString().split('T')[0] : '';
+      document.getElementById('scheduleTimeFrom').value = schedule.timeFrom || '';
+      document.getElementById('scheduleTimeTo').value = schedule.timeTo || '';
+      
+      document.getElementById('scheduleModal').classList.remove('hidden');
+    }
+
+    async function deleteScheduleItem(scheduleId) {
+      if (!confirm('هل أنت متأكد من حذف هذا الجدول الدراسي؟')) return;
+      
+      try {
+        const token = localStorage.getItem('authToken') || '';
+        const response = await fetch(`http://localhost:3000/api/schedule/${scheduleId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          showNotification('تم حذف الجدول بنجاح', 'success');
+          loadSchedules();
+        } else {
+          const error = await response.json();
+          showNotification(error.message || 'حدث خطأ أثناء حذف الجدول', 'error');
+        }
+      } catch (error) {
+        console.error('Schedule delete error:', error);
+        showNotification('حدث خطأ في الاتصال', 'error');
+      }
+    }
+
+    function showNotification(message, type = 'success') {
+      // Remove any existing notifications
+      const existingNotification = document.querySelector('.notification');
+      if (existingNotification) {
+        existingNotification.remove();
+      }
+      
+      // Create new notification
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+      
+      // Add to page
+      document.body.appendChild(notification);
+      
+      // Show notification
+      setTimeout(() => {
+        notification.classList.add('show');
+      }, 100);
+      
+      // Hide and remove notification after 4 seconds
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }, 4000);
     }
 
     function showNotification(message, type = 'info') {
@@ -869,6 +1200,324 @@
       localStorage.removeItem("globalTeacherMode");
       window.location.href = "index_updated.html";
     });
+
+    // Homework Management Functions
+    async function editHomework(homeworkId) {
+      const homeworkItem = homework.find(h => (h.id || h._id) === homeworkId);
+      if (!homeworkItem) {
+        showNotification('الواجب غير موجود', 'error');
+        return;
+      }
+      
+      // Fill the form with current data
+      document.getElementById('homeworkSubject').value = homeworkItem.subject || homeworkItem.taskSubject || '';
+      document.getElementById('homeworkDescription').value = homeworkItem.taskDescription || homeworkItem.description || '';
+      document.getElementById('homeworkDueDate').value = homeworkItem.dueDate ? new Date(homeworkItem.dueDate).toISOString().split('T')[0] : '';
+      
+      // Store the ID for updating
+      document.getElementById('homeworkSubject').dataset.editId = homeworkId;
+      
+      showNotification('تم تحميل بيانات الواجب للتعديل', 'success');
+    }
+
+    async function deleteHomework(homeworkId) {
+      if (!confirm('هل أنت متأكد من حذف هذا الواجب؟')) return;
+      
+      try {
+        const token = localStorage.getItem('authToken') || '';
+        const resp = await fetch(`http://localhost:3000/api/tasks/${homeworkId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (resp.ok) {
+          showNotification('تم حذف الواجب بنجاح', 'success');
+          loadHomework(); // Reload homework list
+        } else {
+          throw new Error('فشل في حذف الواجب');
+        }
+      } catch (error) {
+        console.error('Delete homework error:', error);
+        showNotification('فشل في حذف الواجب', 'error');
+      }
+    }
+
+    async function addHomework() {
+      const subject = document.getElementById('homeworkSubject').value.trim();
+      const description = document.getElementById('homeworkDescription').value.trim();
+      const dueDate = document.getElementById('homeworkDueDate').value;
+      
+      if (!subject || !description || !dueDate) {
+        showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
+        return;
+      }
+      
+      // Get current user data for teacher ID
+      const getCurrentTeacherId = () => {
+        const user = localStorage.getItem('user');
+        const userData = localStorage.getItem('userData');
+        const auth = localStorage.getItem('auth');
+        const authToken = localStorage.getItem('authToken');
+        
+        // Try parsing different data sources
+        try {
+          if (user) {
+            const parsed = JSON.parse(user);
+            if (parsed.teacherId) return parsed.teacherId;
+            if (parsed.id) return parsed.id;
+          }
+        } catch(e) {}
+        
+        try {
+          if (userData) {
+            const parsed = JSON.parse(userData);
+            if (parsed.teacherId) return parsed.teacherId;
+            if (parsed.id) return parsed.id;
+          }
+        } catch(e) {}
+        
+        try {
+          if (auth) {
+            const parsed = JSON.parse(auth);
+            if (parsed.teacherId) return parsed.teacherId;
+            if (parsed.id) return parsed.id;
+          }
+        } catch(e) {}
+        
+        return authToken || null;
+      };
+      
+      const teacherId = getCurrentTeacherId();
+      const editId = document.getElementById('homeworkSubject').dataset.editId;
+      
+      const homeworkData = {
+        taskTitle: subject,
+        taskDescription: description,
+        subject: subject,
+        dueDate: dueDate,
+        grade: 'third-secondary-science',
+        ...(teacherId && { teacherId })
+      };
+      
+      try {
+        const token = localStorage.getItem('authToken') || '';
+        const url = editId 
+          ? `http://localhost:3000/api/tasks/${editId}`
+          : 'http://localhost:3000/api/tasks/grade/third-secondary-science';
+        
+        const resp = await fetch(url, {
+          method: editId ? 'PUT' : 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(homeworkData)
+        });
+        
+        if (resp.ok) {
+          showNotification(editId ? 'تم تحديث الواجب بنجاح' : 'تم إضافة الواجب بنجاح', 'success');
+          
+          // Clear form
+          document.getElementById('homeworkSubject').value = '';
+          document.getElementById('homeworkDescription').value = '';
+          document.getElementById('homeworkDueDate').value = '';
+          delete document.getElementById('homeworkSubject').dataset.editId;
+          
+          loadHomework(); // Reload homework list
+        } else {
+          throw new Error(editId ? 'فشل في تحديث الواجب' : 'فشل في إضافة الواجب');
+        }
+      } catch (error) {
+        console.error('Add/Edit homework error:', error);
+        showNotification(editId ? 'فشل في تحديث الواجب' : 'فشل في إضافة الواجب', 'error');
+      }
+    }
   </script>
+  
+  <!-- Teacher Mode Auto System -->
+  <script src="../js/teacher-mode.js"></script>
+  
+  <!-- Schedule Management Modal -->
+  <div id="scheduleModal" class="modal hidden">
+    <div class="modal-content">
+      <h3 id="scheduleModalTitle">إضافة جدول دراسي</h3>
+      <form id="scheduleForm" onsubmit="saveSchedule(event)">
+        <div class="form-group">
+          <label for="scheduleDay">اليوم:</label>
+          <select id="scheduleDay" required>
+            <option value="">اختر اليوم</option>
+            <option value="الأحد">الأحد</option>
+            <option value="الاثنين">الاثنين</option>
+            <option value="الثلاثاء">الثلاثاء</option>
+            <option value="الأربعاء">الأربعاء</option>
+            <option value="الخميس">الخميس</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="scheduleSubject">المادة:</label>
+          <input type="text" id="scheduleSubject" required placeholder="مثال: الرياضيات">
+        </div>
+        
+        <div class="form-group">
+          <label for="scheduleDate">التاريخ:</label>
+          <input type="date" id="scheduleDate" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="scheduleTimeFrom">الوقت من:</label>
+          <input type="time" id="scheduleTimeFrom" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="scheduleTimeTo">الوقت إلى:</label>
+          <input type="time" id="scheduleTimeTo" required>
+        </div>
+        
+        <div class="form-buttons">
+          <button type="submit" class="btn btn-primary">حفظ</button>
+          <button type="button" onclick="closeScheduleModal()" class="btn btn-secondary">إلغاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <style>
+    /* Schedule Card Styles */
+    .schedule-card {
+      border-left: 4px solid #4CAF50;
+      padding: 1rem;
+    }
+
+    /* Modal Styles */
+    .modal {
+      background: rgba(0, 0, 0, 0.5);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal h3 {
+      margin-bottom: 1.5rem;
+      color: #2c3e50;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #555;
+      font-weight: bold;
+    }
+
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+    }
+
+    .form-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    .btn-primary {
+      background: #3498db;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #2980b9;
+    }
+
+    .btn-secondary {
+      background: #95a5a6;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #7f8c8d;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Notification Styles */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      color: white;
+      z-index: 1001;
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 0.3s ease;
+    }
+
+    .notification.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .notification.success {
+      background: #27ae60;
+    }
+
+    .notification.error {
+      background: #e74c3c;
+    }
+
+    .notification.warning {
+      background: #f39c12;
+    }
+  </style>
 </body>
 </html>

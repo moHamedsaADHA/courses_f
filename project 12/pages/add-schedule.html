@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إضافة جدول دراسي - منصتي البداية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="../js/auth.js"></script>
+    <script src="../js/lessons.js"></script>
+    
+    <script>
+        // Wait for scripts to load
+        function waitForScripts() {
+            return new Promise((resolve) => {
+                if (window.LessonsAPI || document.readyState === 'complete') {
+                    resolve();
+                } else {
+                    setTimeout(() => waitForScripts().then(resolve), 100);
+                }
+            });
+        }
+    </script>
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            direction: rtl;
+            text-align: right;
+            background: white;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .btn {
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #4b5563;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(75, 85, 99, 0.3);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .notification.error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .notification.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .header-nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <nav class="header-nav py-4 mb-8">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <button onclick="goBack()" class="btn btn-secondary">
+                        <i class="fas fa-arrow-right"></i>
+                        العودة
+                    </button>
+                    <h1 class="text-white text-xl font-bold">إضافة جدول دراسي جديد</h1>
+                </div>
+                
+                <div class="flex items-center gap-4 text-white">
+                    <span id="userInfo" class="text-sm">جارٍ التحقق...</span>
+                    <i class="fas fa-calendar-plus text-2xl"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 max-w-2xl">
+        <div class="form-container p-8 fade-in">
+            <div class="text-center mb-8">
+                <div class="bg-gradient-to-r from-purple-500 to-blue-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-calendar-plus text-white text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">إضافة جدول دراسي</h2>
+                <p class="text-gray-600">أدخل تفاصيل الجدول الدراسي الجديد</p>
+            </div>
+
+            <form id="scheduleForm" onsubmit="handleSubmit(event)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="form-group">
+                        <label for="day">
+                            <i class="fas fa-calendar-day text-blue-500 ml-2"></i>
+                            اليوم
+                        </label>
+                        <select id="day" required>
+                            <option value="">اختر اليوم</option>
+                            <option value="الأحد">الأحد</option>
+                            <option value="الاثنين">الاثنين</option>
+                            <option value="الثلاثاء">الثلاثاء</option>
+                            <option value="الأربعاء">الأربعاء</option>
+                            <option value="الخميس">الخميس</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">
+                            <i class="fas fa-book text-green-500 ml-2"></i>
+                            المادة
+                        </label>
+                        <input type="text" id="subject" required placeholder="مثال: الرياضيات، الفيزياء، الكيمياء">
+                    </div>
+
+                    <div class="form-group md:col-span-2">
+                        <label for="grade">
+                            <i class="fas fa-graduation-cap text-purple-500 ml-2"></i>
+                            الصف الدراسي
+                        </label>
+                        <select id="grade" required>
+                            <option value="">اختر الصف</option>
+                            <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+                            <option value="الصف الثاني الثانوي علمي">الصف الثاني الثانوي علمي</option>
+                            <option value="الصف الثاني الثانوي أدبي">الصف الثاني الثانوي أدبي</option>
+                            <option value="الصف الثالث الثانوي علمي">الصف الثالث الثانوي علمي</option>
+                            <option value="الصف الثالث الثانوي أدبي">الصف الثالث الثانوي أدبي</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">
+                            <i class="fas fa-calendar text-red-500 ml-2"></i>
+                            التاريخ
+                        </label>
+                        <input type="date" id="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="instructor">
+                            <i class="fas fa-user-tie text-indigo-500 ml-2"></i>
+                            اسم المدرس (اختياري)
+                        </label>
+                        <input type="text" id="instructor" placeholder="اسم المدرس المسؤول عن الحصة">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="timeFrom">
+                            <i class="fas fa-clock text-orange-500 ml-2"></i>
+                            الوقت من
+                        </label>
+                        <input type="time" id="timeFrom" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="timeTo">
+                            <i class="fas fa-clock text-orange-500 ml-2"></i>
+                            الوقت إلى
+                        </label>
+                        <input type="time" id="timeTo" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">
+                        <i class="fas fa-sticky-note text-yellow-500 ml-2"></i>
+                        ملاحظات إضافية (اختياري)
+                    </label>
+                    <textarea id="notes" rows="4" placeholder="أي ملاحظات أو تفاصيل إضافية عن الحصة..."></textarea>
+                </div>
+
+                <div class="flex gap-4 justify-center mt-8">
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <i class="fas fa-save"></i>
+                        حفظ الجدول
+                    </button>
+                    <button type="button" onclick="resetForm()" class="btn btn-secondary">
+                        <i class="fas fa-undo"></i>
+                        إعادة تعيين
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Simple auth check
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // Wait for scripts to load
+                await waitForScripts();
+                
+                // Check if auth token exists
+                const token = localStorage.getItem('authToken');
+                if (!token) {
+                    // Try alternative token keys
+                    const altToken = localStorage.getItem('token') || localStorage.getItem('jwt') || localStorage.getItem('accessToken');
+                    if (!altToken) {
+                        alert('يجب تسجيل الدخول أولاً');
+                        window.location.href = 'index_updated.html';
+                        return;
+                    } else {
+                        // Use alternative token
+                        localStorage.setItem('authToken', altToken);
+                    }
+                }
+
+                // Try multiple ways to get user info
+                let user = null;
+                let canManage = false;
+
+                // Method 1: Check LessonsAPI
+                if (window.LessonsAPI && typeof window.LessonsAPI.canManage === 'function') {
+                    try {
+                        canManage = window.LessonsAPI.canManage();
+                        if (typeof window.LessonsAPI.getCurrentUser === 'function') {
+                            user = await window.LessonsAPI.getCurrentUser();
+                        }
+                    } catch (e) {
+                        console.warn('LessonsAPI method failed:', e);
+                    }
+                }
+
+                // Method 2: Check localStorage directly
+                if (!user) {
+                    const storedUser = localStorage.getItem('currentUser') || localStorage.getItem('user');
+                    if (storedUser) {
+                        try {
+                            user = JSON.parse(storedUser);
+                            canManage = user && (user.role === 'instructor' || user.role === 'admin' || user.role === 'teacher');
+                        } catch (e) {
+                            console.warn('Failed to parse user data:', e);
+                        }
+                    }
+                }
+
+                // Method 3: Check global AUTH object
+                if (!user && window.AUTH && typeof window.AUTH.getCurrentUser === 'function') {
+                    try {
+                        user = window.AUTH.getCurrentUser();
+                        canManage = user && (user.role === 'instructor' || user.role === 'admin' || user.role === 'teacher');
+                    } catch (e) {
+                        console.warn('AUTH.getCurrentUser failed:', e);
+                    }
+                }
+
+                // Display user info
+                const userDisplayName = user ? (user.username || user.email || user.name || 'المستخدم') : 'المستخدم';
+                document.getElementById('userInfo').textContent = `مرحباً، ${userDisplayName}`;
+                
+                // For now, allow access if we have a token - can restrict later
+                if (!token) {
+                    alert('فشل التحقق من الهوية');
+                    window.location.href = 'index_updated.html';
+                }
+                
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                
+                // Fallback - allow access if token exists
+                const token = localStorage.getItem('authToken');
+                if (token) {
+                    document.getElementById('userInfo').textContent = 'مرحباً، المستخدم';
+                    console.warn('Continuing with basic token validation');
+                } else {
+                    alert('فشل التحقق من الهوية');
+                    window.location.href = 'index_updated.html';
+                }
+            }
+        });
+
+        // Set minimum date to today
+        document.getElementById('date').min = new Date().toISOString().split('T')[0];
+
+        async function handleSubmit(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
+            
+            try {
+                const scheduleData = {
+                    day: document.getElementById('day').value.trim(),
+                    subject: document.getElementById('subject').value.trim(),
+                    grade: document.getElementById('grade').value.trim(),
+                    date: document.getElementById('date').value,
+                    timeFrom: document.getElementById('timeFrom').value,
+                    timeTo: document.getElementById('timeTo').value,
+                    instructor: document.getElementById('instructor').value.trim() || undefined,
+                    notes: document.getElementById('notes').value.trim() || undefined
+                };
+
+                // Validation
+                if (scheduleData.timeFrom >= scheduleData.timeTo) {
+                    throw new Error('وقت البداية يجب أن يكون قبل وقت النهاية');
+                }
+
+                // Save schedule
+                const token = localStorage.getItem('authToken') || '';
+                console.log('Sending schedule data:', scheduleData);
+                console.log('Using token:', token ? 'Token exists' : 'No token');
+                
+                const response = await fetch('http://localhost:3000/api/schedule', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(scheduleData)
+                });
+
+                if (response.ok) {
+                    showNotification('تم إضافة الجدول الدراسي بنجاح!', 'success');
+                    
+                    // Wait a bit then redirect
+                    setTimeout(() => {
+                        const referrer = document.referrer;
+                        if (referrer && referrer.includes('grade')) {
+                            window.history.back();
+                        } else {
+                            window.location.href = 'grades.html';
+                        }
+                    }, 2000);
+                } else {
+                    const error = await response.json();
+                    throw new Error(error.message || 'فشل في إضافة الجدول');
+                }
+                
+            } catch (error) {
+                console.error('Schedule creation error:', error);
+                showNotification(error.message || 'حدث خطأ أثناء إضافة الجدول', 'error');
+                
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('scheduleForm').reset();
+            showNotification('تم إعادة تعيين النموذج', 'warning');
+        }
+
+        function goBack() {
+            const referrer = document.referrer;
+            if (referrer && referrer.includes('grade')) {
+                window.history.back();
+            } else {
+                window.location.href = 'grades.html';
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            // Remove existing notifications
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+
+            // Create new notification
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+
+            // Add to page
+            document.body.appendChild(notification);
+
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+
+            // Hide and remove notification after 4 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 4000);
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('scheduleForm').dispatchEvent(new Event('submit'));
+            }
+            if (e.key === 'Escape') {
+                goBack();
+            }
+        });
+    </script>
+</body>
+</html>

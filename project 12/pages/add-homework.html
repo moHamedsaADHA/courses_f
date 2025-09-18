@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إضافة واجب جديد - منصتي البداية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            direction: rtl;
+            text-align: right;
+            background: white;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .btn {
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #4b5563;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(75, 85, 99, 0.3);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .notification.error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        
+        .notification.warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .header-nav {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <nav class="header-nav py-4 mb-8">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <button onclick="goBack()" class="btn btn-secondary">
+                        <i class="fas fa-arrow-right"></i>
+                        العودة
+                    </button>
+                    <h1 class="text-white text-xl font-bold">إضافة واجب جديد</h1>
+                </div>
+                
+                <div class="flex items-center gap-4 text-white">
+                    <span id="userInfo" class="text-sm">المستخدم</span>
+                    <i class="fas fa-tasks text-2xl"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 max-w-3xl">
+        <div class="form-container p-8 fade-in">
+            <div class="text-center mb-8">
+                <div class="bg-gradient-to-r from-purple-500 to-blue-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-tasks text-white text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">إضافة واجب جديد</h2>
+                <p class="text-gray-600">أدخل تفاصيل المهمة أو الواجب الجديد</p>
+            </div>
+
+            <form id="homeworkForm" onsubmit="handleSubmit(event)">
+                <!-- المعلومات الأساسية -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-info-circle text-blue-500 ml-2"></i>
+                        المعلومات الأساسية
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="form-group">
+                            <label for="title">
+                                <i class="fas fa-heading text-blue-500 ml-2"></i>
+                                عنوان المهمة *
+                            </label>
+                            <input type="text" id="title" required placeholder="مثال: حل تمارين الفصل الثالث">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">
+                                <i class="fas fa-align-right text-green-500 ml-2"></i>
+                                وصف المهمة *
+                            </label>
+                            <textarea id="description" required rows="4" placeholder="اكتب وصفاً تفصيلياً للمهمة أو الواجب..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- التصنيف -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-tags text-purple-500 ml-2"></i>
+                        التصنيف
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="form-group">
+                            <label for="grade">
+                                <i class="fas fa-graduation-cap text-purple-500 ml-2"></i>
+                                الصف الدراسي *
+                            </label>
+                            <select id="grade" required>
+                                <option value="">اختر الصف</option>
+                                <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+                                <option value="الصف الثاني الثانوي علمي">الصف الثاني الثانوي علمي</option>
+                                <option value="الصف الثاني الثانوي ادبي">الصف الثاني الثانوي ادبي</option>
+                                <option value="الصف الثالث الثانوي علمي">الصف الثالث الثانوي علمي</option>
+                                <option value="الصف الثالث الثانوي ادبي">الصف الثالث الثانوي ادبي</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">
+                                <i class="fas fa-book text-green-500 ml-2"></i>
+                                المادة *
+                            </label>
+                            <input type="text" id="subject" required placeholder="مثال: الرياضيات، الفيزياء، الكيمياء">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الموعد -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-clock text-orange-500 ml-2"></i>
+                        موعد التسليم
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label for="dueDate">
+                            <i class="fas fa-calendar text-red-500 ml-2"></i>
+                            تاريخ التسليم *
+                        </label>
+                        <input type="date" id="dueDate" required>
+                    </div>
+                </div>
+
+                <!-- أزرار التحكم -->
+                <div class="flex flex-col md:flex-row gap-4 justify-center mt-8">
+                    <button type="button" onclick="goBack()" class="btn btn-secondary">
+                        <i class="fas fa-times"></i>
+                        إلغاء
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                        <i class="fas fa-save"></i>
+                        حفظ الواجب
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification" class="notification"></div>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        // Global state
+        let isSubmitting = false;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+        });
+
+        function initializePage() {
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('dueDate').setAttribute('min', today);
+            
+            // Initialize user info
+            displayUserInfo();
+            
+            // Setup form validation
+            setupFormValidation();
+        }
+
+        function displayUserInfo() {
+            try {
+                const userInfo = document.getElementById('userInfo');
+                if (!userInfo) return;
+                
+                // Try to get user name from user (primary source)
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                if (user.name) {
+                    userInfo.textContent = user.name;
+                    return;
+                }
+                
+                // Try userData
+                const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                if (userData.name) {
+                    userInfo.textContent = userData.name;
+                    return;
+                }
+                
+                // Try auth.user
+                const auth = JSON.parse(localStorage.getItem('auth') || '{}');
+                if (auth.user && auth.user.name) {
+                    userInfo.textContent = auth.user.name;
+                    return;
+                }
+                
+                // Default fallback
+                userInfo.textContent = 'المستخدم';
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                const userInfo = document.getElementById('userInfo');
+                if (userInfo) {
+                    userInfo.textContent = 'المستخدم';
+                }
+            }
+        }
+
+
+
+        function setupFormValidation() {
+            const form = document.getElementById('homeworkForm');
+            if (!form) return;
+            
+            const inputs = form.querySelectorAll('input[required], textarea[required], select[required]');
+            
+            inputs.forEach(input => {
+                input.addEventListener('blur', validateField);
+                input.addEventListener('input', function() {
+                    clearFieldError(this);
+                });
+            });
+        }
+
+        function validateField(event) {
+            const field = event.target;
+            const value = field.value.trim();
+            
+            if (!value) {
+                showFieldError(field, 'هذا الحقل مطلوب');
+                return false;
+            }
+            
+            // Additional validations
+            if (field.id === 'title' && value.length < 3) {
+                showFieldError(field, 'العنوان يجب أن يكون 3 أحرف على الأقل');
+                return false;
+            }
+            
+            if (field.id === 'description' && value.length < 10) {
+                showFieldError(field, 'الوصف يجب أن يكون 10 أحرف على الأقل');
+                return false;
+            }
+            
+            if (field.id === 'dueDate') {
+                const selectedDate = new Date(value);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                if (selectedDate < today) {
+                    showFieldError(field, 'تاريخ التسليم لا يمكن أن يكون في الماضي');
+                    return false;
+                }
+            }
+            
+            clearFieldError(field);
+            return true;
+        }
+
+        function showFieldError(field, message) {
+            clearFieldError(field);
+            
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'text-red-500 text-sm mt-1';
+            errorDiv.textContent = message;
+            errorDiv.id = field.id + '_error';
+            
+            field.parentNode.appendChild(errorDiv);
+            field.style.borderColor = '#ef4444';
+        }
+
+        function clearFieldError(field) {
+            if (!field) return; // تأكد من وجود العنصر
+            
+            const errorDiv = document.getElementById(field.id + '_error');
+            if (errorDiv) {
+                errorDiv.remove();
+            }
+            if (field.style) {
+                field.style.borderColor = '#e2e8f0';
+            }
+        }
+
+
+
+        async function handleSubmit(event) {
+            event.preventDefault();
+            
+            if (isSubmitting) return;
+            
+            // Validate form
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            const title = document.getElementById('title').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const grade = document.getElementById('grade').value;
+            const subject = document.getElementById('subject').value.trim();
+            const dueDate = document.getElementById('dueDate').value;
+            
+            // Validate required fields
+            if (!title || !description || !grade || !subject || !dueDate) {
+                showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
+                return;
+            }
+            
+            // Validate individual fields
+            const fields = [
+                { element: document.getElementById('title'), validator: validateField },
+                { element: document.getElementById('description'), validator: validateField },
+                { element: document.getElementById('dueDate'), validator: validateField }
+            ];
+            
+            let isValid = true;
+            fields.forEach(({ element, validator }) => {
+                if (!validator({ target: element })) {
+                    isValid = false;
+                }
+            });
+            
+            if (!isValid) {
+                showNotification('يرجى تصحيح الأخطاء في النموذج', 'error');
+                return;
+            }
+            
+            try {
+                isSubmitting = true;
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جارٍ الحفظ...';
+                
+                // Get current teacher ID
+                const teacherId = await getCurrentTeacherId();
+                
+                // Prepare homework data
+                const homeworkData = {
+                    title: title,
+                    description: description,
+                    dueDate: new Date(dueDate).toISOString(),
+                    grade: grade,
+                    subject: subject,
+                    priority: 'متوسط', // قيمة افتراضية
+                    status: 'نشط',
+                    attachments: []
+                };
+                
+                // Add createdBy only if teacherId exists
+                if (teacherId) {
+                    homeworkData.createdBy = teacherId;
+                }
+                
+                // Submit to API
+                const response = await fetch('http://localhost:3000/api/tasks', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('authToken') || ''}`
+                    },
+                    body: JSON.stringify(homeworkData)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    showNotification('تم حفظ الواجب بنجاح!', 'success');
+                    
+                    // Reset form after successful submission
+                    setTimeout(() => {
+                        goBack();
+                    }, 2000);
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'فشل في حفظ الواجب');
+                }
+                
+            } catch (error) {
+                console.error('Submit homework error:', error);
+                showNotification(error.message || 'حدث خطأ أثناء حفظ الواجب', 'error');
+            } finally {
+                isSubmitting = false;
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ الواجب';
+            }
+        }
+
+        async function getCurrentTeacherId() {
+            try {
+                // Try to get from user first (this seems to be the working one based on logs)
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                if (user._id || user.id) {
+                    console.log('Found teacher ID in user:', user._id || user.id);
+                    return user._id || user.id;
+                }
+                
+                // Try to get from userData
+                const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                if (userData._id || userData.id) {
+                    console.log('Found teacher ID in userData:', userData._id || userData.id);
+                    return userData._id || userData.id;
+                }
+                
+                // Try to get from auth
+                const authData = JSON.parse(localStorage.getItem('auth') || '{}');
+                if (authData.user && (authData.user._id || authData.user.id)) {
+                    console.log('Found teacher ID in auth.user:', authData.user._id || authData.user.id);
+                    return authData.user._id || authData.user.id;
+                }
+                
+                // Try to get from authToken (decode JWT if possible)
+                const authToken = localStorage.getItem('authToken');
+                if (authToken) {
+                    try {
+                        // Try to decode JWT token (simple base64 decode for payload)
+                        const tokenParts = authToken.split('.');
+                        if (tokenParts.length === 3) {
+                            const payload = JSON.parse(atob(tokenParts[1]));
+                            if (payload._id || payload.id || payload.userId) {
+                                console.log('Found teacher ID in authToken:', payload._id || payload.id || payload.userId);
+                                return payload._id || payload.id || payload.userId;
+                            }
+                        }
+                    } catch (e) {
+                        console.log('Could not decode authToken');
+                    }
+                }
+                
+                // Try to get from userToken
+                const userToken = localStorage.getItem('userToken');
+                if (userToken) {
+                    try {
+                        const tokenData = JSON.parse(userToken);
+                        if (tokenData._id || tokenData.id) {
+                            console.log('Found teacher ID in userToken:', tokenData._id || tokenData.id);
+                            return tokenData._id || tokenData.id;
+                        }
+                    } catch (e) {
+                        console.log('userToken is not valid JSON');
+                    }
+                }
+                
+                // Try to get from currentUser
+                const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                if (currentUser._id || currentUser.id) {
+                    console.log('Found teacher ID in currentUser:', currentUser._id || currentUser.id);
+                    return currentUser._id || currentUser.id;
+                }
+                
+                // If all else fails, return null to make the field optional
+                console.warn('Could not find teacher ID in any source');
+                return null;
+            } catch (error) {
+                console.error('Error getting teacher ID:', error);
+                return null;
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            // Hide notification after 5 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        function goBack() {
+            // Go back to the previous page or to grades page
+            if (document.referrer && document.referrer.includes('/pages/')) {
+                window.history.back();
+            } else {
+                window.location.href = 'grades.html';
+            }
+        }
+    </script>
+</body>
+</html>

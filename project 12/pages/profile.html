@@ -45,7 +45,7 @@
   <!-- 🚀 Navbar -->
   <nav class="flex flex-wrap items-center justify-between px-6 py-4 bg-black/30 backdrop-blur-md">
     <div class="flex items-center gap-3 mb-3 md:mb-0">
-      <img src="photo_2025-09-03_00-46-19.jpg" alt="شعار" class="w-10 h-10 rounded-full">
+      <img src="../images/photo_2025-09-03_00-46-19.jpg" alt="شعار" class="w-10 h-10 rounded-full">
       <span class="text-lg font-bold">منصة البداية</span>
     </div>
     <div class="flex flex-wrap gap-4 text-sm md:text-base">
@@ -83,22 +83,37 @@
   </footer>
 
   <!-- ⚡ Script -->
+  <script src="../js/auth.js"></script>
   <script>
-    // جلب بيانات الطالب من localStorage
-    const name = localStorage.getItem("studentName") || "طالب";
-    const email = localStorage.getItem("studentEmail") || "غير مسجل";
-    const grade = localStorage.getItem("studentGrade") || "غير محدد";
-
-    // عرض البيانات
-    document.getElementById("studentName").textContent = `👋 أهلاً ${name}`;
-    document.getElementById("studentFullName").textContent = name;
-    document.getElementById("studentEmail").textContent = email;
-    document.getElementById("studentGrade").textContent = grade;
+    document.addEventListener('DOMContentLoaded', function() {
+      // التحقق مما إذا كان المستخدم مسجل الدخول
+      if (isLoggedIn()) {
+        const user = getCurrentUser();
+        const userName = getUserDisplayName();
+        const userAvatar = getUserAvatar();
+        
+        // عرض البيانات
+        document.getElementById("studentName").textContent = `👋 أهلاً ${userName}`;
+        document.getElementById("studentFullName").textContent = userName;
+        document.getElementById("studentEmail").textContent = user.email || "غير مسجل";
+        document.getElementById("studentGrade").textContent = user.grade || "غير محدد";
+        
+        // إضافة صورة المستخدم في الهيدر
+        const headerImg = document.querySelector('nav img.rounded-full');
+        if (headerImg) {
+          headerImg.src = userAvatar;
+          headerImg.alt = "الصورة الشخصية";
+        }
+      } else {
+        // إعادة توجيه المستخدم للصفحة الرئيسية إذا لم يكن مسجل الدخول
+        window.location.href = "index.html";
+      }
+    });
 
     // تسجيل خروج
     function logout() {
-      localStorage.clear();
-      window.location.href = "index_updated.html";
+      clearUserSession();
+      window.location.href = "index.html";
     }
   </script>
 </body>

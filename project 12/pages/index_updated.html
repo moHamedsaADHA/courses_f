@@ -8,8 +8,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- مكتبة التايبنج -->
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-  <!-- Auth Utility Library -->
-  <script src="auth.js"></script>
+  <!-- Auth Utility Library (موحد) -->
+  <script src="../js/auth.js"></script>
 
   <style>
     body {
@@ -184,6 +184,19 @@
       transform: translateY(-4px) scale(0.98) !important;
     }
     
+    /* Course Access Badges */
+    .no-access-badge {
+      z-index: 10;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+    
     /* Authenticated User Badge */
     .user-badge {
       background: linear-gradient(135deg, #3b82f6, #1d4ed8);
@@ -318,7 +331,7 @@
   <nav class="flex items-center justify-between px-4 sm:px-6 py-3 bg-black/40 backdrop-blur-md fixed w-full top-0 z-50">
     <!-- الشعار -->
     <div class="flex items-center gap-3">
-      <img src="WhatsApp_Image_2025-09-06_at_00.31.42_7b113d97-removebg-preview.png" alt="شعار البداية" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full" />
+      <img src="../images/WhatsApp_Image_2025-09-06_at_00.31.42_7b113d97-removebg-preview.png" alt="شعار البداية" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full" />
       <span class="text-lg sm:text-xl font-bold">منصة البداية</span>
     </div>
 
@@ -355,7 +368,7 @@
     <!-- النصوص -->
     <div class="text-center md:text-right order-2 md:order-1">
       <div class="flex flex-col items-center md:items-start">
-        <img src="WhatsApp_Image_2025-09-06_at_00.31.42_7b113d97-removebg-preview.png" 
+        <img src="../images/WhatsApp_Image_2025-09-06_at_00.31.42_7b113d97-removebg-preview.png" 
              alt="شعار البداية" 
              class="w-20 h-20 mb-4 rounded-full shadow-lg" />
         <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">
@@ -370,17 +383,13 @@
     <!-- صورة المدرس -->
     <div class="flex justify-center order-1 md:order-2">
       <div class="relative">
-        <img src="تصميم_بدون_عنوان-removebg-preview.png" 
+        <img src="../images/تصميم_بدون_عنوان-removebg-preview.png" 
              alt="الأستاذ مجدي" 
              class="profile-img w-60 sm:w-80 md:w-[420px] rounded-3xl shadow-2xl" />
         
-        <!-- Teacher Mode Toggle Button -->
-        <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2">
-          <button id="globalModeToggle" 
-                  onclick="toggleGlobalTeacherMode()" 
-                  class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow-lg transition-all duration-300 flex items-center gap-2">
-            <span id="globalModeText">🎓 في وضع المدرس</span>
-          </button>
+        <!-- Teacher Mode Indicator (Auto based on user role) -->
+        <div id="teacherModeIndicator" class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 teacher-mode-badge hidden">
+          👨‍� وضع المعلم
         </div>
       </div>
     </div>
@@ -395,7 +404,7 @@
       <p class="text-base sm:text-lg mb-6 sm:mb-8 max-w-3xl mx-auto text-gray-200">
                                               الأستاذ مجدي جمال هو مدرس مادة الرياضة المتخصص، يشرح لطلاب الصف الأول والثاني والثالث الثانوي بأسلوب واضح وممتع يساعد على الفهم السهل والتفوق كما قال المستر الواحد مننا بالف .
       </p>
-      <img src="photo_2025-09-03_00-20-27.jpg" alt="صورة الأستاذ مجدي" class="profile-img mx-auto w-32 sm:w-44" />
+      <img src="../images/photo_2025-09-03_00-20-27.jpg" alt="صورة الأستاذ مجدي" class="profile-img mx-auto w-32 sm:w-44" />
     </div>
   </section>
 
@@ -406,33 +415,33 @@
       <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 sm:gap-8">
 
         <div class="card course-card bg-white text-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center">
-          <img src="photo_2025-09-03_23-36-50.jpg" alt="الصف الأول" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
+          <img src="../images/photo_2025-09-03_23-36-50.jpg" alt="الصف الأول" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
           <h3 class="text-xl sm:text-2xl font-semibold mb-2">الصف الأول الثانوي</h3>
           <p class="text-center">دروس تأسيسية شاملة في الرياضة.</p>
         </div>
 
         <div class="card course-card bg-white text-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center">
-          <img src="photo_2025-09-03_23-53-13.jpg" alt="الصف الثاني علمي" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
+          <img src="../images/photo_2025-09-03_23-53-13.jpg" alt="الصف الثاني علمي" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
           <h3 class="text-xl sm:text-2xl font-semibold mb-2">الصف الثاني - علمي</h3>
           <p class="text-center">رياضة متقدمة للشعبة العلمية.</p>
         </div>
 
         <div class="card course-card bg-white text-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center">
-          <img src="photo_2025-09-03_23-53-13.jpg" alt="الصف الثاني أدبي" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
+          <img src="../images/photo_2025-09-03_23-53-13.jpg" alt="الصف الثاني أدبي" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
           <h3 class="text-xl sm:text-2xl font-semibold mb-2">الصف الثاني - أدبي</h3>
           <p class="text-center">رياضة الشعبة الأدبية المبسطة.</p>
         </div>
 
         <div class="card course-card bg-white text-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center">
-          <img src="photo_2025-09-03_23-53-17.jpg" alt="الصف الثالث" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
-          <h3 class="text-xl sm:text-2xl font-semibold mb-2">الصف الثالث الثانوي</h3>
-          <p class="text-center">مراجعة نهائية وتحضير للثانوية العامة.</p>
+          <img src="../images/photo_2025-09-03_23-53-17.jpg" alt="الصف الثالث علمي" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
+          <h3 class="text-xl sm:text-2xl font-semibold mb-2">الصف الثالث - علمي</h3>
+          <p class="text-center">مراجعة نهائية وتحضير للثانوية العامة - الشعبة العلمية.</p>
         </div>
 
         <div class="card course-card bg-white text-gray-800 p-6 rounded-xl shadow-lg flex flex-col items-center">
-          <img src="photo_2025-09-03_23-53-16.jpg" alt="مراجعة عامة" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
-          <h3 class="text-xl sm:text-2xl font-semibold mb-2">مراجعة عامة</h3>
-          <p class="text-center">مراجعات شاملة لجميع المراحل.</p>
+          <img src="../images/photo_2025-09-03_23-53-16.jpg" alt="الصف الثالث أدبي" class="w-24 h-24 mb-4 rounded-full shadow-md object-cover" />
+          <h3 class="text-xl sm:text-2xl font-semibold mb-2">الصف الثالث - أدبي</h3>
+          <p class="text-center">مراجعة نهائية وتحضير للثانوية العامة - الشعبة الأدبية.</p>
         </div>
 
       </div>
@@ -460,17 +469,6 @@
       <form id="loginForm" class="flex flex-col gap-4">
         <input type="email" id="loginEmail" name="email" placeholder="البريد الإلكتروني" required class="p-3 rounded bg-white/20 placeholder-gray-300" />
         <input type="password" id="loginPassword" name="password" placeholder="كلمة المرور" required class="p-3 rounded bg-white/20 placeholder-gray-300" />
-        
-        <select id="loginGrade" name="grade" required class="p-3 rounded bg-white text-gray-800 border border-gray-300">
-          <option value="" disabled selected>اختر الصف الدراسي</option>
-          <optgroup label="المرحلة الثانوية" class="bg-purple-50">
-            <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
-            <option value="الصف الثاني الثانوي">الصف الثاني الثانوي</option>
-            <option value="الصف الثاني الثانوي علمي">الصف الثاني الثانوي علمي</option>
-            <option value="الصف الثاني الثانوي ادبي">الصف الثاني الثانوي ادبي</option>
-            <option value="الصف الثالث الثانوي">الصف الثالث الثانوي</option>
-          </optgroup>
-        </select>
         
         <button type="submit" class="bg-blue-600 hover:bg-blue-700 py-3 rounded-lg font-bold transition-colors duration-300" id="loginBtn">
           تسجيل الدخول
@@ -522,10 +520,12 @@
           <option value="" disabled selected>اختر الصف الدراسي</option>
           <optgroup label="المرحلة الثانوية" class="bg-purple-50">
             <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
-            <option value="الصف الثاني الثانوي">الصف الثاني الثانوي</option>
+            <option value="الصف الثاني الثانوي">الصف الثاني الثانوي (عام - يمنح صلاحية العلمي و الأدبي)</option>
             <option value="الصف الثاني الثانوي علمي">الصف الثاني الثانوي علمي</option>
             <option value="الصف الثاني الثانوي ادبي">الصف الثاني الثانوي ادبي</option>
-            <option value="الصف الثالث الثانوي">الصف الثالث الثانوي</option>
+            <option value="الصف الثالث الثانوي">الصف الثالث الثانوي (عام - يمنح صلاحية العلمي و الأدبي)</option>
+            <option value="الصف الثالث الثانوي علمي">الصف الثالث الثانوي علمي</option>
+            <option value="الصف الثالث الثانوي ادبي">الصف الثالث الثانوي ادبي</option>
           </optgroup>
         </select>
         
@@ -646,8 +646,6 @@
     const API_BASE_URL = 'http://localhost:3000/api';
     const TEST_MODE = false; // Set to true for testing without backend
     
-    // Global teacher mode state
-    let isGlobalTeacherMode = localStorage.getItem('globalTeacherMode') === 'true';
     let resendTimer = 0;
     let resendInterval;
 
@@ -794,7 +792,7 @@
     }
     
     // Validate login form
-    function validateLoginForm(email, password, grade) {
+    function validateLoginForm(email, password) {
       const errors = [];
       
       if (!validateEmail(email)) {
@@ -802,9 +800,6 @@
       }
       if (!password || password.length < 8) {
         errors.push('كلمة المرور يجب أن تكون 8 أحرف على الأقل');
-      }
-      if (!grade) {
-        errors.push('يجب اختيار الصف الدراسي');
       }
       
       return errors;
@@ -879,6 +874,14 @@
       updateGlobalModeDisplay();
       checkAuthState();
       setupEventListeners();
+      addCourseCardHandlers();
+      // ضمان ربط الأزرار فور التحميل
+      if (typeof attachAuthButtonHandlers === 'function') {
+        attachAuthButtonHandlers();
+      }
+      
+      // Update course visibility after auth state is checked
+      setTimeout(updateCourseVisibility, 100);
       
       console.log('Event listeners set up');
       
@@ -1031,11 +1034,11 @@
     }
 
     // Login user
-    async function loginUser(email, password, grade) {
-      console.log('Login attempt:', { email, grade }); // Don't log password
+    async function loginUser(email, password) {
+      console.log('Login attempt:', { email }); // Don't log password
       
       // Client-side validation
-      const validationErrors = validateLoginForm(email, password, grade);
+      const validationErrors = validateLoginForm(email, password);
       if (validationErrors.length > 0) {
         showError('loginErrors', validationErrors.join('<br>'));
         return;
@@ -1049,7 +1052,7 @@
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ email, password, grade })
+          body: JSON.stringify({ email, password })
         });
         
         const result = await response.json();
@@ -1233,28 +1236,14 @@
       showNotification('تم تسجيل الخروج بنجاح', 'info');
     }
 
-    // Toggle global teacher mode
-    function toggleGlobalTeacherMode() {
-      isGlobalTeacherMode = !isGlobalTeacherMode;
-      localStorage.setItem('globalTeacherMode', isGlobalTeacherMode.toString());
-      updateGlobalModeDisplay();
-      showNotification(
-        isGlobalTeacherMode ? 'تم التبديل إلى وضع المدرس 👨‍🏫' : 'تم التبديل إلى وضع الطالب 👨‍🎓', 
-        'success'
-      );
-    }
-
-    // Update global mode display
+    // Update mode display based on user role (automatic)
     function updateGlobalModeDisplay() {
-      const toggleBtn = document.getElementById('globalModeToggle');
-      const toggleText = document.getElementById('globalModeText');
-      
-      if (isGlobalTeacherMode) {
-        toggleBtn.className = 'px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-lg transition-all duration-300 flex items-center gap-2';
-        toggleText.textContent = '👨‍🎓 في وضع الطالب';
-      } else {
-        toggleBtn.className = 'px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg shadow-lg transition-all duration-300 flex items-center gap-2';
-        toggleText.textContent = '🎓 في وضع المدرس';
+      if (typeof AUTH !== 'undefined' && AUTH.updateAutoModeDisplay) {
+        AUTH.updateAutoModeDisplay();
+      }
+      // Also update using teacher mode system if available
+      if (typeof TeacherMode !== 'undefined' && TeacherMode.updateModeDisplay) {
+        TeacherMode.updateModeDisplay();
       }
     }
 
@@ -1363,13 +1352,21 @@
       const authButtons = document.querySelector('.hidden.md\\:flex');
       
       if (user && authButtons) {
+        const roleText = user.role === 'instructor' ? 'مدرس' : user.role === 'admin' ? 'مشرف' : 'طالب';
+        const roleColor = user.role === 'instructor' ? 'bg-green-600' : user.role === 'admin' ? 'bg-purple-600' : 'bg-blue-600';
+        // استخدام window.AUTH بأمان لتجنب ReferenceError إذا لم يكن محملاً بعد
+        const authObj = window.AUTH || {};
+        const displayName = typeof authObj.getUserDisplayName === 'function'
+          ? authObj.getUserDisplayName()
+          : (user.firstName || user.name || 'مستخدم');
+        
         authButtons.innerHTML = `
           <a href="#courses" class="hover:text-blue-300">📚 الكورسات</a>
           <a href="#teacher" class="hover:text-blue-300">👨‍🏫 المدرس</a>
           <button onclick="toggleTheme()" class="px-3 py-1 bg-white/20 rounded-lg">🌓</button>
           <div class="flex items-center gap-2 px-3 py-2 bg-blue-600/20 rounded-lg">
-            <span class="text-sm">مرحباً، ${user.firstName}</span>
-            <span class="text-xs bg-blue-600 px-2 py-1 rounded">طالب</span>
+            <span class="text-sm">مرحباً، ${displayName}</span>
+            <span class="text-xs ${roleColor} px-2 py-1 rounded">${roleText}</span>
           </div>
           <button onclick="logoutUser()" class="px-3 py-2 bg-red-600 hover:bg-red-700 rounded-lg text-sm">خروج</button>
         `;
@@ -1381,12 +1378,62 @@
           <a href="#teacher" class="hover:text-blue-300">👨‍🏫 المدرس</a>
           <button onclick="toggleTheme()" class="px-4 py-2 bg-white/20 rounded-lg">🌓 تبديل الوضع</button>
           <div class="px-4 py-2 bg-blue-600/20 rounded-lg">
-            <div class="text-sm">مرحباً، ${user.firstName}</div>
+            <div class="text-sm">مرحباً، ${displayName}</div>
             <div class="text-xs text-blue-300">${user.email}</div>
-            <div class="text-xs text-gray-400">طالب</div>
+            <div class="text-xs text-gray-400">${roleText}</div>
           </div>
           <button onclick="logoutUser()" class="px-4 py-2 bg-red-600 rounded-lg">تسجيل الخروج</button>
         `;
+        
+        // Update course visibility based on user role and grade
+        updateCourseVisibility();
+      } else if (!user && authButtons) {
+        // المستخدم غير مسجل الدخول – نضمن إرجاع الأزرار الأصلية (قد تكون اختفت بعد تسجيل خروج سابق)
+        authButtons.innerHTML = `
+          <a href="#courses" class="hover:text-blue-300">📚 الكورسات</a>
+          <a href="#teacher" class="hover:text-blue-300">👨‍🏫 المدرس</a>
+          <button onclick="toggleTheme()" class="px-3 py-1 bg-white/20 rounded-lg">🌓</button>
+          <button id="openLogin" class="px-3 sm:px-4 py-2 bg-blue-600 rounded-lg text-sm sm:text-base">تسجيل دخول</button>
+          <button id="openRegister" class="px-3 sm:px-4 py-2 bg-green-600 rounded-lg text-sm sm:text-base">إنشاء حساب</button>
+        `;
+        // إعادة بناء قائمة الموبايل كذلك
+        const mobileMenu = document.getElementById('mobileMenu');
+        if (mobileMenu) {
+          mobileMenu.innerHTML = `
+            <a href="#courses" class="hover:text-blue-300">📚 الكورسات</a>
+            <a href="#teacher" class="hover:text-blue-300">👨‍🏫 المدرس</a>
+            <button onclick="toggleTheme()" class="px-4 py-2 bg-white/20 rounded-lg">🌓 تبديل الوضع</button>
+            <button id="openLoginMobile" class="px-4 py-2 bg-blue-600 rounded-lg">تسجيل دخول</button>
+            <button id="openRegisterMobile" class="px-4 py-2 bg-green-600 rounded-lg">إنشاء حساب</button>
+          `;
+        }
+        // إعادة ربط المستمعات بعد إعادة بناء الـ innerHTML
+        attachAuthButtonHandlers();
+      }
+    }
+
+    // Helper: (إعادة) ربط أزرار المصادقة مع المودالات – تتحمل التكرار بأمان
+    function attachAuthButtonHandlers() {
+      const loginBtn = document.getElementById('openLogin');
+      const registerBtn = document.getElementById('openRegister');
+      const loginBtnMob = document.getElementById('openLoginMobile');
+      const registerBtnMob = document.getElementById('openRegisterMobile');
+
+      if (loginBtn) loginBtn.onclick = () => openModal('loginModal');
+      if (registerBtn) registerBtn.onclick = () => openModal('registerModal');
+      if (loginBtnMob) loginBtnMob.onclick = () => openModal('loginModal');
+      if (registerBtnMob) registerBtnMob.onclick = () => openModal('registerModal');
+
+      // كود احتياطي عبر التفويض – يضمن العمل حتى لو تبدلت العناصر لاحقاً
+      if (!window.__authDelegationBound) {
+        document.addEventListener('click', (e) => {
+          if (e.target && (e.target.id === 'openLogin' || e.target.id === 'openLoginMobile')) {
+            openModal('loginModal');
+          } else if (e.target && (e.target.id === 'openRegister' || e.target.id === 'openRegisterMobile')) {
+            openModal('registerModal');
+          }
+        });
+        window.__authDelegationBound = true;
       }
     }
     
@@ -1520,9 +1567,8 @@
         e.preventDefault();
         const email = document.getElementById('loginEmail').value;
         const password = document.getElementById('loginPassword').value;
-        const grade = document.getElementById('loginGrade').value;
         
-        await loginUser(email, password, grade);
+        await loginUser(email, password);
       });
       
       // OTP form
@@ -1565,11 +1611,16 @@
         await resetPassword(newPassword);
       });
       
-      // Modal buttons  
-      document.getElementById('openLogin').onclick = () => openModal('loginModal');
-      document.getElementById('openRegister').onclick = () => openModal('registerModal');
-      document.getElementById('openLoginMobile').onclick = () => openModal('loginModal');
-      document.getElementById('openRegisterMobile').onclick = () => openModal('registerModal');
+  // Modal buttons (حماية من عدم وجود العناصر لو تم استبدالها بعد تسجيل الدخول)
+  const btnLogin = document.getElementById('openLogin');
+  const btnRegister = document.getElementById('openRegister');
+  const btnLoginMob = document.getElementById('openLoginMobile');
+  const btnRegisterMob = document.getElementById('openRegisterMobile');
+
+  if (btnLogin) btnLogin.onclick = () => openModal('loginModal');
+  if (btnRegister) btnRegister.onclick = () => openModal('registerModal');
+  if (btnLoginMob) btnLoginMob.onclick = () => openModal('loginModal');
+  if (btnRegisterMob) btnRegisterMob.onclick = () => openModal('registerModal');
       
       // Course card handlers
       addCourseCardHandlers();
@@ -1596,85 +1647,184 @@
       setTimeout(() => modal.style.display = 'none', 300);
     }
 
-    // ✅ ربط الصفحات
-    function redirectToGrade(grade) {
-      // Set teacher mode in localStorage before redirect
-      localStorage.setItem('globalTeacherMode', isGlobalTeacherMode.toString());
-      
-      if (grade === "grade1") {
-        window.location.href = "grade1.html";
-      } else if (grade === "grade2sci") {
-        window.location.href = "grade2_1.html";
-      } else if (grade === "grade2art") {
-        window.location.href = "grade2_2.html";
-      } else if (grade === "grade3sci") {
-        window.location.href = "grade3_1.html";
-      } else if (grade === "grade3art") {
-        window.location.href = "grade3_2.html";
-      }
-    }
-
     // ============= Page Protection & Navigation =============
     
     // Check if user has access to specific grade
-    function hasGradeAccess(targetGrade, userGrade) {
-      // Allow access if grades match or user is instructor/admin
+    function hasGradeAccess(gradeKey) {
       const user = getCurrentUser();
       if (!user) return false;
       
+      // Instructors and admins can access all grades
       if (user.role === 'instructor' || user.role === 'admin') {
-        return true; // Instructors can access all grades
+        return true;
       }
-      
-      return user.grade === targetGrade;
+
+      // Normalize Arabic or stored grade values to internal codes
+      function normalizeGrade(g) {
+        if (!g || typeof g !== 'string') return g;
+        const s = g.trim().toLowerCase();
+        const map = {
+          // Internal codes pass-through
+          'grade1': 'grade1',
+          'grade2': 'grade2',
+          'grade2sci': 'grade2sci',
+          'grade2art': 'grade2art',
+          'grade3': 'grade3',
+          'grade3sci': 'grade3sci',
+          'grade3art': 'grade3art',
+          // Arabic variants
+          'الصف الأول الثانوي': 'grade1',
+          'الصف الاول الثانوي': 'grade1',
+          'الصف الثاني الثانوي': 'grade2',
+          'الصف الثاني الثانوي علمي': 'grade2sci',
+            'الصف الثاني - علمي': 'grade2sci',
+          'الصف الثاني الثانوي ادبي': 'grade2art',
+            'الصف الثاني - أدبي': 'grade2art',
+          'الصف الثالث الثانوي': 'grade3',
+          'الصف الثالث الثانوي علمي': 'grade3sci',
+            'الصف الثالث - علمي': 'grade3sci',
+          'الصف الثالث الثانوي ادبي': 'grade3art',
+            'الصف الثالث - أدبي': 'grade3art'
+        };
+        return map[s] || g; // fallback: return original
+      }
+
+      const userNormalized = normalizeGrade(user.grade);
+
+      // Exact match (student picked specific track)
+      if (userNormalized === gradeKey) return true;
+
+      // If student has generic grade (without specialization) allow both tracks of that grade
+      if (userNormalized === 'grade2' && (gradeKey === 'grade2sci' || gradeKey === 'grade2art')) return true;
+      if (userNormalized === 'grade3' && (gradeKey === 'grade3sci' || gradeKey === 'grade3art')) return true;
+
+      // Allow mapping from specialization back to generic if needed
+      if ((userNormalized === 'grade2sci' || userNormalized === 'grade2art') && gradeKey === 'grade2') return true;
+      if ((userNormalized === 'grade3sci' || userNormalized === 'grade3art') && gradeKey === 'grade3') return true;
+
+      return false; // No access
     }
     
     // Redirect functions for authenticated users
     function redirectToGrade(grade) {
+      // Check if user is logged in first
       if (!isLoggedIn()) {
-        showNotification('يجب تسجيل الدخول أولاً', 'error');
-        openModal('loginModal');
+        showNotification('يجب تسجيل الدخول أولاً للوصول إلى الكورسات التعليمية', 'error');
+        
+        // Open login modal automatically
+        setTimeout(() => {
+          openModal('loginModal');
+        }, 500);
+        
+        console.log('User not logged in, opening login modal for grade:', grade);
         return;
       }
       
       const user = getCurrentUser();
-      const gradeMap = {
+      const gradeNames = {
         "grade1": "الصف الأول الثانوي",
-        "grade2": "الصف الثاني الثانوي",
-        "grade2sci": "الصف الثاني الثانوي علمي",
-        "grade2art": "الصف الثاني الثانوي ادبي", 
-        "grade3": "الصف الثالث الثانوي"
+        "grade2": "الصف الثاني الثانوي (عام)",
+        "grade2sci": "الصف الثاني الثانوي - علمي",
+        "grade2art": "الصف الثاني الثانوي - أدبي", 
+        "grade3": "الصف الثالث الثانوي (عام)",
+        "grade3sci": "الصف الثالث الثانوي - علمي",
+        "grade3art": "الصف الثالث الثانوي - أدبي"
       };
       
-      const targetGrade = gradeMap[grade];
-      if (!hasGradeAccess(targetGrade, user.grade)) {
-        showNotification(`ليس لديك صلاحية للوصول إلى ${targetGrade}`, 'error');
+      // Check if user has access to this grade
+      if (!hasGradeAccess(grade)) {
+        const gradeName = gradeNames[grade] || grade;
+        if (user.role === 'student') {
+          showNotification(`عذراً، يمكنك الوصول فقط لصفحك الدراسي`, 'error');
+        } else {
+          showNotification(`ليس لديك صلاحية للوصول إلى ${gradeName}`, 'error');
+        }
         return;
       }
       
-      // Set teacher mode in localStorage before redirect
-      localStorage.setItem('globalTeacherMode', isGlobalTeacherMode.toString());
-      
+      // Map grade keys to actual page files
       const pages = {
         "grade1": "grade1.html",
-        "grade2": "grade2.html",
         "grade2sci": "grade2_1.html", 
         "grade2art": "grade2_2.html",
-        "grade3": "grade3.html"
+        "grade3sci": "grade3_1.html",
+        "grade3art": "grade3_2.html"
       };
       
       if (pages[grade]) {
+        console.log(`Redirecting ${user.role} to ${pages[grade]} for grade: ${grade}`);
         window.location.href = pages[grade];
+      } else {
+        showNotification('الصفحة غير موجودة', 'error');
       }
     }
     
+    // Update course card visibility based on user access
+    function updateCourseVisibility() {
+      const courseCards = document.querySelectorAll('.course-card');
+      const grades = [
+        'grade1',      // الصف الأول الثانوي
+        'grade2sci',   // الصف الثاني - علمي  
+        'grade2art',   // الصف الثاني - أدبي
+        'grade3sci',   // الصف الثالث الثانوي (علمي)
+        'grade3art'    // الصف الثالث الثانوي (أدبي)
+      ];
+      
+      courseCards.forEach((card, index) => {
+        const grade = grades[index];
+        if (grade) {
+          const hasAccess = hasGradeAccess(grade);
+          
+          // Remove any existing badges first
+          const existingBadge = card.querySelector('.no-access-badge');
+          if (existingBadge) {
+            existingBadge.remove();
+          }
+          
+          const user = getCurrentUser();
+          
+          if (hasAccess) {
+            card.classList.remove('opacity-50', 'cursor-not-allowed');
+            card.classList.add('cursor-pointer');
+          } else {
+            card.classList.add('opacity-50', 'cursor-not-allowed');
+            card.classList.remove('cursor-pointer');
+            
+            // Add appropriate badge based on user status
+            const badge = document.createElement('div');
+            badge.className = 'no-access-badge absolute top-2 right-2 text-white text-xs px-2 py-1 rounded';
+            card.style.position = 'relative';
+            
+            if (!user) {
+              // User not logged in
+              badge.className += ' bg-orange-500';
+              badge.textContent = '� يتطلب تسجيل دخول';
+            } else if (user.role === 'student') {
+              // Student without access
+              badge.className += ' bg-red-500';
+              badge.textContent = '🔒 غير متاح';
+            }
+            
+            card.appendChild(badge);
+          }
+        }
+      });
+    }
+
     // Add course card click handlers
     function addCourseCardHandlers() {
-      const courseCards = document.querySelectorAll('.card');
+      const courseCards = document.querySelectorAll('.course-card');
       courseCards.forEach((card, index) => {
-        card.style.cursor = 'pointer';
         card.addEventListener('click', function() {
-          const grades = ['grade1', 'grade2sci', 'grade2art', 'grade3', 'grade3']; // Last card is duplicate for 3rd grade
+          // Map each course card to its corresponding grade
+          const grades = [
+            'grade1',      // الصف الأول الثانوي
+            'grade2sci',   // الصف الثاني - علمي  
+            'grade2art',   // الصف الثاني - أدبي
+            'grade3sci',   // الصف الثالث الثانوي (علمي)
+            'grade3art'    // الصف الثالث الثانوي (أدبي)
+          ];
+          
           if (grades[index]) {
             redirectToGrade(grades[index]);
           }
@@ -1731,5 +1881,8 @@
       mobileMenu.classList.toggle("hidden");
     });
   </script>
+  
+  <!-- Teacher Mode Auto System -->
+  <script src="../js/teacher-mode.js"></script>
 </body>
 </html>

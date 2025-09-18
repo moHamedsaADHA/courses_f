@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>عرض الحصة | منصة البداية</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body { background: linear-gradient(to bottom right,#bfdbfe,#ddd6fe,#fbcfe8); min-height:100vh; }
+    html.dark body { background: linear-gradient(to bottom right,#0f172a,#1e293b,#334155); }
+    .fade-in { animation: fade .4s ease; }
+    @keyframes fade { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
+  </style>
+</head>
+<body class="font-sans">
+  <!-- Theme toggle -->
+  <button id="themeToggle" class="fixed top-4 left-4 z-50 w-11 h-11 rounded-full bg-white shadow flex items-center justify-center text-xl">🌙</button>
+
+  <div class="max-w-5xl mx-auto px-4 py-6">
+    <nav class="text-sm text-gray-600 mb-6 flex flex-wrap items-center gap-2">
+      <a href="index_updated.html" class="hover:underline text-blue-700">الرئيسية</a>
+      <span>/</span>
+      <a id="backToGrade" href="grade1.html" class="hover:underline text-blue-700">العودة للصف</a>
+      <span>/</span>
+      <span id="crumbLesson" class="text-gray-800 font-semibold">... تحميل</span>
+    </nav>
+
+    <div id="lessonContainer" class="bg-white/80 backdrop-blur rounded-xl shadow-xl p-6 md:p-8 fade-in">
+      <div id="lessonLoading" class="text-center py-16 text-gray-500">جاري تحميل الحصة...</div>
+      <div id="lessonError" class="hidden text-center py-16 text-red-600"></div>
+      <div id="lessonContent" class="hidden space-y-8">
+        <header class="space-y-3">
+          <h1 id="lessonTitle" class="text-2xl md:text-3xl font-bold text-blue-800"></h1>
+          <div class="flex flex-wrap items-center gap-3 text-sm">
+            <span id="lessonUnit" class="hidden bg-purple-100 text-purple-700 px-3 py-1 rounded-full"></span>
+            <span id="lessonGrade" class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full"></span>
+            <span id="lessonCreatedAt" class="text-gray-500"></span>
+          </div>
+        </header>
+
+        <section>
+          <div id="videoWrapper" class="aspect-video w-full bg-gray-200 rounded-xl flex items-center justify-center text-gray-500">لا يوجد فيديو</div>
+        </section>
+
+        <section id="descriptionSection" class="hidden">
+          <h2 class="text-lg font-semibold mb-2 text-gray-800">وصف الدرس</h2>
+          <p id="lessonDescription" class="leading-relaxed text-gray-700"></p>
+        </section>
+
+        <div id="manageBar" class="hidden flex flex-wrap gap-3 pt-4 border-t">
+          <button id="editBtn" class="px-4 py-2 rounded-md bg-amber-500 hover:bg-amber-600 text-white text-sm flex items-center gap-2"><i class="fas fa-edit"></i> تعديل</button>
+          <button id="deleteBtn" class="px-4 py-2 rounded-md bg-red-600 hover:bg-red-700 text-white text-sm flex items-center gap-2"><i class="fas fa-trash"></i> حذف</button>
+          <button id="backBtn" class="px-4 py-2 rounded-md bg-gray-600 hover:bg-gray-700 text-white text-sm flex items-center gap-2"><i class="fas fa-arrow-right"></i> رجوع</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div id="editModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm hidden items-center justify-center z-50">
+    <div class="bg-white w-full max-w-lg rounded-xl shadow-2xl p-6 relative">
+      <button id="closeEditModal" class="absolute top-3 left-3 text-gray-500 hover:text-gray-700">✖</button>
+      <h3 class="text-xl font-bold mb-4 text-gray-800">تعديل الحصة</h3>
+      <form id="editForm" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium mb-1">الصف</label>
+            <select name="grade" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+              <option value="الصف الثاني الثانوي علمي">الصف الثاني الثانوي علمي</option>
+              <option value="الصف الثاني الثانوي ادبي">الصف الثاني الثانوي ادبي</option>
+              <option value="الصف الثالث الثانوي علمي">الصف الثالث الثانوي علمي</option>
+              <option value="الصف الثالث الثانوي ادبي">الصف الثالث الثانوي ادبي</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">اسم الوحدة</label>
+            <input name="unitTitle" type="text" required class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">عنوان الحصة</label>
+          <input name="lessonTitle" type="text" required class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">رابط الفيديو</label>
+          <input name="videoUrl" type="url" required class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500" />
+        </div>
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" id="cancelEdit" class="px-4 py-2 rounded-md border text-gray-600 hover:bg-gray-100">إلغاء</button>
+          <button id="saveEditBtn" type="submit" class="px-5 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">💾 حفظ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/lessons.js"></script>
+  <script>
+  const params = new URLSearchParams(location.search);
+  // دعم كل من id أو _id احتياطياً
+  const LESSON_ID = params.get('id') || params.get('_id');
+    const loadingEl = document.getElementById('lessonLoading');
+    const errorEl = document.getElementById('lessonError');
+    const contentEl = document.getElementById('lessonContent');
+    const titleEl = document.getElementById('lessonTitle');
+    const unitEl = document.getElementById('lessonUnit');
+    const gradeEl = document.getElementById('lessonGrade');
+    const createdAtEl = document.getElementById('lessonCreatedAt');
+    const descSection = document.getElementById('descriptionSection');
+    const descEl = document.getElementById('lessonDescription');
+    const videoWrapper = document.getElementById('videoWrapper');
+    const manageBar = document.getElementById('manageBar');
+    const crumbLesson = document.getElementById('crumbLesson');
+    const backToGrade = document.getElementById('backToGrade');
+
+    if(!LESSON_ID){
+      loadingEl.classList.add('hidden');
+      errorEl.textContent = 'معرف الحصة غير موجود بالرابط (id=?)';
+      errorEl.classList.remove('hidden');
+    }
+
+    function showNotification(msg,type='info'){
+      const box=document.createElement('div');
+      box.className='fixed top-4 right-4 px-5 py-3 rounded-lg shadow-lg z-50 text-sm transition ' + (type==='error'?'bg-red-600 text-white':type==='success'?'bg-green-600 text-white':'bg-blue-600 text-white');
+      box.textContent=msg; document.body.appendChild(box);
+      setTimeout(()=>{ box.style.opacity='0'; box.style.transform='translateX(100%)'; setTimeout(()=>box.remove(),300); },3000);
+    }
+
+    async function guard(){
+      try {
+        if(!window.AUTH || !AUTH.getCurrentUser){ return setTimeout(guard,50); }
+        const user = AUTH.getCurrentUser();
+        if(!user){
+          localStorage.setItem('postLoginRedirect', location.pathname+location.search);
+          window.location.href='index_updated.html';
+          return;
+        }
+      } catch(e){ console.error('Guard error', e); }
+    }
+    guard();
+
+    function mapGradeToPage(grade){
+      const map={
+        'الصف الأول الثانوي':'grade1.html',
+        'الصف الثاني الثانوي علمي':'grade2_1.html',
+        'الصف الثاني الثانوي ادبي':'grade2_2.html',
+        'الصف الثالث الثانوي علمي':'grade3_1.html',
+        'الصف الثالث الثانوي ادبي':'grade3_2.html'
+      }; return map[grade]||'grade1.html';
+    }
+
+    async function loadLesson(){
+  if(!LESSON_ID){ return; }
+      try {
+        const data = await LessonsAPI.getLesson(LESSON_ID);
+        const lesson = data.lesson || data.data || data; // مرونة
+        renderLesson(lesson);
+      } catch(e){
+        console.error(e);
+        loadingEl.classList.add('hidden');
+        errorEl.textContent = (e && e.body && e.body.message) ? e.body.message : 'فشل تحميل الحصة';
+        errorEl.classList.remove('hidden');
+      }
+    }
+
+    function renderLesson(lesson){
+      loadingEl.classList.add('hidden');
+      if(!lesson){
+        errorEl.textContent='لم يتم العثور على الحصة';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      contentEl.classList.remove('hidden');
+      const lessonTitle = lesson.lessonTitle || lesson.title || 'بدون عنوان';
+      const unitTitle = lesson.unitTitle || lesson.unit || '';
+      const grade = lesson.grade || 'غير محدد';
+      const videoUrl = lesson.videoUrl || lesson.video || lesson.video_link;
+      const description = lesson.lessonDescription || lesson.description || '';
+
+      titleEl.textContent = lessonTitle;
+      crumbLesson.textContent = lessonTitle;
+      gradeEl.textContent = grade;
+      backToGrade.href = mapGradeToPage(grade);
+      if(unitTitle){ unitEl.textContent = unitTitle; unitEl.classList.remove('hidden'); }
+      if(description){ descEl.textContent=description; descSection.classList.remove('hidden'); }
+      createdAtEl.textContent = lesson.createdAt ? new Date(lesson.createdAt).toLocaleString('ar-EG') : '';
+      if(videoUrl){
+        videoWrapper.innerHTML = LessonsAPI.embedVideo(videoUrl);
+      }
+
+      if(LessonsAPI.canManage()){
+        manageBar.classList.remove('hidden');
+      }
+    }
+
+    // Edit modal logic
+    const editModal=document.getElementById('editModal');
+    const editForm=document.getElementById('editForm');
+    document.getElementById('editBtn').addEventListener('click', async ()=>{
+      try {
+        const data = await LessonsAPI.getLesson(LESSON_ID);
+        const lesson = data.lesson || data.data || data;
+        editForm.grade.value = lesson.grade || 'الصف الأول الثانوي';
+        editForm.unitTitle.value = lesson.unitTitle || lesson.unit || '';
+        editForm.lessonTitle.value = lesson.lessonTitle || lesson.title || '';
+        editForm.videoUrl.value = lesson.videoUrl || lesson.video || lesson.video_link || '';
+  // description removed from modal per latest request
+        editModal.classList.remove('hidden');
+        editModal.classList.add('flex');
+      } catch(e){ showNotification('تعذر تحميل بيانات الحصة','error'); }
+    });
+    document.getElementById('closeEditModal').onclick = ()=>{ editModal.classList.add('hidden'); editModal.classList.remove('flex'); };
+    document.getElementById('cancelEdit').onclick = ()=>{ editModal.classList.add('hidden'); editModal.classList.remove('flex'); };
+
+    editForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const saveBtn=document.getElementById('saveEditBtn');
+      saveBtn.disabled=true; saveBtn.textContent='⏳ جاري الحفظ...';
+      const payload={
+        grade: editForm.grade.value,
+        unitTitle: editForm.unitTitle.value.trim(),
+        lessonTitle: editForm.lessonTitle.value.trim(),
+        videoUrl: editForm.videoUrl.value.trim()
+      };
+      if(!payload.unitTitle || !payload.lessonTitle || !payload.videoUrl){ showNotification('الرجاء ملء الحقول المطلوبة','error'); saveBtn.disabled=false; saveBtn.textContent='💾 حفظ'; return; }
+      try {
+        await LessonsAPI.updateLesson(LESSON_ID, payload);
+        showNotification('تم تحديث الحصة','success');
+        editModal.classList.add('hidden'); editModal.classList.remove('flex');
+        await loadLesson();
+      } catch(err){
+        console.error(err);
+        if(err && err.body && Array.isArray(err.body.errors)){
+          showNotification(err.body.errors[0].msg || 'فشل حفظ التعديلات','error');
+        } else {
+          showNotification('فشل حفظ التعديلات','error');
+        }
+      } finally { saveBtn.disabled=false; saveBtn.textContent='💾 حفظ'; }
+    });
+
+    document.getElementById('deleteBtn').addEventListener('click', async ()=>{
+      if(!confirm('هل أنت متأكد من حذف هذه الحصة؟')) return;
+      try {
+        await LessonsAPI.deleteLesson(LESSON_ID);
+        showNotification('تم حذف الحصة','success');
+        setTimeout(()=>{ window.location.href = backToGrade.href; }, 800);
+      } catch(e){ showNotification('فشل حذف الحصة','error'); }
+    });
+
+    document.getElementById('backBtn').addEventListener('click', ()=>{
+      if(document.referrer){ history.back(); } else { window.location.href = backToGrade.href; }
+    });
+
+    // Theme toggle
+    const themeToggle=document.getElementById('themeToggle');
+    themeToggle.addEventListener('click',()=>{
+      document.documentElement.classList.toggle('dark');
+      themeToggle.textContent=document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
+    });
+
+    // Wait for user (in case permissions)
+    document.addEventListener('auth:user-ready', ()=>{ if(LessonsAPI.canManage()) manageBar.classList.remove('hidden'); });
+
+    // Start
+    loadLesson();
+  </script>
+</body>
+</html>

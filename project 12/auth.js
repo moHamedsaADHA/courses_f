@@ -154,6 +154,38 @@ function hasGradeAccess(targetGrade) {
   return user.grade === targetGrade;
 }
 
+// Auto-detect teacher mode based on user role
+function isAutoTeacherMode() {
+  const user = getCurrentUser();
+  if (!user) return false;
+  
+  // Instructors get teacher mode automatically
+  return user.role === 'instructor' || user.role === 'admin';
+}
+
+// Auto-detect student mode based on user role  
+function isAutoStudentMode() {
+  const user = getCurrentUser();
+  if (!user) return true; // Default to student mode if no user
+  
+  // Students get student mode automatically
+  return user.role === 'student';
+}
+
+// Get current teacher mode state based on user role (replaces manual toggle)
+function getCurrentTeacherModeState() {
+  return isAutoTeacherMode();
+}
+
+// Update teacher mode display based on user role
+function updateAutoModeDisplay() {
+  const teacherModeIndicator = document.getElementById('teacherModeIndicator');
+  if (teacherModeIndicator) {
+    const isTeacherMode = getCurrentTeacherModeState();
+    teacherModeIndicator.classList.toggle('hidden', !isTeacherMode);
+  }
+}
+
 // ============= Page Protection Functions =============
 
 // Protect page - redirect if not authenticated
@@ -287,6 +319,12 @@ window.AUTH = {
   hasInstructorPrivileges,
   hasGradeAccess,
   
+  // Auto mode functions
+  isAutoTeacherMode,
+  isAutoStudentMode,
+  getCurrentTeacherModeState,
+  updateAutoModeDisplay,
+  
   // Protection functions
   requireAuth,
   requireRole,
@@ -296,6 +334,8 @@ window.AUTH = {
   // UI functions
   showNotification,
   updateAuthUI,
+  getUserDisplayName,
+  getUserAvatar,
   
   // Config
   CONFIG: AUTH_CONFIG
