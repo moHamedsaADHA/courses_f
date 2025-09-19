@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     try {
       const token = localStorage.getItem('authToken') || '';
-      const resp = await fetch('https://courses-pj.vercel.app/api/quizzes', {
+      const resp = await fetch('https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/quizzes', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

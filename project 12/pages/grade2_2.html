@@ -436,7 +436,7 @@
       grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-600">جارٍ تحميل الحصص...</div>`;
       try {
         // Use grade-specific endpoint for 2nd secondary literary
-        const resp = await fetch('https://courses-pj.vercel.app/api/lessons/grade/2nd-secondary-literary');
+        const resp = await fetch('https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/lessons/grade/2nd-secondary-literary');
         const data = await resp.json();
         lessons = (data.data || data.lessons || []).map(l=>{ if(!l.id && l._id) l.id = l._id; return l; });
         renderAllContent();
@@ -457,7 +457,7 @@
       
       try {
         const token = localStorage.getItem('authToken') || '';
-        const resp = await fetch('https://courses-pj.vercel.app/api/schedule/grade/2nd-secondary-arts', {
+        const resp = await fetch('https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/schedule/grade/2nd-secondary-arts', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -487,7 +487,7 @@
       grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-600">جارٍ تحميل الواجبات...</div>`;
       try {
         // Use grade-specific endpoint for 2nd secondary arts
-        const resp = await fetch('https://courses-pj.vercel.app/api/tasks/grade/second-secondary-literature');
+        const resp = await fetch('https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/tasks/grade/second-secondary-literature');
         const data = await resp.json();
         homework = (data.data || data.tasks || []).map(h=>{ if(!h.id && h._id) h.id = h._id; return h; });
         renderHomework();
@@ -578,7 +578,7 @@
         quizzesGrid.innerHTML = '<div class="col-span-full text-center py-10 text-gray-600">جارٍ تحميل الكويزات...</div>';
         let quizzes = [];
         try {
-          const resp = await fetch('https://courses-pj.vercel.app/api/quizzes/grade/second-secondary-literature');
+          const resp = await fetch('https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/quizzes/grade/second-secondary-literature');
           const data = await resp.json();
           quizzes = data.data || [];
         } catch (e) {
@@ -1379,8 +1379,8 @@ function isValidYouTubeUrl(url) {
       try {
         const token = localStorage.getItem('authToken') || '';
         const url = editingScheduleId 
-          ? `https://courses-pj.vercel.app/api/schedule/${editingScheduleId}`
-          : 'https://courses-pj.vercel.app/api/schedule';
+          ? `https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/schedule/${editingScheduleId}`
+          : 'https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/schedule';
         
         const method = editingScheduleId ? 'PUT' : 'POST';
         
@@ -1428,7 +1428,7 @@ function isValidYouTubeUrl(url) {
       
       try {
         const token = localStorage.getItem('authToken') || '';
-        const response = await fetch(`https://courses-pj.vercel.app/api/schedule/${scheduleId}`, {
+        const response = await fetch(`https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/schedule/${scheduleId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -1550,7 +1550,7 @@ function isValidYouTubeUrl(url) {
       
       try {
         const token = localStorage.getItem('authToken') || '';
-        const resp = await fetch(`https://courses-pj.vercel.app/api/tasks/${homeworkId}`, {
+        const resp = await fetch(`https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/tasks/${homeworkId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -1630,8 +1630,8 @@ function isValidYouTubeUrl(url) {
       try {
         const token = localStorage.getItem('authToken') || '';
         const url = editId 
-          ? `https://courses-pj.vercel.app/api/tasks/${editId}`
-          : 'https://courses-pj.vercel.app/api/tasks/grade/second-secondary-literature';
+          ? `https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/tasks/${editId}`
+          : 'https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/tasks/grade/second-secondary-literature';
         
         const resp = await fetch(url, {
           method: editId ? 'PUT' : 'POST',

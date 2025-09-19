@@ -4,7 +4,7 @@
  */
 
 // ============= Configuration & Constants =============
-const API_BASE_URL = 'https://courses-pj.vercel.app/api';
+const API_BASE_URL = 'https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api';
 const TEST_MODE = false; // Set to true for testing without backend
 
 let resendTimer = 0;
