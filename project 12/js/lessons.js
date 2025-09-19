@@ -2,7 +2,7 @@
 // يعتمد على window.AUTH
 
 (function(){
-  const API_BASE = (window.AUTH && window.AUTH.CONFIG && window.AUTH.CONFIG.API_BASE_URL) || 'https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api';
+  const API_BASE = (window.AUTH && window.AUTH.CONFIG && window.AUTH.CONFIG.API_BASE_URL) || 'https://courses-nine-eta.vercel.app/api';
   const ENDPOINT = API_BASE + '/lessons';
 
   // Wait for user to become available (in case auth.js still initializing or session restored async)

@@ -293,7 +293,7 @@
       grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-600">جارٍ تحميل الحصص...</div>`;
       try {
         // Use grade-specific endpoint for 3rd secondary science
-        const resp = await fetch('https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/lessons/grade/3rd-secondary-science');
+        const resp = await fetch('https://courses-nine-eta.vercel.app/api/lessons/grade/3rd-secondary-science');
         const data = await resp.json();
         lessons = (data.data || data.lessons || []).map(l=>{ if(!l.id && l._id) l.id = l._id; return l; });
         renderAllContent();
@@ -315,7 +315,7 @@
       grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-600">جارٍ تحميل الواجبات...</div>`;
       try {
         // Use grade-specific endpoint for 3rd secondary science
-        const resp = await fetch('https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/tasks/grade/third-secondary-science');
+        const resp = await fetch('https://courses-nine-eta.vercel.app/api/tasks/grade/third-secondary-science');
         const data = await resp.json();
         homework = (data.data || data.tasks || []).map(h=>{ if(!h.id && h._id) h.id = h._id; return h; });
         renderHomework();
@@ -457,7 +457,7 @@
     async function loadSchedules() {
       try {
         const token = localStorage.getItem('authToken') || '';
-        const response = await fetch('https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/schedule/grade/3rd-secondary-science', {
+        const response = await fetch('https://courses-nine-eta.vercel.app/api/schedule/grade/3rd-secondary-science', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -1054,8 +1054,8 @@
       try {
         const token = localStorage.getItem('authToken') || '';
         const url = editingScheduleId 
-          ? `https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/schedule/${editingScheduleId}`
-          : 'https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/schedule';
+          ? `https://courses-nine-eta.vercel.app/api/schedule/${editingScheduleId}`
+          : 'https://courses-nine-eta.vercel.app/api/schedule';
         
         const method = editingScheduleId ? 'PUT' : 'POST';
         
@@ -1103,7 +1103,7 @@
       
       try {
         const token = localStorage.getItem('authToken') || '';
-        const response = await fetch(`https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/schedule/${scheduleId}`, {
+        const response = await fetch(`https://courses-nine-eta.vercel.app/api/schedule/${scheduleId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -1225,7 +1225,7 @@
       
       try {
         const token = localStorage.getItem('authToken') || '';
-        const resp = await fetch(`https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/tasks/${homeworkId}`, {
+        const resp = await fetch(`https://courses-nine-eta.vercel.app/api/tasks/${homeworkId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -1305,8 +1305,8 @@
       try {
         const token = localStorage.getItem('authToken') || '';
         const url = editId 
-          ? `https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/tasks/${editId}`
-          : 'https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api/tasks/grade/third-secondary-science';
+          ? `https://courses-nine-eta.vercel.app/api/tasks/${editId}`
+          : 'https://courses-nine-eta.vercel.app/api/tasks/grade/third-secondary-science';
         
         const resp = await fetch(url, {
           method: editId ? 'PUT' : 'POST',

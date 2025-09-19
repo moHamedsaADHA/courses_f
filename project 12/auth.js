@@ -2,7 +2,7 @@
 // يمكن استخدام هذا الملف في جميع صفحات المشروع
 
 const AUTH_CONFIG = {
-  API_BASE_URL: 'https://courses-j9010ueb3-mohameds-projects-b68e5f4b.vercel.app/api',
+  API_BASE_URL: 'https://courses-nine-eta.vercel.app/api',
   TOKEN_KEY: 'authToken',
   USER_KEY: 'user',
   TEMP_TOKEN_KEY: 'tempToken',
