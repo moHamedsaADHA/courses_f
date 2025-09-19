@@ -427,7 +427,7 @@
       grid.innerHTML = `<div class='col-span-full text-center py-10 text-gray-600'>جارٍ تحميل الحصص...</div>`;
       try {
         // Use grade-specific endpoint for 2nd secondary science
-        const resp = await fetch('http://localhost:3000/api/lessons/grade/2nd-secondary-science');
+        const resp = await fetch('https://courses-pj.vercel.app/api/lessons/grade/2nd-secondary-science');
         const data = await resp.json();
         lessons = (data.data || data.lessons || []).map(l=>{ if(!l.id && l._id) l.id=l._id; return l; });
         renderLessons();
@@ -449,7 +449,7 @@
     async function loadSchedules() {
       try {
         const token = localStorage.getItem('authToken') || '';
-        const response = await fetch('http://localhost:3000/api/schedule/grade/2nd-secondary-science', {
+        const response = await fetch('https://courses-pj.vercel.app/api/schedule/grade/2nd-secondary-science', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -482,7 +482,7 @@
       
       try {
         const token = localStorage.getItem('authToken') || '';
-        const response = await fetch('http://localhost:3000/api/tasks/grade/second-secondary-science', {
+        const response = await fetch('https://courses-pj.vercel.app/api/tasks/grade/second-secondary-science', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -1061,7 +1061,7 @@
       
       try {
         const token = localStorage.getItem('authToken') || '';
-        const response = await fetch(`http://localhost:3000/api/tasks/${homeworkId}`, {
+        const response = await fetch(`https://courses-pj.vercel.app/api/tasks/${homeworkId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -1215,8 +1215,8 @@
       try {
         const token = localStorage.getItem('authToken') || '';
         const url = editingScheduleId 
-          ? `http://localhost:3000/api/schedule/${editingScheduleId}`
-          : 'http://localhost:3000/api/schedule';
+          ? `https://courses-pj.vercel.app/api/schedule/${editingScheduleId}`
+          : 'https://courses-pj.vercel.app/api/schedule';
         
         const method = editingScheduleId ? 'PUT' : 'POST';
         
@@ -1265,7 +1265,7 @@
       
       try {
         const token = localStorage.getItem('authToken') || '';
-        const response = await fetch(`http://localhost:3000/api/schedule/${scheduleId}`, {
+        const response = await fetch(`https://courses-pj.vercel.app/api/schedule/${scheduleId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,

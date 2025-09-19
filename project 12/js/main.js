@@ -4,7 +4,7 @@
  */
 
 // ============= Configuration & Constants =============
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'https://courses-pj.vercel.app/api';
 const TEST_MODE = false; // Set to true for testing without backend
 
 let resendTimer = 0;

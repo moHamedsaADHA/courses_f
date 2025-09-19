@@ -643,7 +643,7 @@
   <!-- ⚡ Scripts -->
   <script>
     // ============= Configuration & Constants =============
-    const API_BASE_URL = 'http://localhost:3000/api';
+    const API_BASE_URL = 'https://courses-pj.vercel.app/api';
     const TEST_MODE = false; // Set to true for testing without backend
     
     let resendTimer = 0;
@@ -1024,7 +1024,7 @@
         console.error('Registration error:', error);
         
         if (error.name === 'TypeError' && error.message.includes('fetch')) {
-          showError('registerErrors', 'لا يمكن الاتصال بالخادم. تأكد من تشغيل الباك إند على http://localhost:3000');
+          showError('registerErrors', 'لا يمكن الاتصال بالخادم. تأكد من تشغيل الباك إند على https://courses-pj.vercel.app');
         } else {
           showError('registerErrors', `حدث خطأ في الاتصال: ${error.message}`);
         }
