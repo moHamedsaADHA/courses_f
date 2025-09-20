@@ -368,7 +368,7 @@
       try {
         // Use grade-specific endpoint for 2nd secondary literary
   const token = localStorage.getItem('authToken') || localStorage.getItem('token') || localStorage.getItem('jwt') || localStorage.getItem('accessToken') || '';
-        const resp = await fetch('http://localhost:3000/api/lessons/grade/2nd-secondary-literary', {
+        const resp = await fetch('https://courses-nine-eta.vercel.app/api/lessons/grade/2nd-secondary-literary', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -395,7 +395,7 @@
     async function loadSchedules() {
       try {
   const token = localStorage.getItem('authToken') || localStorage.getItem('token') || localStorage.getItem('jwt') || localStorage.getItem('accessToken') || '';
-        const response = await fetch('http://localhost:3000/api/schedule/grade/2nd-secondary-literary', {
+        const response = await fetch('https://courses-nine-eta.vercel.app/api/schedule/grade/2nd-secondary-literary', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -428,7 +428,7 @@
       
       try {
         const token = localStorage.getItem('authToken') || '';
-        const response = await fetch('http://localhost:3000/api/tasks/grade/second-secondary-literary', {
+        const response = await fetch('https://courses-nine-eta.vercel.app/api/tasks/grade/second-secondary-literary', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -459,7 +459,7 @@
       renderQuizzes();
       try {
         const token = localStorage.getItem('authToken') || '';
-        const response = await fetch('http://localhost:3000/api/quizzes', {
+        const response = await fetch('https://courses-nine-eta.vercel.app/api/quizzes', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -1017,7 +1017,7 @@
       
       try {
         const token = localStorage.getItem('authToken') || '';
-        const response = await fetch(`http://localhost:3000/api/tasks/${homeworkId}`, {
+        const response = await fetch(`https://courses-nine-eta.vercel.app/api/tasks/${homeworkId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -1154,8 +1154,8 @@
       try {
         const token = localStorage.getItem('authToken') || '';
         const url = editingScheduleId 
-          ? `http://localhost:3000/api/schedule/${editingScheduleId}`
-          : 'http://localhost:3000/api/schedule';
+          ? `https://courses-nine-eta.vercel.app/api/schedule/${editingScheduleId}`
+          : 'https://courses-nine-eta.vercel.app/api/schedule';
         
         const method = editingScheduleId ? 'PUT' : 'POST';
         
@@ -1204,7 +1204,7 @@
       
       try {
         const token = localStorage.getItem('authToken') || '';
-        const response = await fetch(`http://localhost:3000/api/schedule/${scheduleId}`, {
+        const response = await fetch(`https://courses-nine-eta.vercel.app/api/schedule/${scheduleId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,

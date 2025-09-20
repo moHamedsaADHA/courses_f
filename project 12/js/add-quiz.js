@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     try {
       const token = localStorage.getItem('authToken') || '';
-      const resp = await fetch('http://localhost:3000/api/quizzes', {
+      const resp = await fetch('https://courses-nine-eta.vercel.app/api/quizzes', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
