@@ -1,18 +1,30 @@
-```html
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>الصف الثاني الثانوي أدبي - منصتي التعليمية</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <style>
-    body {
-      background: linear-gradient(to bottom right, #dbeafe, #e0e7ff, #e0f2fe);
-      transition: background 0.5s ease;
-    }
-    html.dark body {
+<!DOCTYPE html><!DOCTYPE html>
+
+<html><html lang="ar" dir="rtl">
+
+<head><head>
+
+    <meta charset="UTF-8">  <meta charset="UTF-8" />
+
+    <meta http-equiv="refresh" content="0; url=project%2012/pages/grade2_1.html">  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script>  <title>الصف الثاني الثانوي علمي - منصتي التعليمية</title>
+
+        window.location.href = "project%2012/pages/grade2_1.html";  <script src="https://cdn.tailwindcss.com"></script>
+
+    </script>  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <title>Redirecting...</title>  <style>
+
+</head>    body {
+
+<body>      background: linear-gradient(to bottom right, #dbeafe, #e0e7ff, #e0f2fe);
+
+    <p>Redirecting to Grade 2 Science...</p>      transition: background 0.5s ease;
+
+</body>    }
+
+</html>    html.dark body {
       background: linear-gradient(to bottom right, #0f172a, #1e1b4b, #1e3a8a);
     }
     .card { transition: all 0.3s ease; }
@@ -93,7 +105,7 @@
           <i class="fas fa-graduation-cap text-white text-xl"></i>
         </div>
         <div>
-          <h1 class="text-2xl font-bold text-gray-800">الصف الثاني الثانوي أدبي</h1>
+          <h1 class="text-2xl font-bold text-gray-800">الصف الثاني الثانوي علمي</h1>
           <p class="text-gray-600">منصتي التعليمية</p>
         </div>
       </div>
@@ -278,10 +290,10 @@
         if(!(window.AUTH && AUTH.getCurrentUser)) return setTimeout(attempt,50);
         const user = AUTH.getCurrentUser();
         if(!user){
-          localStorage.setItem('postLoginRedirect','grade2_2.html');
+          localStorage.setItem('postLoginRedirect','grade2_1.html');
           return window.location.href='index_updated.html';
         }
-        const wanted='الصف الثاني الثانوي أدبي';
+        const wanted='الصف الثاني الثانوي علمي';
         const norm=g=>g?g.trim():g;
         const role=(user.role||'').toLowerCase();
         const isInstructor=['instructor','admin','teacher','مدرس','معلم'].includes(role);
@@ -406,7 +418,7 @@
       document.getElementById('studentName').textContent = studentName;
       if(studentName && studentName !== '👤 الطالب'){
         document.getElementById('welcomeBox').classList.remove('hidden');
-        document.getElementById('welcomeText').textContent = `👋 أهلاً، ${studentName} — الصف الثاني الثانوي أدبي 🎉`;
+        document.getElementById('welcomeText').textContent = `👋 أهلاً، ${studentName} — الصف الثاني الثانوي علمي 🎉`;
       }
     }
 
@@ -427,8 +439,8 @@
       const grid=document.getElementById('lessonsGrid');
       grid.innerHTML = `<div class='col-span-full text-center py-10 text-gray-600'>جارٍ تحميل الحصص...</div>`;
       try {
-        // Use grade-specific endpoint for 2nd secondary literary
-        const resp = await fetch('https://courses-nine-eta.vercel.app/api/lessons/grade/2nd-secondary-literary');
+        // Use grade-specific endpoint for 2nd secondary science
+        const resp = await fetch('https://courses-nine-eta.vercel.app/api/lessons/grade/2nd-secondary-science');
         const data = await resp.json();
         lessons = (data.data || data.lessons || []).map(l=>{ if(!l.id && l._id) l.id=l._id; return l; });
         renderLessons();
@@ -450,7 +462,7 @@
     async function loadSchedules() {
       try {
         const token = localStorage.getItem('authToken') || '';
-        const response = await fetch('https://courses-nine-eta.vercel.app/api/schedule/grade/2nd-secondary-literary', {
+        const response = await fetch('https://courses-nine-eta.vercel.app/api/schedule/grade/2nd-secondary-science', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -483,7 +495,7 @@
       
       try {
         const token = localStorage.getItem('authToken') || '';
-        const response = await fetch('https://courses-nine-eta.vercel.app/api/tasks/grade/second-secondary-literary', {
+        const response = await fetch('https://courses-nine-eta.vercel.app/api/tasks/grade/second-secondary-science', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -820,7 +832,7 @@
     // Render materials
     function renderMaterials() {
       const materialsGrid = document.getElementById('materialsGrid');
-      const materials = JSON.parse(localStorage.getItem('materials_grade2lit') || '[]');
+      const materials = JSON.parse(localStorage.getItem('materials_grade2sci') || '[]');
       
       // Default materials if empty
       if (materials.length === 0) {
@@ -884,7 +896,7 @@
     // Render quizzes
     function renderQuizzes() {
       const quizzesGrid = document.getElementById('quizzesGrid');
-      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade2lit') || '[]');
+      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade2sci') || '[]');
       
       // Default quizzes if empty
       if (quizzes.length === 0) {
@@ -951,9 +963,9 @@
         return;
       }
       
-      const scheduleItems = JSON.parse(localStorage.getItem('scheduleItems_grade2lit') || '[]');
+      const scheduleItems = JSON.parse(localStorage.getItem('scheduleItems_grade2sci') || '[]');
       scheduleItems.push({ day, subject, startTime, endTime });
-      localStorage.setItem('scheduleItems_grade2lit', JSON.stringify(scheduleItems));
+      localStorage.setItem('scheduleItems_grade2sci', JSON.stringify(scheduleItems));
       
       // Clear inputs
       document.getElementById('scheduleDay').value = '';
@@ -975,7 +987,7 @@
         return;
       }
       
-      const homeworkItems = JSON.parse(localStorage.getItem('homeworkItems_grade2lit') || '[]');
+      const homeworkItems = JSON.parse(localStorage.getItem('homeworkItems_grade2sci') || '[]');
       const today = new Date();
       const due = new Date(dueDate);
       const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
@@ -986,7 +998,7 @@
       else if (diffDays > 7) status = 'الأسبوع القادم';
       
       homeworkItems.push({ subject, description, dueDate, status });
-      localStorage.setItem('homeworkItems_grade2lit', JSON.stringify(homeworkItems));
+      localStorage.setItem('homeworkItems_grade2sci', JSON.stringify(homeworkItems));
       
       // Clear inputs
       document.getElementById('homeworkSubject').value = '';
@@ -1007,7 +1019,7 @@
         return;
       }
       
-      const materials = JSON.parse(localStorage.getItem('materials_grade2lit') || '[]');
+      const materials = JSON.parse(localStorage.getItem('materials_grade2sci') || '[]');
       const fileName = title + '.pdf';
       
       materials.push({
@@ -1016,7 +1028,7 @@
         files: [{ name: fileName, link }]
       });
       
-      localStorage.setItem('materials_grade2lit', JSON.stringify(materials));
+      localStorage.setItem('materials_grade2sci', JSON.stringify(materials));
       
       // Clear inputs
       document.getElementById('materialTitle').value = '';
@@ -1037,9 +1049,9 @@
         return;
       }
       
-      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade2lit') || '[]');
+      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade2sci') || '[]');
       quizzes.push({ title, description, status });
-      localStorage.setItem('quizzes_grade2lit', JSON.stringify(quizzes));
+      localStorage.setItem('quizzes_grade2sci', JSON.stringify(quizzes));
       
       // Clear inputs
       document.getElementById('quizTitle').value = '';
@@ -1086,9 +1098,9 @@
     function removeMaterial(index) {
       if (!confirm('هل أنت متأكد من حذف هذه المادة؟')) return;
       
-      const materials = JSON.parse(localStorage.getItem('materials_grade2lit') || '[]');
+      const materials = JSON.parse(localStorage.getItem('materials_grade2sci') || '[]');
       materials.splice(index, 1);
-      localStorage.setItem('materials_grade2lit', JSON.stringify(materials));
+      localStorage.setItem('materials_grade2sci', JSON.stringify(materials));
       
       renderMaterials();
       showNotification('تم حذف المادة بنجاح', 'success');
@@ -1097,9 +1109,9 @@
     function removeQuiz(index) {
       if (!confirm('هل أنت متأكد من حذف هذا الكويز؟')) return;
       
-      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade2lit') || '[]');
+      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade2sci') || '[]');
       quizzes.splice(index, 1);
-      localStorage.setItem('quizzes_grade2lit', JSON.stringify(quizzes));
+      localStorage.setItem('quizzes_grade2sci', JSON.stringify(quizzes));
       
       renderQuizzes();
       showNotification('تم حذف الكويز بنجاح', 'success');
@@ -1484,4 +1496,3 @@
   </style>
 </body>
 </html>
-```

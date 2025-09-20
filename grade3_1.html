@@ -1,16 +1,30 @@
-```html
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>الصف الثاني الثانوي أدبي - منصتي التعليمية</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <style>
-    body {
-      background: linear-gradient(to bottom right, #dbeafe, #e0e7ff, #e0f2fe);
-      transition: background 0.5s ease;
+<!DOCTYPE html><!DOCTYPE html>
+
+<html><html lang="ar" dir="rtl" class="">
+
+<head><head>
+
+    <meta charset="UTF-8">  <meta charset="UTF-8" />
+
+    <meta http-equiv="refresh" content="0; url=project%2012/pages/grade3_1.html">  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script>  <title>الصف الثالث الثانوي علمي - منصتي البداية</title>
+
+        window.location.href = "project%2012/pages/grade3_1.html";  <script src="https://cdn.tailwindcss.com"></script>
+
+    </script>  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <title>Redirecting...</title>  <script src="../js/auth.js"></script>
+
+</head>  <script src="../js/lessons.js"></script>
+
+<body>  <style>
+
+    <p>Redirecting to Grade 3 Science...</p>    body {
+
+</body>      background: linear-gradient(to bottom right, #dbeafe, #e0e7ff, #e0f2fe);
+
+</html>      transition: background 0.5s ease;
     }
     html.dark body {
       background: linear-gradient(to bottom right, #0f172a, #1e1b4b, #1e3a8a);
@@ -79,32 +93,32 @@
 
   <!-- بانر ترحيب -->
   <section id="welcomeBox" class="container mx-auto mt-6 hidden">
-    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 rounded-lg shadow-lg flex justify-between items-center">
-      <span id="welcomeText" class="font-semibold text-lg"></span>
-      <button id="logoutBtn" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow hover:bg-gray-100">تسجيل الخروج</button>
+    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 rounded-lg shadow-lg flex flex-col md:flex-row justify-between items-center gap-4">
+      <span id="welcomeText" class="font-semibold text-lg text-center md:text-right"></span>
+      <button id="logoutBtn" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow hover:bg-gray-100 w-full md:w-auto">تسجيل الخروج</button>
     </div>
   </section>
 
   <!-- Header -->
   <header class="bg-white shadow-lg">
-    <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-      <div class="flex items-center gap-4">
+    <div class="container mx-auto px-4 py-4 flex flex-col lg:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
         <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
           <i class="fas fa-graduation-cap text-white text-xl"></i>
         </div>
         <div>
-          <h1 class="text-2xl font-bold text-gray-800">الصف الثاني الثانوي أدبي</h1>
-          <p class="text-gray-600">منصتي التعليمية</p>
+          <h1 class="text-xl md:text-2xl font-bold text-gray-800">الصف الثالث الثانوي علمي</h1>
+          <p class="text-gray-600 text-sm md:text-base">منصتي التعليمية</p>
         </div>
       </div>
-      <div class="flex items-center gap-6">
+      <div class="flex flex-col md:flex-row items-center gap-4">
         <!-- منيو الطالب -->
         <div class="relative inline-block text-left">
-          <button id="userMenuBtn" class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full shadow hover:bg-blue-700">
+          <button id="userMenuBtn" class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full shadow hover:bg-blue-700 w-full md:w-auto justify-center">
             <span id="studentName">👤 الطالب</span>
             <i class="fas fa-caret-down"></i>
           </button>
-          <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-50">
+          <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg">
             <a href="profile.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">الملف الشخصي</a>
             <a href="grades.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">الدرجات</a>
             <a href="calendar.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">التقويم</a>
@@ -139,13 +153,6 @@
             </a>
           </div>
           
-           <!-- زر إضافة كويز للمعلمين فقط -->
-           <div id="addQuizHeaderBtn" class="hidden">
-             <a href="add-quiz.html" class="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-               <i class="fas fa-question-circle"></i>
-               <span>إضافة كويز</span>
-             </a>
-           </div>
           <div class="relative">
             <img src="../images/photo_2025-09-03_00-20-27.jpg" class="w-12 h-12 rounded-full border-2 border-blue-400" alt="أ/ مجدي جمال" />
             <div id="teacherModeIndicator" class="teacher-mode-indicator hidden">مدرس</div>
@@ -162,12 +169,12 @@
 
   <!-- Navigation -->
   <nav class="bg-white shadow-md mt-4 overflow-x-auto">
-    <div class="container mx-auto px-4 py-3 flex justify-center md:justify-between gap-3 min-w-max">
-      <button class="nav-tab active px-6 py-2 rounded-lg font-semibold" data-tab="lessons">🎓 الحصص</button>
-      <button class="nav-tab px-6 py-2 rounded-lg font-semibold" data-tab="schedule">📅 الجدول</button>
-      <button class="nav-tab px-6 py-2 rounded-lg font-semibold" data-tab="homework">📝 الواجبات</button>
-      <button class="nav-tab px-6 py-2 rounded-lg font-semibold" data-tab="materials">📚 المواد</button>
-      <button class="nav-tab px-6 py-2 rounded-lg font-semibold" data-tab="quizzes">🎯 الكويزات</button>
+    <div class="container mx-auto px-4 py-3 flex space-x-4 space-x-reverse min-w-max md:min-w-0 justify-start md:justify-center">
+      <button class="nav-tab active px-4 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="lessons">🎓 الحصص</button>
+      <button class="nav-tab px-4 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="schedule">📅 الجدول الدراسي</button>
+      <button class="nav-tab px-4 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="homework">📝 الواجبات</button>
+      <button class="nav-tab px-4 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="materials">📚 المواد التعليمية</button>
+      <button class="nav-tab px-4 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="quizzes">🎯 الكويزات</button>
     </div>
   </nav>
 
@@ -175,14 +182,15 @@
   <main class="container mx-auto px-4 py-8">
     <!-- Lessons -->
     <div id="lessons-tab" class="tab-content">
-      <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">الحصص</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="lessonsGrid"></div>
-      <!-- الإضافة الآن من خلال صفحة add-lesson.html -->
+      <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8">الحصص</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="lessonsGrid">
+        <!-- Lesson cards will be generated by JavaScript -->
+      </div>
     </div>
 
     <!-- Schedule -->
     <div id="schedule-tab" class="tab-content hidden">
-      <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">الجدول الدراسي</h2>
+      <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8">الجدول الدراسي</h2>
       
       <!-- Teacher Tools for Schedule -->
       <div id="scheduleTeacherTools" class="teacher-tools rounded-lg p-4 mb-6 hidden">
@@ -203,7 +211,7 @@
 
     <!-- Homework -->
     <div id="homework-tab" class="tab-content hidden">
-      <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">الواجبات</h2>
+      <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8">الواجبات</h2>
       
       <!-- Teacher Tools for Homework -->
       <div id="homeworkTeacherTools" class="teacher-tools rounded-lg p-4 mb-6 hidden">
@@ -223,7 +231,7 @@
 
     <!-- Materials -->
     <div id="materials-tab" class="tab-content hidden">
-      <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">المواد التعليمية</h2>
+      <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8">المواد التعليمية</h2>
       
       <!-- Teacher Tools for Materials -->
       <div id="materialsTeacherTools" class="teacher-tools rounded-lg p-4 mb-6 hidden">
@@ -243,7 +251,7 @@
 
     <!-- Quizzes -->
     <div id="quizzes-tab" class="tab-content hidden">
-      <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">الكويزات</h2>
+      <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-8">الكويزات</h2>
       
       <!-- Teacher Tools for Quizzes -->
       <div id="quizzesTeacherTools" class="teacher-tools rounded-lg p-4 mb-6 hidden">
@@ -267,331 +275,125 @@
   </main>
 
   <!-- JS -->
-  <script src="../js/auth.js"></script>
-  <script src="../js/lessons.js"></script>
   <script>
-    /* =============================
-       حماية الوصول للصف
-    ============================= */
-    (function guardAccess(){
-      const attempt=()=>{
-        if(!(window.AUTH && AUTH.getCurrentUser)) return setTimeout(attempt,50);
-        const user = AUTH.getCurrentUser();
-        if(!user){
-          localStorage.setItem('postLoginRedirect','grade2_2.html');
-          return window.location.href='index_updated.html';
-        }
-        const wanted='الصف الثاني الثانوي أدبي';
-        const norm=g=>g?g.trim():g;
-        const role=(user.role||'').toLowerCase();
-        const isInstructor=['instructor','admin','teacher','مدرس','معلم'].includes(role);
-        if(!isInstructor && norm(user.grade)!==wanted){
-          return window.location.href='index_updated.html';
-        }
-      };
-      attempt();
-    })();
-
-    // ================== المتغيرات الخاصة بالحصة ==================
-    let isTeacherMode = false; // سيُحدَّث بناءً على الصلاحيات
+    // Global state
+    let isTeacherMode = false;
+    
+    // Data structures
+    // Dynamic lessons system
     let lessons = [];
-    let lessonsLoading=false, lessonsError=null;
-    let currentLessonSearch='', currentLessonUnit='', currentLessonPage=1; const LESSONS_PAGE_SIZE=30;
-    let editingLessonId=null;
+    let lessonsLoading = false;
+    let lessonsError = null;
     
     // Schedule state
     let schedules = [];
+    let currentLessonUnit = '';
+    let currentLessonSearch = '';
+    let currentLessonPage = 1;
+    const LESSONS_PAGE_SIZE = 10;
     
-    // Homework/Tasks state
+    // Dynamic homework system
     let homework = [];
     let homeworkLoading = false;
     let homeworkError = null;
+    
+    // Load lessons from grade-specific API endpoint
+    async function loadLessons(){
+      if(lessonsLoading) return;
+      lessonsLoading = true;
+      lessonsError = null;
+      const grid = document.getElementById('lessonsGrid');
+      grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-600">جارٍ تحميل الحصص...</div>`;
+      try {
+        // Use grade-specific endpoint for 3rd secondary science
+        const resp = await fetch('https://courses-nine-eta.vercel.app/api/lessons/grade/3rd-secondary-science');
+        const data = await resp.json();
+        lessons = (data.data || data.lessons || []).map(l=>{ if(!l.id && l._id) l.id = l._id; return l; });
+        renderAllContent();
+      } catch(e){
+        lessonsError = e;
+        console.error('Load lessons error:', e);
+        grid.innerHTML = `<div class='col-span-full text-center py-10 text-red-600'>فشل تحميل الحصص <button class='underline' onclick='loadLessons()'>إعادة المحاولة</button></div>`;
+      } finally {
+        lessonsLoading = false;
+      }
+    }
+    
+    // Load homework from API
+    async function loadHomework(){
+      if(homeworkLoading) return;
+      homeworkLoading = true;
+      homeworkError = null;
+      const grid = document.getElementById('homeworkGrid');
+      grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-600">جارٍ تحميل الواجبات...</div>`;
+      try {
+        // Use grade-specific endpoint for 3rd secondary science
+        const resp = await fetch('https://courses-nine-eta.vercel.app/api/tasks/grade/third-secondary-science');
+        const data = await resp.json();
+        homework = (data.data || data.tasks || []).map(h=>{ if(!h.id && h._id) h.id = h._id; return h; });
+        renderHomework();
+      } catch(e){
+        homeworkError = e;
+        console.error('Load homework error:', e);
+        grid.innerHTML = `<div class='col-span-full text-center py-10 text-red-600'>فشل تحميل الواجبات <button class='underline' onclick='loadHomework()'>إعادة المحاولة</button></div>`;
+      } finally {
+        homeworkLoading = false;
+      }
+    }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      initTabs();
-      initStudentBanner();
-      setupLessonsToolbar();
+    // Initialize on page load
+    document.addEventListener("DOMContentLoaded", () => {
+      // Check global teacher mode from localStorage
+      const globalTeacherMode = localStorage.getItem('globalTeacherMode') === 'true';
+      if (globalTeacherMode) {
+        isTeacherMode = true;
+        updateModeDisplay();
+      }
+
       loadLessons();
       loadSchedules();
       loadHomework();
       
-      // Try to show header buttons immediately and also after a delay
-      setTimeout(showHeaderButtons, 100);
-      setTimeout(showHeaderButtons, 500);
-      setTimeout(showHeaderButtons, 1000);
-      
-      // Also check periodically in case auth system loads later
-      const checkInterval = setInterval(() => {
-        showHeaderButtons();
-        // Stop checking after 10 seconds
-        setTimeout(() => clearInterval(checkInterval), 10000);
-      }, 2000);
-    });
-
-    document.addEventListener('auth:user-ready',()=>{
-      isTeacherMode = LessonsAPI.canManage();
-      updateTeacherToolsVisibility();
-      setupLessonsToolbar(); // لإظهار زر الإضافة عند توفر الصلاحية
-      showHeaderButtons();
-    });
-
-    // Function to show header buttons for authorized users
-    function showHeaderButtons() {
-      // Check if user is authorized using multiple methods
-      let canManage = false;
-      
-      // Method 1: Check LessonsAPI
-      if (window.LessonsAPI && LessonsAPI.canManage) {
-        try {
-          canManage = LessonsAPI.canManage();
-        } catch(e) {
-          console.log('LessonsAPI check failed, trying other methods');
-        }
-      }
-      
-      // Method 2: Check global teacher mode
-      if (!canManage) {
-        canManage = localStorage.getItem('globalTeacherMode') === 'true';
-      }
-      
-      // Method 3: Check user data directly
-      if (!canManage) {
-        try {
-          const userData = localStorage.getItem('user') || localStorage.getItem('userData');
-          if (userData) {
-            const user = JSON.parse(userData);
-            const role = (user.role || '').toLowerCase();
-            canManage = ['instructor', 'admin', 'teacher', 'مدرس', 'معلم'].includes(role);
+        // Show add lesson header button for authorized users
+        if (window.LessonsAPI && LessonsAPI.canManage()) {
+          const addLessonHeaderBtn = document.getElementById('addLessonHeaderBtn');
+          if (addLessonHeaderBtn) {
+            addLessonHeaderBtn.classList.remove('hidden');
           }
-        } catch(e) {}
-      }
-      
-      // Method 4: Check if isTeacherMode is true
-      if (!canManage) {
-        canManage = isTeacherMode === true;
-      }
-      
-      console.log('Header buttons check - canManage:', canManage);
-      
-      if (canManage) {
-        const addLessonHeaderBtn = document.getElementById('addLessonHeaderBtn');
-        if (addLessonHeaderBtn) {
-          addLessonHeaderBtn.classList.remove('hidden');
-          console.log('Shown add lesson button');
-        }
-        
-        const addScheduleHeaderBtn = document.getElementById('addScheduleHeaderBtn');
-        if (addScheduleHeaderBtn) {
-          addScheduleHeaderBtn.classList.remove('hidden');
-          console.log('Shown add schedule button');
-        }
-        
-        const addHomeworkHeaderBtn = document.getElementById('addHomeworkHeaderBtn');
-        if (addHomeworkHeaderBtn) {
-          addHomeworkHeaderBtn.classList.remove('hidden');
-          console.log('Shown add homework button');
-        }
-
-         // Show add quiz header button
-         const addQuizHeaderBtn = document.getElementById('addQuizHeaderBtn');
-         if (addQuizHeaderBtn) {
-           addQuizHeaderBtn.classList.remove('hidden');
-           console.log('Shown add quiz button');
-         }
-      }
-    }
-
-    function initStudentBanner(){
-      const studentName = localStorage.getItem('studentName') || '👤 الطالب';
-      document.getElementById('studentName').textContent = studentName;
-      if(studentName && studentName !== '👤 الطالب'){
-        document.getElementById('welcomeBox').classList.remove('hidden');
-        document.getElementById('welcomeText').textContent = `👋 أهلاً، ${studentName} — الصف الثاني الثانوي أدبي 🎉`;
-      }
-    }
-
-    function initTabs(){
-      const tabs=document.querySelectorAll('.nav-tab');
-      const contents=document.querySelectorAll('.tab-content');
-      tabs.forEach(tab=>tab.addEventListener('click',function(){
-        tabs.forEach(t=>t.classList.remove('active'));
-        this.classList.add('active');
-        contents.forEach(c=>c.classList.add('hidden'));
-        document.getElementById(this.dataset.tab+'-tab').classList.remove('hidden');
-      }));
-    }
-
-    // ================== الدروس الديناميكية ==================
-    async function loadLessons(){
-      if(lessonsLoading) return; lessonsLoading=true; lessonsError=null;
-      const grid=document.getElementById('lessonsGrid');
-      grid.innerHTML = `<div class='col-span-full text-center py-10 text-gray-600'>جارٍ تحميل الحصص...</div>`;
-      try {
-        // Use grade-specific endpoint for 2nd secondary literary
-        const resp = await fetch('https://courses-nine-eta.vercel.app/api/lessons/grade/2nd-secondary-literary');
-        const data = await resp.json();
-        lessons = (data.data || data.lessons || []).map(l=>{ if(!l.id && l._id) l.id=l._id; return l; });
-        renderLessons();
-        refreshUnitFilter();
-      } catch(e){
-        lessonsError=e; console.error(e);
-        grid.innerHTML = `<div class='col-span-full text-center py-10 text-red-600'>فشل تحميل الحصص <button class='underline' onclick='loadLessons()'>إعادة المحاولة</button></div>`;
-      } finally { lessonsLoading=false; }
-    }
-
-    function renderLessons(){
-      const grid=document.getElementById('lessonsGrid');
-      if(!lessons.length){ grid.innerHTML = `<div class='col-span-full text-center py-10 text-gray-500'>لا توجد حصص بعد</div>`; return; }
-      grid.innerHTML='';
-      lessons.forEach(l=> grid.appendChild(createLessonCard(l)) );
-    }
-
-    // Load schedules from API
-    async function loadSchedules() {
-      try {
-        const token = localStorage.getItem('authToken') || '';
-        const response = await fetch('https://courses-nine-eta.vercel.app/api/schedule/grade/2nd-secondary-literary', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
+          
+          // Show add schedule header button
+          const addScheduleHeaderBtn = document.getElementById('addScheduleHeaderBtn');
+          if (addScheduleHeaderBtn) {
+            addScheduleHeaderBtn.classList.remove('hidden');
           }
+          
+          // Show add homework header button
+          const addHomeworkHeaderBtn = document.getElementById('addHomeworkHeaderBtn');
+          if (addHomeworkHeaderBtn) {
+            addHomeworkHeaderBtn.classList.remove('hidden');
+          }
+        }
+      
+        const studentName = localStorage.getItem("studentName") || "👤 الطالب";
+      document.getElementById("studentName").textContent = studentName;
+
+      if (studentName && studentName !== "👤 الطالب") {
+        document.getElementById("welcomeBox").classList.remove("hidden");
+        document.getElementById("welcomeText").textContent = `👋 أهلاً، ${studentName} — الصف الثالث الثانوي علمي 🎉`;
+      }
+
+      // Tabs functionality
+      const tabs = document.querySelectorAll(".nav-tab");
+      const tabContents = document.querySelectorAll(".tab-content");
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", function () {
+          tabs.forEach((t) => t.classList.remove("active"));
+          this.classList.add("active");
+          tabContents.forEach((c) => c.classList.add("hidden"));
+          document.getElementById(this.dataset.tab + "-tab").classList.remove("hidden");
         });
-        
-        if (response.ok) {
-          const data = await response.json();
-          schedules = (data.data || data.schedules || []).map(s => {
-            if (!s.id && s._id) s.id = s._id;
-            return s;
-          });
-          renderSchedule();
-        } else {
-          console.error('Failed to load schedules');
-          renderSchedule(); // Render empty state
-        }
-      } catch (error) {
-        console.error('Schedule load error:', error);
-        renderSchedule(); // Render empty state
-      }
-    }
-
-    // Load homework from API
-    async function loadHomework() {
-      if (homeworkLoading) return;
-      homeworkLoading = true;
-      homeworkError = null;
-      renderHomework(); // عرض حالة التحميل
-      
-      try {
-        const token = localStorage.getItem('authToken') || '';
-        const response = await fetch('https://courses-nine-eta.vercel.app/api/tasks/grade/second-secondary-literary', {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        
-        if (response.ok) {
-          const data = await response.json();
-          homework = data.data || [];
-        } else {
-          console.error('Failed to load homework:', response.statusText);
-          homeworkError = new Error('Failed to load homework');
-        }
-      } catch (error) {
-        console.error('Load homework error:', error);
-        homeworkError = error;
-      } finally {
-        homeworkLoading = false;
-        renderHomework(); // إعادة عرض النتائج النهائية
-      }
-    }
-
-    function createLessonCard(lesson){
-      const card=document.createElement('div');
-      card.className='card bg-white rounded-xl shadow-lg p-6 border-l-4 border-indigo-500 relative flex flex-col';
-      const canManage=isTeacherMode;
-      const title=lesson.lessonTitle || lesson.title || 'بدون عنوان';
-      const unit=lesson.unitTitle || lesson.unit || '';
-      const video=lesson.videoUrl || lesson.video || lesson.video_link;
-      card.innerHTML=`
-        ${canManage?'<div class="teacher-mode-indicator">مدرس</div>':''}
-        <div class='flex justify-between items-start mb-2'>
-          <div>
-            <h3 class='text-lg font-bold text-indigo-800 mb-1 line-clamp-2'>${title}</h3>
-            ${unit?`<span class='inline-block text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full'>${unit}</span>`:''}
-          </div>
-          ${canManage?`<div class='relative'>
-            <button class='text-gray-500 hover:text-gray-700' onclick='this.nextElementSibling.classList.toggle("hidden")'>⋮</button>
-            <div class='hidden absolute left-0 mt-1 w-32 bg-white border rounded shadow z-10'>
-              <button class='block w-full text-right px-3 py-1 text-sm hover:bg-gray-100' onclick='openLessonModal("${lesson.id}")'>✏️ تعديل</button>
-              <button class='block w-full text-right px-3 py-1 text-sm text-red-600 hover:bg-red-100' onclick='deleteLessonConfirm("${lesson.id}")'>🗑️ حذف</button>
-            </div>
-          </div>`:''}
-        </div>
-        <div class='mt-auto pt-2'>
-          ${video?`<button onclick='openLessonDetail("${lesson.id}")' class='w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition flex items-center justify-center gap-2'>▶️ مشاهدة الدرس</button>`:`<div class='w-full bg-gray-300 text-gray-600 px-4 py-2 rounded-lg text-center text-sm'>لا يوجد فيديو</div>`}
-        </div>`;
-      return card;
-    }
-
-    function openLessonDetail(id){ window.location.href = `lesson.html?id=${encodeURIComponent(id)}`; }
-
-    function setupLessonsToolbar(){
-      const container = document.querySelector('#lessons-tab');
-      if(!container) return;
-      let bar=document.getElementById('lessonsToolbar');
-      if(!bar){
-        bar=document.createElement('div');
-        bar.id='lessonsToolbar';
-        bar.className='mb-6';
-        container.insertBefore(bar, container.querySelector('#lessonsGrid'));
-      }
-      const canManage=isTeacherMode;
-      bar.innerHTML = `
-        <div class='flex flex-col md:flex-row gap-3'>
-          <div class='flex-1 flex items-stretch gap-2'>
-            <input id='lessonSearch' type='text' placeholder='🔍 بحث...' class='flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500'/>
-            <select id='lessonUnitFilter' class='px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-purple-500'>
-              <option value=''>كل الوحدات</option>
-            </select>
-          </div>
-          ${canManage?`<a href='add-lesson.html' class='px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 text-sm flex items-center gap-2 self-start'>➕ إضافة حصة</a>`:''}
-        </div>`;
-      if(canManage && document.getElementById('addLessonBtn')) document.getElementById('addLessonBtn').addEventListener('click',()=>openLessonModal());
-      const search=document.getElementById('lessonSearch');
-      if(search){ let deb; search.addEventListener('input',e=>{ clearTimeout(deb); deb=setTimeout(()=>{ currentLessonSearch=e.target.value.trim(); currentLessonPage=1; loadLessons(); },350); }); }
-      const unitSel=document.getElementById('lessonUnitFilter');
-      if(unitSel){ unitSel.addEventListener('change',e=>{ currentLessonUnit=e.target.value; currentLessonPage=1; loadLessons(); }); }
-    }
-
-    function refreshUnitFilter(){
-      const select=document.getElementById('lessonUnitFilter');
-      if(!select) return;
-      const current=select.value;
-      const units=[...new Set(lessons.map(l=>l.unitTitle||l.unit).filter(Boolean))];
-      select.innerHTML = `<option value=''>كل الوحدات</option>` + units.map(u=>`<option value='${u}' ${u===current?'selected':''}>${u}</option>`).join('');
-    }
-
-    // تم نقل الإضافة والتعديل إلى صفحة مستقلة add-lesson.html
-    async function deleteLessonConfirm(id){ if(!confirm('حذف الحصة؟')) return; try { await LessonsAPI.deleteLesson(id); showNotification('تم الحذف','success'); loadLessons(); } catch(_){ showNotification('فشل الحذف','error'); } }
-
-    function updateTeacherToolsVisibility(){
-      if(isTeacherMode){ 
-        showTeacherTools(); 
-        showHeaderButtons(); // إظهار أزرار الheader أيضاً
-      } else { 
-        hideTeacherTools(); 
-      }
-    }
-
-    // ================== وظائف الجدول / الواجبات / المواد / الكويزات (قديمة) ==================
-    function renderAllContent(){
-      renderLessons();
-      renderSchedule();
-      renderHomework();
-      renderMaterials();
-      renderQuizzes();
-    }
+      });
+    });
 
     // Toggle between teacher and student mode
     function toggleMode() {
@@ -599,7 +401,6 @@
       localStorage.setItem('globalTeacherMode', isTeacherMode.toString());
       updateModeDisplay();
       renderAllContent();
-      showHeaderButtons(); // إظهار الأزرار عند التبديل
       showNotification(
         isTeacherMode ? 'تم التبديل إلى وضع المدرس 👨‍🏫' : 'تم التبديل إلى وضع الطالب 👨‍🎓', 
         'success'
@@ -617,7 +418,6 @@
         modeText.textContent = '👨‍🎓 وضع الطالب';
         indicator.classList.remove('hidden');
         showTeacherTools();
-        showHeaderButtons(); // إظهار أزرار الheader
       } else {
         modeToggle.className = 'px-4 py-2 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition-colors';
         modeText.textContent = '🎓 وضع المدرس';
@@ -650,7 +450,124 @@
       renderQuizzes();
     }
 
-    // (تم استبدال نظام الحصص القديم بنظام ديناميكي)
+    // Render lesson cards
+    function renderLessons() {
+      const lessonsGrid = document.getElementById('lessonsGrid');
+      lessonsGrid.innerHTML = '';
+      
+      if(!lessons || lessons.length === 0){
+        lessonsGrid.innerHTML = `<div class='col-span-full text-center py-10 text-gray-500'>لا توجد حصص متاحة حالياً</div>`;
+        return;
+      }
+      
+      lessons.forEach(lesson => {
+        const lessonCard = createLessonCard(lesson);
+        lessonsGrid.appendChild(lessonCard);
+      });
+    }
+
+    // Load schedules from API
+    async function loadSchedules() {
+      try {
+        const token = localStorage.getItem('authToken') || '';
+        const response = await fetch('https://courses-nine-eta.vercel.app/api/schedule/grade/3rd-secondary-science', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          schedules = (data.data || data.schedules || []).map(s => {
+            if (!s.id && s._id) s.id = s._id;
+            return s;
+          });
+          renderSchedule();
+        } else {
+          console.error('Failed to load schedules');
+          renderSchedule(); // Render empty state
+        }
+      } catch (error) {
+        console.error('Schedule load error:', error);
+        renderSchedule(); // Render empty state
+      }
+    }
+
+    // Create lesson card
+    function createLessonCard(lesson) {
+      const card = document.createElement('div');
+      card.className = 'card bg-white rounded-xl shadow-lg p-6 border-l-4 border-indigo-500 relative';
+      
+      // Backend might return lessonTitle/unitTitle instead of title/unit
+      const lessonTitle = lesson.lessonTitle || lesson.title || 'بدون عنوان';
+      const lessonUnit = lesson.unitTitle || lesson.unit || '';
+      const lessonDescription = lesson.lessonDescription || lesson.description || '';
+      const videoUrl = lesson.videoUrl || lesson.video || lesson.video_link;
+      
+      const savedLink = localStorage.getItem(`lesson_${lesson.id}_link`) || videoUrl || '';
+      
+      card.innerHTML = `
+        ${isTeacherMode ? '<div class="teacher-mode-indicator">وضع المدرس</div>' : ''}
+        <div class="flex justify-between items-start mb-4">
+          <div>
+            <h3 class="text-lg font-bold text-indigo-800 mb-2">${lessonTitle}</h3>
+            ${lessonDescription ? `<p class="text-gray-700 text-sm mb-4">${lessonDescription}</p>` : ''}
+            ${lessonUnit ? `<span class='inline-block text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full mb-2'>${lessonUnit}</span>` : ''}
+          </div>
+        </div>
+        
+        ${isTeacherMode ? `
+          <div class="teacher-tools rounded-lg p-3 mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">رابط اليوتيوب:</label>
+            <div class="flex gap-2">
+              <input 
+                type="url" 
+                id="link_${lesson.id}" 
+                value="${savedLink}"
+                placeholder="https://youtube.com/watch?v=..."
+                class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <button 
+                onclick="saveLink('${lesson.id}')"
+                class="px-3 py-2 bg-indigo-600 text-white rounded-md text-sm hover:bg-indigo-700 transition-colors"
+              >
+                💾 حفظ
+              </button>
+            </div>
+          </div>
+        ` : ''}
+        
+        <div class="flex justify-between items-center">
+          ${savedLink || videoUrl ? `
+            <button 
+              onclick="openLessonDetail('${lesson.id || lesson._id}')"
+              class="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
+            >
+              ▶️ مشاهدة الدرس
+            </button>
+          ` : `
+            <button 
+              disabled
+              class="flex-1 bg-gray-400 text-white px-4 py-2 rounded-lg cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              ❌ لا يوجد فيديو متاح
+            </button>
+          `}
+          
+          ${isTeacherMode && savedLink ? `
+            <button 
+              onclick="removeLink('${lesson.id}')"
+              class="mr-2 px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm"
+            >
+              🗑️
+            </button>
+          ` : ''}
+        </div>
+      `;
+      
+      return card;
+    }
 
     // Render schedule
     function renderSchedule() {
@@ -687,14 +604,15 @@
           const timeFrom = item.timeFrom || item.startTime || '';
           const timeTo = item.timeTo || item.endTime || '';
           const scheduleId = item.id || item._id;
+          const colors = day === 'الأحد' ? 'blue' : 'indigo';
           
           dayContent += `
-            <div class="schedule-card bg-blue-50 border-l-4 border-blue-400 p-3 rounded-lg relative">
+            <div class="schedule-card bg-${colors}-50 border-l-4 border-${colors}-400 p-3 rounded-lg relative">
               ${canManage ? '<div class="teacher-mode-indicator">قابل للتعديل</div>' : ''}
               <div class="flex justify-between items-start">
                 <div class="flex-1">
-                  <span class="font-semibold text-blue-800">${item.subject}</span>
-                  <div class="text-sm text-blue-600 mt-1">${timeFrom} - ${timeTo}</div>
+                  <span class="font-semibold text-${colors}-800">${item.subject}</span>
+                  <div class="text-sm text-${colors}-600 mt-1">${timeFrom} - ${timeTo}</div>
                   ${item.date ? `<div class="text-xs text-gray-500 mt-1">${new Date(item.date).toLocaleDateString('ar-EG')}</div>` : ''}
                 </div>
                 ${canManage ? `
@@ -720,95 +638,69 @@
     // Render homework
     function renderHomework() {
       const homeworkGrid = document.getElementById('homeworkGrid');
-      
-      if (homeworkLoading) {
-        homeworkGrid.innerHTML = '<div class="col-span-full text-center py-10 text-gray-600">جارٍ تحميل الواجبات...</div>';
-        return;
-      }
-      
-      if (homeworkError) {
-        homeworkGrid.innerHTML = '<div class="col-span-full text-center py-10 text-red-600">فشل تحميل الواجبات <button class="underline" onclick="loadHomework()">إعادة المحاولة</button></div>';
-        return;
-      }
-      
-      if (homework.length === 0) {
-        homeworkGrid.innerHTML = '<div class="col-span-full text-center py-10 text-gray-600">لا توجد واجبات متاحة</div>';
-        return;
-      }
-      
       homeworkGrid.innerHTML = '';
       
-      homework.forEach((item) => {
+      if(!homework || homework.length === 0){
+        homeworkGrid.innerHTML = `<div class='col-span-full text-center py-10 text-gray-500'>لا توجد واجبات متاحة حالياً</div>`;
+        return;
+      }
+      
+      homework.forEach((item, index) => {
         const homeworkCard = document.createElement('div');
         homeworkCard.className = 'card bg-white rounded-xl shadow-lg p-6 border-blue-400 relative';
         
-        // Calculate days until due
-        const dueDate = new Date(item.dueDate);
-        const today = new Date();
-        const diffTime = dueDate - today;
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        // Get data from API response or fallback to defaults
+        const taskTitle = item.taskTitle || item.title || 'واجب بدون عنوان';
+        const taskSubject = item.subject || item.taskSubject || 'مادة غير محددة';
+        const taskDescription = item.taskDescription || item.description || '';
+        const dueDate = item.dueDate ? new Date(item.dueDate).toLocaleDateString('ar-EG') : 'غير محدد';
         
-        let statusText = 'منتهي';
-        let statusColor = 'bg-red-100 text-red-800';
-        
-        if (diffDays > 7) {
-          statusText = 'الأسبوع القادم';
-          statusColor = 'bg-blue-100 text-blue-800';
-        } else if (diffDays > 1) {
-          statusText = `بعد ${diffDays} أيام`;
-          statusColor = 'bg-yellow-100 text-yellow-800';
-        } else if (diffDays === 1) {
-          statusText = 'غداً';
-          statusColor = 'bg-orange-100 text-orange-800';
-        } else if (diffDays === 0) {
-          statusText = 'اليوم';
-          statusColor = 'bg-red-100 text-red-800';
+        // Calculate status based on due date
+        let status = 'متاح';
+        if (item.dueDate) {
+          const due = new Date(item.dueDate);
+          const now = new Date();
+          const diffTime = due - now;
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          
+          if (diffDays < 0) status = 'منتهي الصلاحية';
+          else if (diffDays === 0) status = 'اليوم';
+          else if (diffDays === 1) status = 'غداً';
+          else if (diffDays <= 7) status = `خلال ${diffDays} أيام`;
+          else status = 'الأسبوع القادم';
         }
         
-        // Priority colors
-        let priorityColor = 'border-blue-400';
-        if (item.priority === 'عاجل') priorityColor = 'border-red-400';
-        else if (item.priority === 'عالي') priorityColor = 'border-orange-400';
-        else if (item.priority === 'متوسط') priorityColor = 'border-yellow-400';
-        
-        homeworkCard.className = `card bg-white rounded-xl shadow-lg p-6 ${priorityColor} relative`;
+        const colors = taskSubject.includes('رياضيات') ? 'blue' : taskSubject.includes('فيزياء') ? 'green' : 'indigo';
+        const canManage = window.LessonsAPI && LessonsAPI.canManage();
         
         homeworkCard.innerHTML = `
-          ${isTeacherMode ? '<div class="teacher-mode-indicator">قابل للتعديل</div>' : ''}
+          ${canManage ? '<div class="teacher-mode-indicator">قابل للتعديل</div>' : ''}
           <div class="flex items-center justify-between mb-4">
-            <h3 class="text-xl font-bold text-blue-800">${item.subject}</h3>
-            <span class="px-3 py-1 ${statusColor} rounded-full text-sm">${statusText}</span>
+            <h3 class="text-xl font-bold text-${colors}-800">${taskTitle}</h3>
+            <span class="px-3 py-1 bg-${colors}-100 text-${colors}-800 rounded-full text-sm">${status}</span>
           </div>
-          <h4 class="text-md font-semibold text-gray-800 mb-2">${item.title}</h4>
-          <p class="text-gray-700 mb-4">${item.description}</p>
-          <div class="flex justify-between items-center text-sm text-gray-600 mb-4">
-            <span>تاريخ التسليم: ${new Date(item.dueDate).toLocaleDateString('ar-EG')}</span>
-            <span class="px-2 py-1 bg-gray-100 rounded">${item.priority}</span>
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium text-gray-600">المادة:</span>
+            <span class="text-sm text-${colors}-600">${taskSubject}</span>
           </div>
-          ${item.attachments && item.attachments.length > 0 ? `
-            <div class="mb-4">
-              <h5 class="text-sm font-medium text-gray-700 mb-2">المرفقات:</h5>
-              ${item.attachments.map(att => `
-                <a href="${att.url}" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm block">
-                  <i class="fas fa-paperclip ml-1"></i> ${att.filename}
-                </a>
-              `).join('')}
-            </div>
-          ` : ''}
-          ${isTeacherMode ? `
+          <p class="text-gray-700 mb-4">${taskDescription}</p>
+          <p class="text-sm text-gray-600 mb-4">تاريخ التسليم: ${dueDate}</p>
+          ${canManage ? `
             <div class="teacher-tools rounded-lg p-3">
-              <button 
-                onclick="editHomework('${item._id || item.id}')"
-                class="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm ml-2"
-              >
-                ✏️ تعديل
-              </button>
-              <button 
-                onclick="deleteHomework('${item._id || item.id}')"
-                class="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm"
-              >
-                🗑️ حذف
-              </button>
+              <div class='flex gap-2'>
+                <button 
+                  onclick="editHomework('${item.id || item._id}')"
+                  class="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm"
+                >
+                  ✏️ تعديل
+                </button>
+                <button 
+                  onclick="deleteHomework('${item.id || item._id}')"
+                  class="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm"
+                >
+                  🗑️ حذف
+                </button>
+              </div>
             </div>
           ` : ''}
         `;
@@ -820,7 +712,7 @@
     // Render materials
     function renderMaterials() {
       const materialsGrid = document.getElementById('materialsGrid');
-      const materials = JSON.parse(localStorage.getItem('materials_grade2lit') || '[]');
+      const materials = JSON.parse(localStorage.getItem('materials_grade3sci') || '[]');
       
       // Default materials if empty
       if (materials.length === 0) {
@@ -884,7 +776,7 @@
     // Render quizzes
     function renderQuizzes() {
       const quizzesGrid = document.getElementById('quizzesGrid');
-      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade2lit') || '[]');
+      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade3sci') || '[]');
       
       // Default quizzes if empty
       if (quizzes.length === 0) {
@@ -900,46 +792,42 @@
       quizzes.forEach((quiz, index) => {
         const quizCard = document.createElement('div');
         quizCard.className = 'card bg-white rounded-xl shadow-lg p-6 border-yellow-400 relative';
+        
         const statusColors = {
           'متاح': 'bg-yellow-100 text-yellow-800',
           'قريباً': 'bg-blue-100 text-blue-800',
           'مغلق': 'bg-red-100 text-red-800'
         };
+        
         quizCard.innerHTML = `
           ${isTeacherMode ? '<div class="teacher-mode-indicator">قابل للتعديل</div>' : ''}
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-xl font-bold text-yellow-800">${quiz.title}</h3>
             <span class="px-3 py-1 ${statusColors[quiz.status]} rounded-full text-sm">${quiz.status}</span>
-            ${isTeacherMode ? `
-              <div class='relative'>
-                <button class='text-gray-500 hover:text-gray-700 px-2' onclick="this.nextElementSibling.classList.toggle('hidden')">⋮</button>
-                <div class='hidden absolute left-0 mt-1 w-32 bg-white border rounded shadow z-10'>
-                  <button class='block w-full text-right px-3 py-1 text-sm hover:bg-gray-100' onclick='editQuiz(${index})'>✏️ تعديل</button>
-                  <button class='block w-full text-right px-3 py-1 text-sm text-red-600 hover:bg-red-100' onclick='removeQuiz(${index})'>🗑️ حذف</button>
-                </div>
-              </div>
-            ` : ''}
           </div>
           <p class="text-gray-700 mb-4">${quiz.description}</p>
           <div class="flex justify-between items-center">
             ${quiz.status === 'متاح' ? `
-              <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg shadow hover:bg-yellow-600 flex-1">ابدأ الآن</button>
+              <button class="bg-yellow-500 text-white px-4 py-2 rounded-lg shadow hover:bg-yellow-600 w-full md:w-auto flex-1">ابدأ الآن</button>
             ` : `
-              <button disabled class="bg-gray-400 text-white px-4 py-2 rounded-lg shadow cursor-not-allowed flex-1">${quiz.status}</button>
+              <button disabled class="bg-gray-400 text-white px-4 py-2 rounded-lg shadow cursor-not-allowed w-full md:w-auto flex-1">${quiz.status}</button>
             `}
+            ${isTeacherMode ? `
+              <button 
+                onclick="removeQuiz(${index})"
+                class="mr-2 px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm"
+              >
+                🗑️
+              </button>
+            ` : ''}
           </div>
         `;
+        
         quizzesGrid.appendChild(quizCard);
       });
     }
 
     // Teacher tools functions
-    function editQuiz(index) {
-      // مثال: توجيه لصفحة التعديل مع معرف الكويز
-      // يمكن لاحقاً استخدام id حقيقي من API
-      window.location.href = `add-quiz.html?edit=${index}`;
-    }
-
     function addScheduleItem() {
       const day = document.getElementById('scheduleDay').value.trim();
       const subject = document.getElementById('scheduleSubject').value.trim();
@@ -951,9 +839,9 @@
         return;
       }
       
-      const scheduleItems = JSON.parse(localStorage.getItem('scheduleItems_grade2lit') || '[]');
+      const scheduleItems = JSON.parse(localStorage.getItem('scheduleItems_grade3sci') || '[]');
       scheduleItems.push({ day, subject, startTime, endTime });
-      localStorage.setItem('scheduleItems_grade2lit', JSON.stringify(scheduleItems));
+      localStorage.setItem('scheduleItems_grade3sci', JSON.stringify(scheduleItems));
       
       // Clear inputs
       document.getElementById('scheduleDay').value = '';
@@ -975,7 +863,7 @@
         return;
       }
       
-      const homeworkItems = JSON.parse(localStorage.getItem('homeworkItems_grade2lit') || '[]');
+      const homeworkItems = JSON.parse(localStorage.getItem('homeworkItems_grade3sci') || '[]');
       const today = new Date();
       const due = new Date(dueDate);
       const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
@@ -986,7 +874,7 @@
       else if (diffDays > 7) status = 'الأسبوع القادم';
       
       homeworkItems.push({ subject, description, dueDate, status });
-      localStorage.setItem('homeworkItems_grade2lit', JSON.stringify(homeworkItems));
+      localStorage.setItem('homeworkItems_grade3sci', JSON.stringify(homeworkItems));
       
       // Clear inputs
       document.getElementById('homeworkSubject').value = '';
@@ -1007,7 +895,7 @@
         return;
       }
       
-      const materials = JSON.parse(localStorage.getItem('materials_grade2lit') || '[]');
+      const materials = JSON.parse(localStorage.getItem('materials_grade3sci') || '[]');
       const fileName = title + '.pdf';
       
       materials.push({
@@ -1016,7 +904,7 @@
         files: [{ name: fileName, link }]
       });
       
-      localStorage.setItem('materials_grade2lit', JSON.stringify(materials));
+      localStorage.setItem('materials_grade3sci', JSON.stringify(materials));
       
       // Clear inputs
       document.getElementById('materialTitle').value = '';
@@ -1037,9 +925,9 @@
         return;
       }
       
-      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade2lit') || '[]');
+      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade3sci') || '[]');
       quizzes.push({ title, description, status });
-      localStorage.setItem('quizzes_grade2lit', JSON.stringify(quizzes));
+      localStorage.setItem('quizzes_grade3sci', JSON.stringify(quizzes));
       
       // Clear inputs
       document.getElementById('quizTitle').value = '';
@@ -1050,45 +938,23 @@
       showNotification('تمت إضافة الكويز بنجاح', 'success');
     }
 
-    // Edit homework
-    async function editHomework(homeworkId) {
-      // Redirect to add-homework.html with edit mode
-      window.location.href = `add-homework.html?edit=${encodeURIComponent(homeworkId)}`;
-    }
-
-    // Delete homework
-    async function deleteHomework(homeworkId) {
+    function removeHomework(index) {
       if (!confirm('هل أنت متأكد من حذف هذا الواجب؟')) return;
       
-      try {
-        const token = localStorage.getItem('authToken') || '';
-        const response = await fetch(`https://courses-nine-eta.vercel.app/api/tasks/${homeworkId}`, {
-          method: 'DELETE',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        
-        if (response.ok) {
-          showNotification('تم حذف الواجب بنجاح', 'success');
-          loadHomework(); // إعادة تحميل الواجبات
-        } else {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'فشل في حذف الواجب');
-        }
-      } catch (error) {
-        console.error('Delete homework error:', error);
-        showNotification(error.message || 'حدث خطأ أثناء حذف الواجب', 'error');
-      }
+      const homeworkItems = JSON.parse(localStorage.getItem('homeworkItems_grade3sci') || '[]');
+      homeworkItems.splice(index, 1);
+      localStorage.setItem('homeworkItems_grade3sci', JSON.stringify(homeworkItems));
+      
+      renderHomework();
+      showNotification('تم حذف الواجب بنجاح', 'success');
     }
 
     function removeMaterial(index) {
       if (!confirm('هل أنت متأكد من حذف هذه المادة؟')) return;
       
-      const materials = JSON.parse(localStorage.getItem('materials_grade2lit') || '[]');
+      const materials = JSON.parse(localStorage.getItem('materials_grade3sci') || '[]');
       materials.splice(index, 1);
-      localStorage.setItem('materials_grade2lit', JSON.stringify(materials));
+      localStorage.setItem('materials_grade3sci', JSON.stringify(materials));
       
       renderMaterials();
       showNotification('تم حذف المادة بنجاح', 'success');
@@ -1097,15 +963,47 @@
     function removeQuiz(index) {
       if (!confirm('هل أنت متأكد من حذف هذا الكويز؟')) return;
       
-      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade2lit') || '[]');
+      const quizzes = JSON.parse(localStorage.getItem('quizzes_grade3sci') || '[]');
       quizzes.splice(index, 1);
-      localStorage.setItem('quizzes_grade2lit', JSON.stringify(quizzes));
+      localStorage.setItem('quizzes_grade3sci', JSON.stringify(quizzes));
       
       renderQuizzes();
       showNotification('تم حذف الكويز بنجاح', 'success');
     }
 
-    // أزيلت وظائف الحصص القديمة (saveLink/removeLink/watchLesson)
+    // Lesson functions
+    function saveLink(lessonId) {
+      const linkInput = document.getElementById(`link_${lessonId}`);
+      const link = linkInput.value.trim();
+      
+      if (link && isValidYouTubeUrl(link)) {
+        localStorage.setItem(`lesson_${lessonId}_link`, link);
+        renderLessons();
+        showNotification('تم حفظ الرابط بنجاح! ✅', 'success');
+      } else if (link) {
+        showNotification('يرجى إدخال رابط يوتيوب صحيح', 'error');
+      } else {
+        showNotification('يرجى إدخال رابط', 'error');
+      }
+    }
+
+    function removeLink(lessonId) {
+      if (confirm('هل أنت متأكد من حذف هذا الرابط؟')) {
+        localStorage.removeItem(`lesson_${lessonId}_link`);
+        renderLessons();
+        showNotification('تم حذف الرابط بنجاح', 'success');
+      }
+    }
+
+    function watchLesson(link) {
+      if (link) {
+        window.open(link, '_blank');
+      }
+    }
+
+    function openLessonDetail(id) {
+      window.location.href = `lesson.html?id=${encodeURIComponent(id)}`;
+    }
 
     function downloadFile(link) {
       window.open(link, '_blank');
@@ -1114,6 +1012,160 @@
     function isValidYouTubeUrl(url) {
       const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|embed\/)|youtu\.be\/).+/;
       return youtubeRegex.test(url);
+    }
+
+    // Schedule Management Functions
+    let editingScheduleId = null;
+
+    function openAddScheduleModal() {
+      editingScheduleId = null;
+      document.getElementById('scheduleModalTitle').textContent = 'إضافة جدول دراسي';
+      document.getElementById('scheduleForm').reset();
+      document.getElementById('scheduleModal').classList.remove('hidden');
+    }
+
+    function closeScheduleModal() {
+      document.getElementById('scheduleModal').classList.add('hidden');
+      editingScheduleId = null;
+    }
+
+    async function saveSchedule(event) {
+      event.preventDefault();
+      
+      const day = document.getElementById('scheduleDay').value;
+      const subject = document.getElementById('scheduleSubject').value;
+      const date = document.getElementById('scheduleDate').value;
+      const timeFrom = document.getElementById('scheduleTimeFrom').value;
+      const timeTo = document.getElementById('scheduleTimeTo').value;
+      
+      // Get current user data and teacher ID
+      let teacherId = null;
+      try {
+        const userStr = localStorage.getItem('currentUser') || 
+                       localStorage.getItem('user') || 
+                       localStorage.getItem('userData');
+        
+        if (userStr) {
+          const user = JSON.parse(userStr);
+          teacherId = user.id || user.userId || user._id || user.teacherId;
+          console.log('Teacher ID:', teacherId);
+        }
+      } catch (e) {
+        console.warn('Failed to get teacher ID:', e);
+      }
+
+      const scheduleData = {
+        day,
+        subject,
+        date,
+        timeFrom,
+        timeTo,
+        grade: 'الصف الثالث الثانوي علمي',
+        instructor: teacherId // إضافة معرف المعلم
+      };
+      
+      try {
+        const token = localStorage.getItem('authToken') || '';
+        const url = editingScheduleId 
+          ? `https://courses-nine-eta.vercel.app/api/schedule/${editingScheduleId}`
+          : 'https://courses-nine-eta.vercel.app/api/schedule';
+        
+        const method = editingScheduleId ? 'PUT' : 'POST';
+        
+        const response = await fetch(url, {
+          method,
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(scheduleData)
+        });
+        
+        if (response.ok) {
+          showNotification(editingScheduleId ? 'تم تحديث الجدول بنجاح' : 'تم إضافة الجدول بنجاح', 'success');
+          closeScheduleModal();
+          loadSchedules();
+        } else {
+          const error = await response.json();
+          showNotification(error.message || 'حدث خطأ أثناء حفظ الجدول', 'error');
+        }
+      } catch (error) {
+        console.error('Schedule save error:', error);
+        showNotification('حدث خطأ في الاتصال', 'error');
+      }
+    }
+
+    async function editScheduleItem(scheduleId) {
+      const schedule = schedules.find(s => (s.id || s._id) === scheduleId);
+      if (!schedule) return;
+      
+      editingScheduleId = scheduleId;
+      document.getElementById('scheduleModalTitle').textContent = 'تعديل الجدول الدراسي';
+      
+      document.getElementById('scheduleDay').value = schedule.day || '';
+      document.getElementById('scheduleSubject').value = schedule.subject || '';
+      document.getElementById('scheduleDate').value = schedule.date ? new Date(schedule.date).toISOString().split('T')[0] : '';
+      document.getElementById('scheduleTimeFrom').value = schedule.timeFrom || '';
+      document.getElementById('scheduleTimeTo').value = schedule.timeTo || '';
+      
+      document.getElementById('scheduleModal').classList.remove('hidden');
+    }
+
+    async function deleteScheduleItem(scheduleId) {
+      if (!confirm('هل أنت متأكد من حذف هذا الجدول الدراسي؟')) return;
+      
+      try {
+        const token = localStorage.getItem('authToken') || '';
+        const response = await fetch(`https://courses-nine-eta.vercel.app/api/schedule/${scheduleId}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        if (response.ok) {
+          showNotification('تم حذف الجدول بنجاح', 'success');
+          loadSchedules();
+        } else {
+          const error = await response.json();
+          showNotification(error.message || 'حدث خطأ أثناء حذف الجدول', 'error');
+        }
+      } catch (error) {
+        console.error('Schedule delete error:', error);
+        showNotification('حدث خطأ في الاتصال', 'error');
+      }
+    }
+
+    function showNotification(message, type = 'success') {
+      // Remove any existing notifications
+      const existingNotification = document.querySelector('.notification');
+      if (existingNotification) {
+        existingNotification.remove();
+      }
+      
+      // Create new notification
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+      
+      // Add to page
+      document.body.appendChild(notification);
+      
+      // Show notification
+      setTimeout(() => {
+        notification.classList.add('show');
+      }, 100);
+      
+      // Hide and remove notification after 4 seconds
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }, 4000);
     }
 
     function showNotification(message, type = 'info') {
@@ -1162,111 +1214,31 @@
       window.location.href = "index_updated.html";
     });
 
-    // Schedule Management Functions
-    let editingScheduleId = null;
-
-    function openAddScheduleModal() {
-      editingScheduleId = null;
-      document.getElementById('scheduleModalTitle').textContent = 'إضافة جدول دراسي';
-      document.getElementById('scheduleForm').reset();
-      document.getElementById('scheduleModal').classList.remove('hidden');
-    }
-
-    function closeScheduleModal() {
-      document.getElementById('scheduleModal').classList.add('hidden');
-      editingScheduleId = null;
-    }
-
-    async function saveSchedule(event) {
-      event.preventDefault();
-      
-      const day = document.getElementById('scheduleDay').value;
-      const subject = document.getElementById('scheduleSubject').value;
-      const grade = document.getElementById('scheduleGrade').value;
-      const date = document.getElementById('scheduleDate').value;
-      const timeFrom = document.getElementById('scheduleTimeFrom').value;
-      const timeTo = document.getElementById('scheduleTimeTo').value;
-      
-      // Get current user data and teacher ID
-      let teacherId = null;
-      try {
-        const userStr = localStorage.getItem('currentUser') || 
-                       localStorage.getItem('user') || 
-                       localStorage.getItem('userData');
-        
-        if (userStr) {
-          const user = JSON.parse(userStr);
-          teacherId = user.id || user.userId || user._id || user.teacherId;
-          console.log('Teacher ID:', teacherId);
-        }
-      } catch (e) {
-        console.warn('Failed to get teacher ID:', e);
+    // Homework Management Functions
+    async function editHomework(homeworkId) {
+      const homeworkItem = homework.find(h => (h.id || h._id) === homeworkId);
+      if (!homeworkItem) {
+        showNotification('الواجب غير موجود', 'error');
+        return;
       }
+      
+      // Fill the form with current data
+      document.getElementById('homeworkSubject').value = homeworkItem.subject || homeworkItem.taskSubject || '';
+      document.getElementById('homeworkDescription').value = homeworkItem.taskDescription || homeworkItem.description || '';
+      document.getElementById('homeworkDueDate').value = homeworkItem.dueDate ? new Date(homeworkItem.dueDate).toISOString().split('T')[0] : '';
+      
+      // Store the ID for updating
+      document.getElementById('homeworkSubject').dataset.editId = homeworkId;
+      
+      showNotification('تم تحميل بيانات الواجب للتعديل', 'success');
+    }
 
-      const scheduleData = {
-        day,
-        subject,
-        grade,
-        date,
-        timeFrom,
-        timeTo,
-        instructor: teacherId // إضافة معرف المعلم
-      };
+    async function deleteHomework(homeworkId) {
+      if (!confirm('هل أنت متأكد من حذف هذا الواجب؟')) return;
       
       try {
         const token = localStorage.getItem('authToken') || '';
-        const url = editingScheduleId 
-          ? `https://courses-nine-eta.vercel.app/api/schedule/${editingScheduleId}`
-          : 'https://courses-nine-eta.vercel.app/api/schedule';
-        
-        const method = editingScheduleId ? 'PUT' : 'POST';
-        
-        const response = await fetch(url, {
-          method,
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(scheduleData)
-        });
-        
-        if (response.ok) {
-          showNotification(editingScheduleId ? 'تم تحديث الجدول بنجاح' : 'تم إضافة الجدول بنجاح', 'success');
-          closeScheduleModal();
-          loadSchedules();
-        } else {
-          const error = await response.json();
-          showNotification(error.message || 'حدث خطأ أثناء حفظ الجدول', 'error');
-        }
-      } catch (error) {
-        console.error('Schedule save error:', error);
-        showNotification('حدث خطأ في الاتصال', 'error');
-      }
-    }
-
-    async function editScheduleItem(scheduleId) {
-      const schedule = schedules.find(s => (s.id || s._id) === scheduleId);
-      if (!schedule) return;
-      
-      editingScheduleId = scheduleId;
-      document.getElementById('scheduleModalTitle').textContent = 'تعديل الجدول الدراسي';
-      
-      document.getElementById('scheduleDay').value = schedule.day || '';
-      document.getElementById('scheduleSubject').value = schedule.subject || '';
-      document.getElementById('scheduleGrade').value = schedule.grade || '';
-      document.getElementById('scheduleDate').value = schedule.date ? new Date(schedule.date).toISOString().split('T')[0] : '';
-      document.getElementById('scheduleTimeFrom').value = schedule.timeFrom || '';
-      document.getElementById('scheduleTimeTo').value = schedule.timeTo || '';
-      
-      document.getElementById('scheduleModal').classList.remove('hidden');
-    }
-
-    async function deleteScheduleItem(scheduleId) {
-      if (!confirm('هل أنت متأكد من حذف هذا الجدول الدراسي؟')) return;
-      
-      try {
-        const token = localStorage.getItem('authToken') || '';
-        const response = await fetch(`https://courses-nine-eta.vercel.app/api/schedule/${scheduleId}`, {
+        const resp = await fetch(`https://courses-nine-eta.vercel.app/api/tasks/${homeworkId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -1274,16 +1246,106 @@
           }
         });
         
-        if (response.ok) {
-          showNotification('تم حذف الجدول بنجاح', 'success');
-          loadSchedules();
+        if (resp.ok) {
+          showNotification('تم حذف الواجب بنجاح', 'success');
+          loadHomework(); // Reload homework list
         } else {
-          const error = await response.json();
-          showNotification(error.message || 'حدث خطأ أثناء حذف الجدول', 'error');
+          throw new Error('فشل في حذف الواجب');
         }
       } catch (error) {
-        console.error('Schedule delete error:', error);
-        showNotification('حدث خطأ في الاتصال', 'error');
+        console.error('Delete homework error:', error);
+        showNotification('فشل في حذف الواجب', 'error');
+      }
+    }
+
+    async function addHomework() {
+      const subject = document.getElementById('homeworkSubject').value.trim();
+      const description = document.getElementById('homeworkDescription').value.trim();
+      const dueDate = document.getElementById('homeworkDueDate').value;
+      
+      if (!subject || !description || !dueDate) {
+        showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
+        return;
+      }
+      
+      // Get current user data for teacher ID
+      const getCurrentTeacherId = () => {
+        const user = localStorage.getItem('user');
+        const userData = localStorage.getItem('userData');
+        const auth = localStorage.getItem('auth');
+        const authToken = localStorage.getItem('authToken');
+        
+        // Try parsing different data sources
+        try {
+          if (user) {
+            const parsed = JSON.parse(user);
+            if (parsed.teacherId) return parsed.teacherId;
+            if (parsed.id) return parsed.id;
+          }
+        } catch(e) {}
+        
+        try {
+          if (userData) {
+            const parsed = JSON.parse(userData);
+            if (parsed.teacherId) return parsed.teacherId;
+            if (parsed.id) return parsed.id;
+          }
+        } catch(e) {}
+        
+        try {
+          if (auth) {
+            const parsed = JSON.parse(auth);
+            if (parsed.teacherId) return parsed.teacherId;
+            if (parsed.id) return parsed.id;
+          }
+        } catch(e) {}
+        
+        return authToken || null;
+      };
+      
+      const teacherId = getCurrentTeacherId();
+      const editId = document.getElementById('homeworkSubject').dataset.editId;
+      
+      const homeworkData = {
+        taskTitle: subject,
+        taskDescription: description,
+        subject: subject,
+        dueDate: dueDate,
+        grade: 'third-secondary-science',
+        ...(teacherId && { teacherId })
+      };
+      
+      try {
+        const token = localStorage.getItem('authToken') || '';
+        const url = editId 
+          ? `https://courses-nine-eta.vercel.app/api/tasks/${editId}`
+          : 'https://courses-nine-eta.vercel.app/api/tasks/grade/third-secondary-science';
+        
+        const resp = await fetch(url, {
+          method: editId ? 'PUT' : 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(homeworkData)
+        });
+        
+        if (resp.ok) {
+          showNotification(editId ? 'تم تحديث الواجب بنجاح' : 'تم إضافة الواجب بنجاح', 'success');
+          
+          // Clear form
+          document.getElementById('homeworkSubject').value = '';
+          document.getElementById('homeworkDescription').value = '';
+          document.getElementById('homeworkDueDate').value = '';
+          delete document.getElementById('homeworkSubject').dataset.editId;
+          
+          loadHomework(); // Reload homework list
+        } else {
+          throw new Error(editId ? 'فشل في تحديث الواجب' : 'فشل في إضافة الواجب');
+        }
+      } catch (error) {
+        console.error('Add/Edit homework error:', error);
+        showNotification(editId ? 'فشل في تحديث الواجب' : 'فشل في إضافة الواجب', 'error');
       }
     }
   </script>
@@ -1311,18 +1373,6 @@
         <div class="form-group">
           <label for="scheduleSubject">المادة:</label>
           <input type="text" id="scheduleSubject" required placeholder="مثال: الرياضيات">
-        </div>
-        
-        <div class="form-group">
-          <label for="scheduleGrade">الصف:</label>
-          <select id="scheduleGrade" required>
-            <option value="">اختر الصف</option>
-            <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
-            <option value="الصف الثاني الثانوي علمي">الصف الثاني الثانوي علمي</option>
-            <option value="الصف الثاني الثانوي ادبي">الصف الثاني الثانوي ادبي</option>
-            <option value="الصف الثالث الثانوي علمي">الصف الثالث الثانوي علمي</option>
-            <option value="الصف الثالث الثانوي ادبي">الصف الثالث الثانوي ادبي</option>
-          </select>
         </div>
         
         <div class="form-group">
@@ -1484,4 +1534,3 @@
   </style>
 </body>
 </html>
-```
