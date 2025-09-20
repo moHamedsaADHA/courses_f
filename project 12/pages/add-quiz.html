@@ -3,57 +3,272 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>إضافة كويز جديد</title>
+  <title>إضافة كويز جديد - منصتي البداية</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="../js/auth.js"></script>
+  <script src="../js/lessons.js"></script>
+  <!-- Shared Header -->
+  <script src="../shared/shared-header.js"></script>
+  
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #eef2ff, #f0f9ff, #f5f3ff);
+      min-height: 100vh;
+    }
+    html.dark body {
+      background: linear-gradient(to bottom right, #0f172a, #1e293b, #312e81);
+    }
+    
+    .form-container {
+      background: white;
+      border-radius: 2rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+    .form-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.07;
+      background: radial-gradient(circle at 30% 30%, #6366f1, transparent 60%);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #2d3748;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      direction: rtl;
+      text-align: right;
+      background: white;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      transform: translateY(-1px);
+    }
+  </style>
 </head>
-<body class="min-h-screen bg-gray-50">
-  <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">إضافة كويز جديد</h1>
-    <form id="quizForm" class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg space-y-6">
-      <div>
-        <label class="block mb-1 font-semibold">العنوان</label>
-        <input type="text" id="quizTitle" class="w-full px-3 py-2 border rounded" required />
-      </div>
-      <div>
-        <label class="block mb-1 font-semibold">الوصف</label>
-        <textarea id="quizDescription" class="w-full px-3 py-2 border rounded"></textarea>
-      </div>
-      <div>
-        <label class="block mb-1 font-semibold">الصف</label>
-        <select id="quizGrade" class="w-full px-3 py-2 border rounded" required>
-          <option value="">اختر الصف</option>
-          <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
-          <option value="الصف الثاني الثانوي علمي">الصف الثاني الثانوي علمي</option>
-          <option value="الصف الثاني الثانوي أدبي">الصف الثاني الثانوي أدبي</option>
-          <option value="الصف الثالث الثانوي علمي">الصف الثالث الثانوي علمي</option>
-          <option value="الصف الثالث الثانوي أدبي">الصف الثالث الثانوي أدبي</option>
-        </select>
-      </div>
-      <div>
-        <label class="block mb-1 font-semibold">المادة</label>
-        <input type="text" id="quizSubject" class="w-full px-3 py-2 border rounded" required />
-      </div>
-      <div>
-        <label class="block mb-1 font-semibold">مدة الكويز (دقائق)</label>
-        <input type="number" id="quizTimeLimit" class="w-full px-3 py-2 border rounded" min="1" value="30" required />
-      </div>
-      <div>
-        <label class="block mb-1 font-semibold">نشط؟</label>
-        <select id="quizIsActive" class="w-full px-3 py-2 border rounded">
-          <option value="true">نعم</option>
-          <option value="false">لا</option>
-        </select>
-      </div>
-      <div>
-        <label class="block mb-1 font-semibold">الأسئلة</label>
-        <div id="questionsList" class="space-y-4"></div>
-        <button type="button" id="addQuestionBtn" class="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"><i class="fas fa-plus"></i> إضافة سؤال</button>
-      </div>
-      <button type="submit" class="w-full py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700">حفظ الكويز</button>
-    </form>
-    <div id="quizMsg" class="mt-6 text-center font-bold"></div>
+<body class="min-h-screen flex flex-col">
+  <!-- Shared Header Container -->
+  <div id="shared-header-container">
+    <!-- Header will be loaded by shared-header.js -->
   </div>
+
+  <!-- Page Header للمدرسين فقط -->
+  <header id="pageHeader" class="bg-white/90 backdrop-blur shadow-md sticky top-0 z-30 hidden">
+    <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xl">
+          <i class="fas fa-question-circle"></i>
+        </div>
+        <div>
+          <h1 class="text-xl md:text-2xl font-bold text-gray-800">إضافة كويز جديد</h1>
+          <p class="text-gray-500 text-sm">هذه الصفحة متاحة للمعلم أو الأدمن فقط</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <button onclick="goBack()" class="px-4 py-2 rounded-lg border text-sm hover:bg-gray-50 flex items-center gap-2">
+          <i class="fas fa-arrow-right"></i>
+          <span>رجوع</span>
+        </button>
+        <button id="logoutBtn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 text-sm flex items-center gap-2">
+          <i class="fas fa-right-from-bracket"></i>
+          <span>خروج</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 container mx-auto px-4 py-10">
+    <div id="accessDenied" class="max-w-xl mx-auto hidden">
+      <div class="bg-red-50 border border-red-200 text-red-700 p-6 rounded-xl shadow">
+        <h2 class="text-xl font-bold mb-2">🚫 غير مصرح</h2>
+        <p class="mb-4 text-sm leading-relaxed">هذه الصفحة مخصصة للمدرسين أو المسؤولين فقط. إذا كنت تملك حساباً بصلاحيات مناسبة قم <a href="index_updated.html" class="underline">بتسجيل الدخول</a>.</p>
+        <a href="index_updated.html" class="inline-block px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm">العودة للصفحة الرئيسية</a>
+      </div>
+    </div>
+
+    <div id="quizFormWrapper" class="max-w-2xl mx-auto hidden">
+      <div class="form-container p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-gray-800 relative z-10 flex items-center gap-2">
+          <i class="fas fa-question-circle"></i>
+          <span>تفاصيل الكويز الجديد</span>
+        </h2>
+        
+        <form id="quizForm" class="space-y-6 relative z-10">
+          <div class="form-group">
+            <label for="quizTitle">
+              <i class="fas fa-heading text-blue-500 ml-2"></i>
+              العنوان
+            </label>
+            <input type="text" id="quizTitle" required placeholder="مثال: اختبار الوحدة الأولى" />
+          </div>
+          
+          <div class="form-group">
+            <label for="quizDescription">
+              <i class="fas fa-align-left text-green-500 ml-2"></i>
+              الوصف (اختياري)
+            </label>
+            <textarea id="quizDescription" rows="3" placeholder="وصف مختصر عن محتوى الاختبار..."></textarea>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-group">
+              <label for="quizGrade">
+                <i class="fas fa-graduation-cap text-purple-500 ml-2"></i>
+                الصف الدراسي
+              </label>
+              <select id="quizGrade" required>
+                <option value="">اختر الصف</option>
+                <option value="الصف الأول الثانوي">الصف الأول الثانوي</option>
+                <option value="الصف الثاني الثانوي علمي">الصف الثاني الثانوي علمي</option>
+                <option value="الصف الثاني الثانوي أدبي">الصف الثاني الثانوي أدبي</option>
+                <option value="الصف الثالث الثانوي علمي">الصف الثالث الثانوي علمي</option>
+                <option value="الصف الثالث الثانوي أدبي">الصف الثالث الثانوي أدبي</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="quizSubject">
+                <i class="fas fa-book text-indigo-500 ml-2"></i>
+                المادة
+              </label>
+              <input type="text" id="quizSubject" required placeholder="مثال: الرياضيات، الفيزياء، الكيمياء" />
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-group">
+              <label for="quizTimeLimit">
+                <i class="fas fa-clock text-orange-500 ml-2"></i>
+                مدة الاختبار (دقائق)
+              </label>
+              <input type="number" id="quizTimeLimit" min="1" value="30" required placeholder="30" />
+            </div>
+            
+            <div class="form-group">
+              <label for="quizIsActive">
+                <i class="fas fa-toggle-on text-green-500 ml-2"></i>
+                الحالة
+              </label>
+              <select id="quizIsActive">
+                <option value="true">نشط</option>
+                <option value="false">غير نشط</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>
+              <i class="fas fa-list-ol text-red-500 ml-2"></i>
+              الأسئلة
+            </label>
+            <div id="questionsList" class="space-y-4 mt-4"></div>
+            <button type="button" id="addQuestionBtn" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
+              <i class="fas fa-plus"></i> 
+              إضافة سؤال
+            </button>
+          </div>
+          
+          <div class="flex items-center justify-between pt-2 relative z-10">
+            <div class="text-xs text-gray-500">سيتم حفظ الاختبار فوراً وربطه بحسابك</div>
+            <div class="flex gap-3">
+              <button type="button" onclick="goBack()" class="px-4 py-2 rounded-lg border text-sm hover:bg-gray-50">
+                رجوع
+              </button>
+              <button type="submit" class="px-6 py-2 rounded-lg bg-pink-600 text-white text-sm font-semibold hover:bg-pink-700 flex items-center gap-2">
+                💾 حفظ الاختبار
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <div id="notificationRoot" class="fixed top-4 right-4 z-50 space-y-2"></div>
+  <div id="quizMsg" class="fixed bottom-4 left-4 z-50"></div>
+  <script>
+    // حراسة الوصول
+    (function guard(){
+      const attempt=()=>{
+        if(!(window.AUTH && AUTH.getCurrentUser)) return setTimeout(attempt,40);
+        const user = AUTH.getCurrentUser();
+        if(!user){
+          localStorage.setItem('postLoginRedirect','add-quiz.html');
+          return window.location.href='index_updated.html';
+        }
+        const role=(user.role||'').toLowerCase();
+        const allowed=['instructor','admin','teacher','مدرس','معلم'];
+        if(!allowed.includes(role)){
+          document.getElementById('accessDenied').classList.remove('hidden');
+          return;
+        }
+        document.getElementById('pageHeader').classList.remove('hidden');
+        document.getElementById('quizFormWrapper').classList.remove('hidden');
+      };
+      attempt();
+    })();
+
+    // تحميل الـ Shared Header عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof loadSharedHeader === 'function') {
+        loadSharedHeader();
+      }
+    });
+
+    // دالة للرجوع
+    function goBack() {
+      const referrer = document.referrer;
+      if (referrer && referrer.includes('grade')) {
+        window.history.back();
+      } else {
+        window.location.href = 'grades.html';
+      }
+    }
+
+    // دالة إظهار الإشعارات
+    function showNotification(message, type = 'info') {
+      const root = document.getElementById('notificationRoot');
+      const el = document.createElement('div');
+      el.className = `px-5 py-3 rounded-lg shadow text-sm text-white transition transform ${
+        type === 'error' ? 'bg-red-600' : 
+        type === 'success' ? 'bg-green-600' : 
+        type === 'warning' ? 'bg-yellow-600' : 
+        'bg-indigo-600'
+      }`;
+      el.textContent = message;
+      root.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateX(100%)';
+        setTimeout(() => el.remove(), 300);
+      }, 3000);
+    }
+  </script>
+  
   <script src="../js/add-quiz.js"></script>
 </body>
 </html>

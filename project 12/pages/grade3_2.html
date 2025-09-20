@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <script src="../js/auth.js"></script>
   <script src="../js/lessons.js"></script>
+  <!-- Shared Header -->
+  <script src="../shared/shared-header.js"></script>
   <style>
     body {
       background: linear-gradient(to bottom right, #dbeafe, #e0e7ff, #e0f2fe);
@@ -78,89 +80,29 @@
   <!-- زر الوضع الليلي -->
   <button id="themeToggle" aria-label="تبديل الوضع بين داكن وفاتح">🌙</button>
 
-  <!-- بانر ترحيب -->
-  <section id="welcomeBox" class="container mx-auto mt-6 hidden">
-    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 rounded-lg shadow-lg flex justify-between items-center">
-      <span id="welcomeText" class="font-semibold text-lg"></span>
-      <button id="logoutBtn" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow hover:bg-gray-100">تسجيل الخروج</button>
-    </div>
-  </section>
-
-  <!-- Header -->
-  <header class="bg-white shadow-lg">
-    <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
-      <div class="flex items-center space-x-4 mb-4 md:mb-0">
-        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
-          <i class="fas fa-graduation-cap text-white text-xl"></i>
-        </div>
-        <div>
-          <h1 class="text-2xl font-bold text-gray-800">الصف الثالث الثانوي أدبي</h1>
-          <p class="text-gray-600">منصتي التعليمية</p>
-        </div>
-      </div>
-      <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
-        <!-- منيو الطالب -->
-        <div class="relative inline-block text-left">
-          <button id="userMenuBtn" class="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-full shadow hover:bg-blue-700">
-            <span id="studentName">👤 الطالب</span>
-            <i class="fas fa-caret-down"></i>
-          </button>
-          <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg">
-            <a href="profile.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">الملف الشخصي</a>
-            <a href="grades.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">الدرجات</a>
-            <a href="calendar.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">التقويم</a>
-            <a href="settings.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">الإعدادات</a>
-            <hr>
-            <button id="logoutBtn2" class="w-full text-right px-4 py-2 text-red-600 hover:bg-red-100">تسجيل الخروج</button>
-          </div>
-        </div>
-        <!-- بيانات الأستاذ + زر التبديل -->
-        <div class="flex items-center gap-3">
-          <!-- زر إضافة حصة للمعلمين فقط -->
-          <div id="addLessonHeaderBtn" class="hidden">
-            <a href="add-lesson.html" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-              <i class="fas fa-plus"></i>
-              <span>إضافة حصة</span>
-            </a>
-          </div>
-          
-          <!-- زر إضافة جدول دراسي للمعلمين فقط -->
-          <div id="addScheduleHeaderBtn" class="hidden">
-            <a href="add-schedule-simple.html" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-              <i class="fas fa-calendar-plus"></i>
-              <span>إضافة جدول</span>
-            </a>
-          </div>
-          
-          <!-- زر إضافة واجب للمعلمين فقط -->
-          <div id="addHomeworkHeaderBtn" class="hidden">
-            <a href="add-homework.html" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-              <i class="fas fa-tasks"></i>
-              <span>إضافة واجب</span>
-            </a>
-          </div>
-          
-          <div class="relative">
-            <img src="../images/photo_2025-09-03_00-20-27.jpg" class="w-12 h-12 rounded-full border-2 border-blue-400" alt="أ/ مجدي جمال" />
-            <div id="teacherModeIndicator" class="teacher-mode-indicator hidden">مدرس</div>
-          </div>
-          <div class="text-right">
-            <p class="font-semibold text-gray-800">أ/ مجدي جمال</p>
-            <p class="text-sm text-gray-600">مدرس الجغرافيا والتاريخ</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+  <!-- Shared Header Container -->
+  <div id="shared-header-container">
+    <!-- Header will be loaded by shared-header.js -->
+  </div>
 
   <!-- Navigation -->
   <nav class="bg-white shadow-md mt-4 overflow-x-auto">
-    <div class="container mx-auto px-4 py-3 flex justify-start md:justify-center space-x-4 min-w-max">
-      <button class="nav-tab active px-6 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="lessons">🎓 الحصص</button>
-      <button class="nav-tab px-6 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="schedule">📅 الجدول الدراسي</button>
-      <button class="nav-tab px-6 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="homework">📝 الواجبات</button>
-      <button class="nav-tab px-6 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="materials">📚 المواد التعليمية</button>
-      <button class="nav-tab px-6 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="quizzes">🎯 الكويزات</button>
+    <div class="container mx-auto px-4 py-3 flex justify-center md:justify-between gap-3 min-w-max">
+      <button class="nav-tab active px-4 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="lessons">
+        🎓 الحصص
+      </button>
+      <button class="nav-tab px-4 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="schedule">
+        📅 الجدول الدراسي
+      </button>
+      <button class="nav-tab px-4 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="homework">
+        📝 الواجبات
+      </button>
+      <button class="nav-tab px-4 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="materials">
+        📚 المواد التعليمية
+      </button>
+      <button class="nav-tab px-4 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="quizzes">
+        🎯 الكويزات
+      </button>
     </div>
   </nav>
 
@@ -293,7 +235,7 @@
       grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-600">جارٍ تحميل الحصص...</div>`;
       try {
         // Use grade-specific endpoint for 3rd secondary literary
-        const resp = await fetch('https://courses-nine-eta.vercel.app/api/lessons/grade/3rd-secondary-literary');
+        const resp = await fetch('http://localhost:3000/api/lessons/grade/3rd-secondary-literary');
         const data = await resp.json();
         lessons = (data.data || data.lessons || []).map(l=>{ if(!l.id && l._id) l.id = l._id; return l; });
         renderAllContent();
@@ -315,7 +257,7 @@
       
       try {
         const token = localStorage.getItem('authToken') || '';
-        const response = await fetch('https://courses-nine-eta.vercel.app/api/schedule/grade/3rd-secondary-arts', {
+        const response = await fetch('http://localhost:3000/api/schedule/grade/3rd-secondary-arts', {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -349,8 +291,18 @@
       const grid = document.getElementById('homeworkGrid');
       grid.innerHTML = `<div class="col-span-full text-center py-10 text-gray-600">جارٍ تحميل الواجبات...</div>`;
       try {
-        // Use grade-specific endpoint for 3rd secondary literature
-        const resp = await fetch('https://courses-nine-eta.vercel.app/api/tasks/grade/third-secondary-literature');
+        // Get token from localStorage
+        const token = localStorage.getItem('authToken') || 
+                     localStorage.getItem('token') || 
+                     localStorage.getItem('jwt') || 
+                     localStorage.getItem('accessToken') || '';
+        
+        // Use grade-specific endpoint for 3rd secondary literature with authorization header
+        const resp = await fetch('http://localhost:3000/api/tasks/grade/third-secondary-literature', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         const data = await resp.json();
         homework = (data.data || data.tasks || []).map(h=>{ if(!h.id && h._id) h.id = h._id; return h; });
         renderHomework();
@@ -876,7 +828,7 @@
 
       try {
         const token = localStorage.getItem('authToken') || '';
-        const response = await fetch('https://courses-nine-eta.vercel.app/api/schedule', {
+        const response = await fetch('http://localhost:3000/api/schedule', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -1079,7 +1031,7 @@
       
       try {
         const token = localStorage.getItem('authToken') || '';
-        const response = await fetch(`https://courses-nine-eta.vercel.app/api/schedule/${scheduleId}`, {
+        const response = await fetch(`http://localhost:3000/api/schedule/${scheduleId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -1127,24 +1079,7 @@
       toggleBtn.textContent = document.documentElement.classList.contains("dark") ? "☀️" : "🌙";
     });
 
-    // User menu
-    const userBtn = document.getElementById("userMenuBtn");
-    const userMenu = document.getElementById("userMenu");
-    userBtn.addEventListener("click", () => {
-      userMenu.classList.toggle("hidden");
-    });
-
-    // Logout
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      localStorage.removeItem("studentName");
-      localStorage.removeItem("globalTeacherMode");
-      window.location.href = "index_updated.html";
-    });
-    document.getElementById("logoutBtn2").addEventListener("click", () => {
-      localStorage.removeItem("studentName");
-      localStorage.removeItem("globalTeacherMode");
-      window.location.href = "index_updated.html";
-    });
+    // User menu and logout functionality will be handled by shared-header.js
 
     // Homework Management Functions
     async function editHomework(homeworkId) {
@@ -1170,7 +1105,7 @@
       
       try {
         const token = localStorage.getItem('authToken') || '';
-        const resp = await fetch(`https://courses-nine-eta.vercel.app/api/tasks/${homeworkId}`, {
+        const resp = await fetch(`http://localhost:3000/api/tasks/${homeworkId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -1250,8 +1185,8 @@
       try {
         const token = localStorage.getItem('authToken') || '';
         const url = editId 
-          ? `https://courses-nine-eta.vercel.app/api/tasks/${editId}`
-          : 'https://courses-nine-eta.vercel.app/api/tasks/grade/third-secondary-literature';
+          ? `http://localhost:3000/api/tasks/${editId}`
+          : 'http://localhost:3000/api/tasks/grade/third-secondary-literature';
         
         const resp = await fetch(url, {
           method: editId ? 'PUT' : 'POST',
@@ -1284,5 +1219,14 @@
   
   <!-- Teacher Mode Auto System -->
   <script src="../js/teacher-mode.js"></script>
+
+  <script>
+    // تحميل الـ Shared Header عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof loadSharedHeader === 'function') {
+        loadSharedHeader();
+      }
+    });
+  </script>
 </body>
 </html>

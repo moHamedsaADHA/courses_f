@@ -1,0 +1,186 @@
+<!-- بانر ترحيب -->
+<section id="welcomeBox" class="container mx-auto mt-6 hidden">
+  <div class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4 rounded-lg shadow-lg flex justify-between items-center">
+    <span id="welcomeText" class="font-semibold text-lg"></span>
+    <button id="logoutBtn" class="bg-white text-blue-600 px-4 py-2 rounded-lg shadow hover:bg-gray-100">تسجيل الخروج</button>
+  </div>
+</section>
+
+<!-- Header -->
+<header class="bg-white shadow-lg">
+  <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+    <!-- الصف -->
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+        <i class="fas fa-graduation-cap text-white text-xl"></i>
+      </div>
+      <div>
+        <h1 id="gradeTitle" class="text-xl md:text-2xl font-bold text-gray-800"></h1>
+        <p class="text-gray-600">منصة البداية</p>
+      </div>
+    </div>
+
+    <!-- يمين: قائمة الطالب + بيانات الأستاذ + وضع المدرس -->
+    <div class="flex items-center gap-4 md:gap-6 flex-col md:flex-row">
+      <!-- قائمة الطالب -->
+      <div class="relative inline-block text-left">
+        <button id="userMenuBtn" class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-full shadow hover:bg-blue-700 w-full md:w-auto">
+          <img id="userAvatar" src="../images/default_user.png" alt="صورة المستخدم" class="w-6 h-6 rounded-full" />
+          <span id="userName">الطالب</span>
+          <i class="fas fa-chevron-down"></i>
+        </button>
+        <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-50">
+          <a href="profile.html" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">👤 الملف الشخصي</a>
+          <a href="grades.html" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">📊 الدرجات</a>
+          <a href="calendar.html" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">📅 التقويم</a>
+          <a href="settings.html" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">⚙️ الإعدادات</a>
+          <button id="logoutBtn2" class="w-full text-right block px-4 py-2 text-gray-800 hover:bg-gray-100 border-t">🚪 تسجيل خروج</button>
+        </div>
+      </div>
+
+      <!-- بيانات الأستاذ + زر التبديل -->
+      <div class="flex flex-wrap items-center gap-2 md:gap-3">
+        <!-- زر إضافة حصة للمعلمين فقط -->
+        <div id="addLessonHeaderBtn" class="hidden">
+          <a href="add-lesson.html" class="bg-green-600 text-white px-3 py-2 rounded-lg shadow hover:bg-green-700 text-xs md:text-sm flex items-center gap-1 md:gap-2 transition-colors">
+            <i class="fas fa-plus"></i>
+            <span class="inline">إضافة حصة</span>
+          </a>
+        </div>
+        
+        <!-- زر إضافة جدول دراسي للمعلمين فقط -->
+        <div id="addScheduleHeaderBtn" class="hidden">
+          <a href="add-schedule-simple.html" class="bg-purple-600 text-white px-3 py-2 rounded-lg shadow hover:bg-purple-700 text-xs md:text-sm flex items-center gap-1 md:gap-2 transition-colors">
+            <i class="fas fa-calendar-plus"></i>
+            <span class="inline">إضافة جدول</span>
+          </a>
+        </div>
+        
+        <!-- زر إضافة واجب للمعلمين فقط -->
+        <div id="addHomeworkHeaderBtn" class="hidden">
+          <a href="add-homework.html" class="bg-orange-600 text-white px-3 py-2 rounded-lg shadow hover:bg-orange-700 text-xs md:text-sm flex items-center gap-1 md:gap-2 transition-colors">
+            <i class="fas fa-tasks"></i>
+            <span class="inline">إضافة واجب</span>
+          </a>
+        </div>
+        
+        <!-- زر إضافة كويز للمعلمين فقط -->
+        <div id="addQuizHeaderBtn" class="hidden">
+          <a href="add-quiz.html" class="bg-pink-600 text-white px-3 py-2 rounded-lg shadow hover:bg-pink-700 text-xs md:text-sm flex items-center gap-1 md:gap-2 transition-colors">
+            <i class="fas fa-question-circle"></i>
+            <span class="inline">إضافة اختبار</span>
+          </a>
+        </div>
+        
+        <!-- زر التقويم للمعلمين فقط -->
+        <div id="calendarHeaderBtn" class="hidden">
+          <a href="calendar.html" class="bg-indigo-600 text-white px-3 py-2 rounded-lg shadow hover:bg-indigo-700 text-xs md:text-sm flex items-center gap-1 md:gap-2 transition-colors">
+            <i class="fas fa-calendar-alt"></i>
+            <span class="inline">التقويم</span>
+          </a>
+        </div>
+        
+        <!-- زر الدرجات للمعلمين فقط -->
+        <div id="gradesHeaderBtn" class="hidden">
+          <a href="grades.html" class="bg-yellow-600 text-white px-3 py-2 rounded-lg shadow hover:bg-yellow-700 text-xs md:text-sm flex items-center gap-1 md:gap-2 transition-colors">
+            <i class="fas fa-chart-bar"></i>
+            <span class="inline">الدرجات</span>
+          </a>
+        </div>
+        
+        <div class="relative">
+          <img id="teacherAvatar" src="../images/photo_2025-09-03_00-20-27.jpg" alt="صورة المدرس" class="w-12 h-12 rounded-full border-2 border-blue-600" />
+          <div id="teacherModeIndicator" class="teacher-mode-indicator hidden">مدرس</div>
+        </div>
+        <div class="text-right">
+          <p id="teacherName" class="font-semibold text-gray-800">أ/ مجدي جمال</p>
+          <p class="text-sm text-gray-600">مدرس الرياضيات</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Navigation -->
+<!-- <nav class="bg-white shadow-md mt-4 overflow-x-auto">
+  <div class="container mx-auto px-4 py-3 flex justify-center md:justify-between gap-3 min-w-max">
+    <button class="nav-tab active px-4 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="lessons">
+      🎓 الحصص
+    </button>
+    <button class="nav-tab px-4 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="schedule">
+      📅 الجدول الدراسي
+    </button>
+    <button class="nav-tab px-4 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="homework">
+      📝 الواجبات
+    </button>
+    <button class="nav-tab px-4 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="materials">
+      📚 المواد التعليمية
+    </button>
+    <button class="nav-tab px-4 py-2 rounded-lg font-semibold whitespace-nowrap" data-tab="quizzes">
+      🎯 الكويزات
+    </button>
+  </div>
+</nav> -->
+
+<style>
+  /* CSS لتحسين عرض أزرار المعلم */
+  .teacher-mode-indicator {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #10b981;
+    color: white;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .hidden {
+    display: none !important;
+  }
+  
+  /* تحسين عرض أزرار المعلم */
+  .teacher-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .teacher-buttons a {
+    white-space: nowrap;
+    min-width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .teacher-buttons a i {
+    flex-shrink: 0;
+  }
+  
+  .teacher-buttons a span {
+    font-weight: 500;
+  }
+  
+  /* على الشاشات الصغيرة، نجعل النص أصغر */
+  @media (max-width: 640px) {
+    .teacher-buttons a span {
+      font-size: 0.75rem;
+    }
+    .teacher-buttons a {
+      padding: 0.375rem 0.75rem;
+    }
+  }
+  
+  /* على الشاشات الكبيرة، نعطي مساحة أكثر */
+  @media (min-width: 768px) {
+    .teacher-buttons {
+      gap: 0.75rem;
+    }
+    .teacher-buttons a {
+      padding: 0.5rem 1rem;
+    }
+  }
+</style>

@@ -8,6 +8,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let questions = [];
 
+  // Prefill grade from URL if provided
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const gradeParam = params.get('grade');
+    if (gradeParam) {
+      const gradeSelect = document.getElementById('quizGrade');
+      if (gradeSelect) {
+        gradeSelect.value = gradeParam;
+      }
+    }
+  } catch (_) {}
+
   function renderQuestions() {
     questionsList.innerHTML = '';
     questions.forEach((q, idx) => {
@@ -107,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     try {
       const token = localStorage.getItem('authToken') || '';
-      const resp = await fetch('https://courses-nine-eta.vercel.app/api/quizzes', {
+      const resp = await fetch('http://localhost:3000/api/quizzes', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

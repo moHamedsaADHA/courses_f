@@ -8,12 +8,19 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <script src="../js/auth.js"></script>
   <script src="../js/lessons.js"></script>
+  <!-- Shared Header -->
+  <script src="../shared/shared-header.js"></script>
   <style>
     body{background:linear-gradient(to bottom right,#eef2ff,#f0f9ff,#f5f3ff);min-height:100vh;}
     html.dark body{background:linear-gradient(to bottom right,#0f172a,#1e293b,#312e81);}    
   </style>
 </head>
 <body class="min-h-screen flex flex-col">
+  <!-- Shared Header Container -->
+  <div id="shared-header-container">
+    <!-- Header will be loaded by shared-header.js -->
+  </div>
+
   <!-- Header يظهر فقط للمدرس / الادمن -->
   <header id="pageHeader" class="bg-white/90 backdrop-blur shadow-md sticky top-0 z-30 hidden">
     <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -106,6 +113,13 @@
       };
       attempt();
     })();
+
+    // تحميل الـ Shared Header عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof loadSharedHeader === 'function') {
+        loadSharedHeader();
+      }
+    });
 
     const form = document.getElementById('lessonCreateForm');
     form?.addEventListener('submit', submitNewLesson);

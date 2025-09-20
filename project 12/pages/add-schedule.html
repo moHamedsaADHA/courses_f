@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="../js/auth.js"></script>
     <script src="../js/lessons.js"></script>
+    <!-- Shared Header -->
+    <script src="../shared/shared-header.js"></script>
     
     <script>
         // Wait for scripts to load
@@ -284,6 +286,8 @@
         </div>
     </div>
 
+    <div id="notificationRoot" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
     <script>
         // Simple auth check
         document.addEventListener('DOMContentLoaded', async function() {
@@ -405,7 +409,7 @@
                 console.log('Sending schedule data:', scheduleData);
                 console.log('Using token:', token ? 'Token exists' : 'No token');
                 
-                const response = await fetch('https://courses-nine-eta.vercel.app/api/schedule', {
+                const response = await fetch('http://localhost:3000/api/schedule', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
